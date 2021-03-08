@@ -233,6 +233,7 @@ class SalecentralController extends Zend_Controller_Action {
         $this->_helper->layout->setLayout('target-column');
 		
 		$no_invoice_data   = $_GET['id'];
+		$no_invoice_data_original   = $_GET['id_original'];
 		$this->view->no_invoice_data = $no_invoice_data;
 		
 		$this->view->Salecentral_Service = $this->Salecentral_Service;
@@ -243,6 +244,7 @@ class SalecentralController extends Zend_Controller_Action {
 		$this->view->data2 = $this->Salecentral_Service->getdatacustomerid($kode_customer);
 		
 		$this->view->data3=$this->Salecentral_Service->getDataDetailSaleCentral($no_invoice_data);
+		$this->view->no_invoice_revisi=$this->Salecentral_Service->getDataNoInvoiceRevisi($no_invoice_data,$no_invoice_data_original);
 		
 		$this->view->customer=$this->Salecentral_Service->getCustomer();
 		$this->view->warna=$this->Salecentral_Service->getWarna();
@@ -413,11 +415,137 @@ class SalecentralController extends Zend_Controller_Action {
 		
 		$this->view->datainsert=$this->Salecentral_Service->editdata($data);
    }
+
+   	public function kirimdatarevisiAction() { 
+	
+		$this->_helper->layout->setLayout('salecentral-layout');
+		
+		$no_invoice 	 	= '';
+		$tgl_invoice	 	= '';
+		$kode_customer   	= '';
+		$shipment		 	= '';
+		$nama_kurir		 	= '';
+		$total_berat	 	= '';
+		$total_biaya	 	= '';
+		$diskon		 	 	= '';
+		$biaya_kirim 	 	= '';
+		$net_total	 	 	= '';
+		$metode_penerimaan	= '';
+		$jml_penerimaan 	= '';
+		$metode_penerimaan2	= '';
+		$jml_penerimaan2 	= '';
+		$jml_bayar		 	= '';
+		$sisa_bayar		 	= '';
+		$nama_penerima	 	= '';
+		$alamat_penerima 	= '';
+		$keterangan		 	= '';
+		$seq		 	 	= ''; 
+		$kode_inv 		 	= date('dmy');
+		
+		$kode_barang	 	= '';
+		$hj_retail		 	= '';
+		$qty			 	= '';
+		$free			 	= '';
+		$sub_total		 	= '';
+		$sub_total_berat 	= '';
+			
+		$nama_tabel 	 	= '';
+		$on_hand 		 	= '';
+		$hj_retail_baru  	= '';
+		$kode 				= '';
+		$no_invoice_revisi  = '';
+		
+		if(isset($_POST['no_invoice_original'])){ $no_invoice = $_POST['no_invoice_original'];}
+		if(isset($_POST['no_invoice_revisi'])){ $no_invoice_revisi = $_POST['no_invoice_revisi'];}
+		if(isset($_POST['tgl_invoice'])){ $tgl_invoice = $_POST['tgl_invoice'];}
+		if(isset($_POST['kode_customer2'])){ $kode_customer = $_POST['kode_customer2'];}
+		if(isset($_POST['shipment'])){ $shipment = $_POST['shipment'];}
+		if(isset($_POST['nama_kurir'])){ $nama_kurir = $_POST['nama_kurir'];}
+		if(isset($_POST['total_berat'])){ $total_berat = $_POST['total_berat'];}
+		if(isset($_POST['total_biaya'])){ $total_biaya = $_POST['total_biaya'];}
+		if(isset($_POST['diskon'])){ $diskon = $_POST['diskon'];}
+		if(isset($_POST['biaya_kirim'])){ $biaya_kirim = $_POST['biaya_kirim'];}
+		if(isset($_POST['net_total'])){ $net_total = $_POST['net_total'];}
+		if(isset($_POST['metode_penerimaan'])){ $metode_penerimaan = $_POST['metode_penerimaan'];}
+		if(isset($_POST['jml_penerimaan'])){ $jml_penerimaan = $_POST['jml_penerimaan'];}
+		if(isset($_POST['metode_penerimaan2'])){ $metode_penerimaan2 = $_POST['metode_penerimaan2'];}
+		if(isset($_POST['jml_penerimaan2'])){ $jml_penerimaan2 = $_POST['jml_penerimaan2'];}
+		if(isset($_POST['jml_bayar'])){ $jml_bayar = $_POST['jml_bayar'];}
+		if(isset($_POST['sisa_bayar'])){ $sisa_bayar = $_POST['sisa_bayar'];}
+		if(isset($_POST['nama_penerima'])){ $nama_penerima = $_POST['nama_penerima'];}
+		if(isset($_POST['alamat_penerima'])){ $alamat_penerima = $_POST['alamat_penerima'];}
+		if(isset($_POST['keterangan'])){ $keterangan = $_POST['keterangan'];}
+		if(isset($_POST['seq'])){ $seq = $_POST['seq'];}
+		
+		if(isset($_POST['kode_barang'])){ $kode_barang = $_POST['kode_barang'];}
+		if(isset($_POST['hj_retail'])){ $hj_retail = $_POST['hj_retail'];}
+		if(isset($_POST['qty'])){ $qty = $_POST['qty'];}
+		if(isset($_POST['free'])){ $free = $_POST['free'];}
+		if(isset($_POST['sub_total'])){ $sub_total = $_POST['sub_total'];}
+		if(isset($_POST['sub_total_berat'])){ $sub_total_berat = $_POST['sub_total_berat'];}
+		
+		if(isset($_POST['nama_tabel'])){ $nama_tabel = $_POST['nama_tabel'];}
+		if(isset($_POST['on_hand'])){ $on_hand = $_POST['on_hand'];}
+		if(isset($_POST['hj_retail_baru'])){ $hj_retail_baru = $_POST['hj_retail_baru'];}
+		if(isset($_POST['kode'])){ $kode = $_POST['kode'];}
+		
+		$total_berat= str_replace(".", "", $total_berat);
+		$total_biaya= str_replace(".", "", $total_biaya);
+		$biaya_kirim= str_replace(".", "", $biaya_kirim);
+		$diskon= str_replace(".", "", $diskon);
+		$net_total= str_replace(".", "", $net_total);
+		$jml_penerimaan= str_replace(".", "", $jml_penerimaan);
+		$jml_penerimaan2= str_replace(".", "", $jml_penerimaan2);
+		$jml_bayar= str_replace(".", "", $jml_bayar);
+		$sisa_bayar= str_replace(".", "", $sisa_bayar);
+		$hj_retail= str_replace(".", "", $hj_retail);
+		$qty= str_replace(".", "", $qty);
+		$free= str_replace(".", "", $free);
+		$sub_total= str_replace(".", "", $sub_total);
+		$sub_total_berat= str_replace(".", "", $sub_total_berat);
+		$on_hand= str_replace(".", "", $on_hand);
+		
+		$data = array('no_invoice_original' => $no_invoice,
+					  'no_invoice_revisi' => $no_invoice_revisi,
+					  'tgl_invoice' => $tgl_invoice,
+					  'kode_customer' => $kode_customer,
+					  'shipment' => $shipment,
+					  'nama_kurir' => $nama_kurir,
+					  'total_berat' => $total_berat,
+					  'total_biaya' => $total_biaya,
+					  'diskon' => $diskon,
+					  'biaya_kirim' => $biaya_kirim,
+					  'net_total' => $net_total,
+					  'metode_penerimaan' => $metode_penerimaan,
+					  'jml_penerimaan' => $jml_penerimaan,
+					  'metode_penerimaan2' => $metode_penerimaan2,
+					  'jml_penerimaan2' => $jml_penerimaan2,
+					  'jml_bayar' => $jml_bayar,
+					  'sisa_bayar' => $sisa_bayar,
+					  'nama_penerima' => $nama_penerima,
+					  'alamat_penerima' => $alamat_penerima,
+					  'keterangan' => $keterangan,
+					  'seq' => $seq,
+					  'kode_inv' => $kode_inv,
+					  'kode_barang' => $kode_barang,
+					  'hj_retail' => $hj_retail,
+					  'qty' => $qty,
+					  'free' => $free,
+					  'sub_total' => $sub_total,
+					  'sub_total_berat' => $sub_total_berat,
+					  'nama_tabel' => $nama_tabel,
+					  'on_hand' => $on_hand,
+					  'hj_retail_baru' => $hj_retail_baru,
+					  'kode' => $kode);
+		
+		$this->view->datainsert=$this->Salecentral_Service->revisidata($data);
+   }
    
    public function approvalAction() {
         $this->_helper->layout->setLayout('target-column');
 		
 		$no_invoice_data   = $_GET['id'];
+		$no_invoice_data_original   = $_GET['id_original'];
 		$this->view->no_invoice_data = $no_invoice_data;
 		
 		$this->view->Salecentral_Service = $this->Salecentral_Service;
@@ -428,6 +556,7 @@ class SalecentralController extends Zend_Controller_Action {
 		$this->view->data2 = $this->Salecentral_Service->getdatacustomerid($kode_customer);
 		
 		$this->view->data3=$this->Salecentral_Service->getDataDetailSaleCentral($no_invoice_data);
+		$this->view->no_invoice_revisi=$this->Salecentral_Service->getDataNoInvoiceRevisi($no_invoice_data,$no_invoice_data_original);
 		
 		$this->view->customer=$this->Salecentral_Service->getCustomer();
 		$this->view->warna=$this->Salecentral_Service->getWarna();
@@ -473,7 +602,10 @@ class SalecentralController extends Zend_Controller_Action {
 		$on_hand 		 	= '';
 		$hj_retail_baru  	= '';
 		$kode 				= '';
+		$no_invoice_original = '';
 		
+		if(isset($_POST['no_invoice_original'])){ $no_invoice_original = $_POST['no_invoice_original'];}
+
 		if(isset($_POST['no_invoice'])){ $no_invoice = $_POST['no_invoice'];}
 		if(isset($_POST['tgl_invoice'])){ $tgl_invoice = $_POST['tgl_invoice'];}
 		if(isset($_POST['kode_customer2'])){ $kode_customer = $_POST['kode_customer2'];}
@@ -526,6 +658,7 @@ class SalecentralController extends Zend_Controller_Action {
 		$stok_gudang= str_replace(".", "", $stok_gudang);
 		
 		$data = array('no_invoice' => $no_invoice,
+					  'no_invoice_original' => $no_invoice_original,
 					  'tgl_invoice' => $tgl_invoice,
 					  'kode_customer' => $kode_customer,
 					  'shipment' => $shipment,

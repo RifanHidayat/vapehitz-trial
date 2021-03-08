@@ -9,7 +9,13 @@
 			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
 		?>
 		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
-		<input type="hidden" id='id' name='id' value ='<?php echo $this->data[0]['id_transaksi'];?>'>
+		<input type="hidden" id='id' name='id' value ='<?php echo $this->data[0]['id_cashincashout'];?>'>
+
+		<input type="hidden" id='id_transaksi' name='id_transaksi' value ='<?php echo $this->data[0]['id_transaksi'];?>'>
+
+
+
+
 		<input type="hidden" id='action' name='action' value =''>
 		<div class="panel">
             <fieldset class="panel-dt">	
@@ -36,7 +42,7 @@
 							<tr>
 								<td width="14%"> 
 								
-											<input name="tgl_transaksi" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value="<?php echo $this->data[0]['tgl_transaksi'] ?>"> 
+											<input name="tgl_transaksi" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value="<?php echo $this->data[0]['tgl_cashincashout'] ?>"> 
 											<span class="input-group-btn add-on">
 											<button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
 											</span>
@@ -45,16 +51,21 @@
 								<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 								<td width="16%"> 
 									<select id="jenis_expense" name="jenis_expense" class="form-control select_group product" width="20%">
-                        			<option value="<?php echo $this->data[0]['id_jenisexpense'] ?>"><?php echo $this->data[0]['keterangan'] ?></option>
+                        		
+
                         		<?php  
+                        		$jenis_expense=$this->data[0]['jenis_expense'];
+                        			$selected3 = 'selected'; 
+
                           			for($x=0; $x<count($this->jenis_expense); $x++){ 
                           			$keterangan = $this->jenis_expense[$x]['keterangan'];
                           			$id_jenisexpense = $this->jenis_expense[$x]['id'];
-                        		if ($keterangan!=$this->data[0]['keterangan']){
+                        		
                         		?>
-                        			<option value="<?php echo $id_jenisexpense;?>"><?php echo $keterangan;?></option>
+
+                        			<option value="<?php echo $jenis_expense;?>" <?php if($keterangan == $jenis_expense){echo $selected3;}?>><?php echo $keterangan;?></option>
                        			 
-                       			 <?php }} ?>
+                       			 <?php } ?>
                        			
                        			</select>
 
@@ -111,7 +122,7 @@
 								<td> &nbsp;</td>
 								<td width="16%">
 									<label for="cashin">
-									 	<input required=""  name="type" type="radio" id="cashin" name="cashin" value="Cash In" <?php if ($this->data[0]['type']=="Cash In"){?> checked <?php }?>>
+									 	<input required=""  name="type" type="radio" id="cashin" name="cashin" value="Cash In" <?php if ($this->data[0]['status_uang']=="Cash In"){?> checked <?php }?>>
 
 										Cash in
 									</label>

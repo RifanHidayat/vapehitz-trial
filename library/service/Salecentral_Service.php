@@ -206,6 +206,19 @@ class Salecentral_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
+    public function getDataNoInvoiceRevisi($no_invoice_data,$no_invoice_data_original) {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+            $query ="SELECT COUNT(no_invoice_original) as jml,no_invoice_original from salecentral where no_invoice_original='$no_invoice_data_original'";
+            $result = $db->fetchAll($query);
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
 	
 	public function insertdata(array $data){
 		$registry = Zend_Registry::getInstance();
@@ -214,6 +227,7 @@ class Salecentral_Service {
 	    $db->beginTransaction();
 		
 		$insdata = array("no_invoice" => $data['no_invoice'],
+						"no_invoice_original" => $data['no_invoice'],
 						 "tgl_invoice" => $data['tgl_invoice'],
 						 "kode_customer" => $data['kode_customer'],
 						 "shipment" => $data['shipment'],
@@ -234,10 +248,7 @@ class Salecentral_Service {
 						 "keterangan" => $data['keterangan'],
 						 "seq" => $data['seq'],
 						 "kode_inv" => $data['kode_inv']);
-
-
-			
-					
+		
 		$db->insert('salecentral',$insdata);
 	
 		
@@ -257,6 +268,90 @@ class Salecentral_Service {
 				
 			$insdata2 = array("kode_barang" => $kode_barang,
 							  "no_invoice" => $data['no_invoice'],
+							  "harga_jual" => $hj_retail,
+							  "qty" => $qty,
+							  "free" => $free,
+						      "sub_total" => $sub_total,
+							  "sub_total_berat" => $sub_total_berat,
+							  "jenis_barang" => $nama_tabel,
+							  "kode_jenis_barang" => $kode);
+					
+			$db->insert('sub_salecentral',$insdata2);
+			
+			$insdata3 = array("on_hand" => $on_hand);
+					
+			$where = "$kode = '".$kode_barang."'";
+					
+			$db->update($nama_tabel,$insdata3,$where);
+				
+			}
+		}
+		
+		/* $insdata4 = array("no_order" => $data['no_order'],
+						 "tgl_pembayaran" => $data['tgl_order'],
+						 "jumlah_pembayaran" => $data['jml_bayar_dp'],
+						 "sisa_pembayaran" => $data['sisa_bayar'],
+						 "metode_pembayaran" => $data['metode_bayar2'],
+						 "no_rekening" => $data['no_rek']);
+					
+		$db->insert('hutang',$insdata4); */
+		
+		$db->commit();
+	    return 'sukses';
+	   } catch (Exception $e) {
+         $db->rollBack();
+         echo $e->getMessage().'<br>';
+	     return 'gagal';
+	   }
+	}
+	public function revisidata(array $data){
+		$registry = Zend_Registry::getInstance();
+		$db = $registry->get('db');
+		try {
+	    $db->beginTransaction();
+		
+		$insdata = array("no_invoice" => $data['no_invoice_revisi'],
+						"no_invoice_original" => $data['no_invoice_original'],
+						 "tgl_invoice" => $data['tgl_invoice'],
+						 "kode_customer" => $data['kode_customer'],
+						 "shipment" => $data['shipment'],
+						 "nama_kurir" => $data['nama_kurir'],
+						 "total_berat" => $data['total_berat'],
+						 "total_biaya" => $data['total_biaya'],
+						 "diskon" => $data['diskon'],
+						 "biaya_kirim" => $data['biaya_kirim'],
+						 "net_total" => $data['net_total'],
+						 "metode_penerimaan" => $data['metode_penerimaan'],
+						 "jml_penerimaan" => $data['jml_penerimaan'],
+						 "metode_penerimaan2" => $data['metode_penerimaan2'],
+						 "jml_penerimaan2" => $data['jml_penerimaan2'],
+						 "jml_bayar" => $data['jml_bayar'],
+						 "sisa_bayar" => $data['sisa_bayar'],
+						 "nama_penerima" => $data['nama_penerima'],
+						 "alamat_penerima" => $data['alamat_penerima'],
+						 "keterangan" => $data['keterangan'],
+						 "seq" => $data['seq'],
+						 "kode_inv" => $data['kode_inv']);
+		
+		$db->insert('salecentral',$insdata);
+	
+		
+		if(count($data['kode_barang']) <> 0 && trim($data['kode_barang'][0]) <> ''){
+			for($x=0;$x<count($data['kode_barang']);$x++){
+				$kode_barang	 = $data['kode_barang'][$x];
+				$hj_retail		 = $data['hj_retail'][$x];
+				$qty			 = $data['qty'][$x];
+				$free			 = $data['free'][$x];
+				$sub_total		 = $data['sub_total'][$x];
+				$sub_total_berat = $data['sub_total_berat'][$x];
+				
+				$nama_tabel 	 = $data['nama_tabel'][$x];
+				$on_hand 		 = $data['on_hand'][$x];
+				$hj_retail_baru  = $data['hj_retail_baru'][$x];
+				$kode 			 = $data['kode'][$x];
+				
+			$insdata2 = array("kode_barang" => $kode_barang,
+							  "no_invoice" => $data['no_invoice_revisi'],
 							  "harga_jual" => $hj_retail,
 							  "qty" => $qty,
 							  "free" => $free,
@@ -326,6 +421,7 @@ class Salecentral_Service {
 
 						 
 		$where = "no_invoice = '".$no_invoice."'";
+		$db->update('salecentral',$insdata,$where);
 
 		$insdata_transaksi1= array(
 					 "deskripsi" => "Transaksi Penjualan \n".$data['no_invoice'],
@@ -334,6 +430,7 @@ class Salecentral_Service {
 					 "type" => "Cash In",
 					 "nama_table" => "salescentral",
 					  "id_table" => $data['no_invoice'],
+					  "id_table_original" => $data['no_invoice_original'],
 					   "id_akun" => $data['metode_penerimaan']);
 			$insdata_transaksi2= array(
 					  "deskripsi" => "Transaksi Penjualan \n".$data['no_invoice'],
@@ -342,15 +439,16 @@ class Salecentral_Service {
 					     "type" => "Cash In",
 					     "nama_table" => "salescentral",
 					     "id_table" => $data['no_invoice'],
+					     "id_table_original" => $data['no_invoice_original'],
 					     "id_akun" => $data['metode_penerimaan2']);
 
 
 				 
 	
-		$where_transaksi="id_table = '".$no_invoice."'";
+		$where_transaksi = "id_table_original = '".$data['no_invoice_original']."'AND nama_table='salecentral'";
 
 		$db->delete('transaksi', $where_transaksi);
-		$db->update('salecentral',$insdata,$where);
+		
 		$db->insert('transaksi',$insdata_transaksi1);
 		$db->insert('transaksi',$insdata_transaksi2);
 		
@@ -445,24 +543,31 @@ class Salecentral_Service {
 						 
 		$where = "no_invoice = '".$no_invoice."'";
 
+		$where_transaksi = "id_table_original = '".$data['no_invoice_original']."'AND nama_table='salecentral'";
+
+		$db->delete('transaksi', $where_transaksi);
+
 		$insdata_transaksi1= array(
 					 "deskripsi" => "Transaksi Penjualan \n".$no_invoice,
 					 "tgl_transaksi" => $data['tgl_invoice'],
 					 "nominal" => $data['jml_penerimaan'],
 					 "type" => "Cash In",
 					 "nama_table" => "salecentral",
-					  "id_table" => $no_invoice,
-					   "id_akun" => $data['metode_penerimaan']);
-			$insdata_transaksi2= array(
+					 "id_table" => $no_invoice,
+					   "id_table_original" => $data['no_invoice_original'],
+					 "id_akun" => $data['metode_penerimaan']);
+		$insdata_transaksi2= array(
 					  "deskripsi" => "Transaksi Penjualan \n".$no_invoice,
-					   "tgl_transaksi" => $data['tgl_invoice'],
-					    "nominal" => $data['jml_penerimaan2'],
-					     "type" => "Cash In",
-					     "nama_table" => "salecentral",
-					     "id_table" => $no_invoice,
-					     "id_akun" => $data['metode_penerimaan2']);
+					  "tgl_transaksi" => $data['tgl_invoice'],
+					  "nominal" => $data['jml_penerimaan2'],
+					  "type" => "Cash In",
+					  "nama_table" => "salecentral",
+					  "id_table" => $no_invoice,
+					  "id_table_original" => $data['no_invoice_original'],
+					  "id_akun" => $data['metode_penerimaan2']);
 					
 		$db->update('salecentral',$insdata,$where);
+
 		$db->insert('transaksi',$insdata_transaksi1);
 		$db->insert('transaksi',$insdata_transaksi2);
 		

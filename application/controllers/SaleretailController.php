@@ -182,6 +182,105 @@ class SaleretailController extends Zend_Controller_Action {
 		
 		$this->view->datainsert=$this->Saleretail_Service->insertdata($data);
    }
+
+   public function kirimdatarevisiAction() { 
+		$this->_helper->layout->setLayout('saleretail-layout');
+		
+		$no_invoice 	 	= '';
+		$tgl_invoice	 	= '';
+		$total_biaya	 	= '';
+		$metode_pembayaran	= '';
+		$no_rekening	 	= '';
+		$jml_pembayaran 	= '';
+		$uang_kembali		= '';
+		$biaya_admin	 	= '';
+		$kode_inv 		 	= date('dmy');
+		$seq		 	 	= ''; 
+		
+		$kode_barang	 	= '';
+		$hj_retail		 	= '';
+		$discount			= '';
+		$stok_retail		= '';
+		$qty			 	= '';
+		$sub_total		 	= '';
+			
+		$nama_tabel 	 	= '';
+		$kode 				= '';
+
+			$id_akun 			= '';
+		$no_rek 			= '';
+		$cash 				= '';
+		$jml_revisi 	    = '';
+		$no_invoice_original = '';
+		
+		if(isset($_POST['no_invoice'])){ $no_invoice = $_POST['no_invoice'];}
+		if(isset($_POST['no_invoice_original'])){ $no_invoice_original = $_POST['no_invoice_original'];}
+		if(isset($_POST['jml_revisi'])){ $jml_revisi = $_POST['jml_revisi'];}
+		if(isset($_POST['tgl_invoice'])){ $tgl_invoice = $_POST['tgl_invoice'];}
+		if(isset($_POST['total_biaya'])){ $total_biaya = $_POST['total_biaya'];}
+		if(isset($_POST['metode_pembayaran'])){ $metode_pembayaran = $_POST['metode_pembayaran'];}
+		// if(isset($_POST['no_rekening'])){ $no_rekening = $_POST['no_rekening'];}
+		if(isset($_POST['jml_pembayaran'])){ $jml_pembayaran = $_POST['jml_pembayaran'];}
+		if(isset($_POST['uang_kembali'])){ $uang_kembali = $_POST['uang_kembali'];}
+		if(isset($_POST['biaya_admin'])){ $biaya_admin = $_POST['biaya_admin'];}
+		if(isset($_POST['seq'])){ $seq = $_POST['seq'];}
+		
+		if(isset($_POST['kode_barang'])){ $kode_barang = $_POST['kode_barang'];}
+		if(isset($_POST['hj_retail'])){ $hj_retail = $_POST['hj_retail'];}
+		if(isset($_POST['discount'])){ $discount = $_POST['discount'];}
+		if(isset($_POST['stok_retail'])){ $stok_retail = $_POST['stok_retail'];}
+		if(isset($_POST['qty'])){ $qty = $_POST['qty'];}
+		if(isset($_POST['sub_total'])){ $sub_total = $_POST['sub_total'];}
+		
+		if(isset($_POST['nama_tabel'])){ $nama_tabel = $_POST['nama_tabel'];}
+		if(isset($_POST['kode'])){ $kode = $_POST['kode'];}
+				if(isset($_POST['no_rek'])){ $no_rek = $_POST['no_rek'];}
+		if(isset($_POST['cash'])){ $cash = $_POST['cash'];}
+		
+		$tgl_invoice = str_replace('/', '-', $tgl_invoice);
+		$tgl_invoice = date("Y-m-d H:i", strtotime($tgl_invoice));
+		
+		$total_biaya= str_replace(".", "", $total_biaya);
+		$jml_pembayaran= str_replace(".", "", $jml_pembayaran);
+		$uang_kembali= str_replace(".", "", $uang_kembali);
+		$biaya_admin= str_replace(".", "", $biaya_admin);
+		$hj_retail= str_replace(".", "", $hj_retail);
+		$discount= str_replace(".", "", $discount);
+		$stok_retail= str_replace(".", "", $stok_retail);
+		$qty= str_replace(".", "", $qty);
+		$sub_total= str_replace(".", "", $sub_total);
+
+			if (($no_rek==0) || ($no_rek=="")){
+			$id_akun=$cash;
+
+		}else{
+				$id_akun=$no_rek;
+
+		}
+		
+		$data = array('no_invoice' => $no_invoice,
+					  'no_invoice_original' => $no_invoice_original,
+					  'jml_revisi' => $jml_revisi,
+					  'tgl_invoice' => $tgl_invoice,
+					  'total_biaya' => $total_biaya,
+					  'metode_pembayaran' => $metode_pembayaran,
+					  'no_rekening' => $id_akun,
+					  'jml_pembayaran' => $jml_pembayaran,
+					  'uang_kembali' => $uang_kembali,
+					  'biaya_admin' => $biaya_admin,
+					  'kode_inv' => $kode_inv,
+					  'seq' => $seq,
+					  'kode_barang' => $kode_barang,
+					  'hj_retail' => $hj_retail,
+					  'discount' => $discount,
+					  'stok_retail' => $stok_retail,
+					  'qty' => $qty,
+					  'sub_total' => $sub_total,
+					  'nama_tabel' => $nama_tabel,
+					  'kode' => $kode);
+		
+		$this->view->datainsert=$this->Saleretail_Service->revisidata($data);
+   }
    
    public function hapusdataAction(){
 		$no_invoice = '';
@@ -199,7 +298,7 @@ class SaleretailController extends Zend_Controller_Action {
 	}
 	
 	public function editdataAction() {
-        $this->_helper->layout->setLayout('target-column');
+          $this->_helper->layout->setLayout('target-column');
 		
 		$no_invoice_data   = $_GET['id'];
 		$this->view->no_invoice_data = $no_invoice_data;
@@ -208,6 +307,7 @@ class SaleretailController extends Zend_Controller_Action {
 		
 		$this->view->data=$this->Saleretail_Service->getDatasaleretail($no_invoice_data);
 		$temp_saleretail = $this->Saleretail_Service->getDatasaleretail($no_invoice_data);
+		$this->view->no_invoice_revisi=$this->Saleretail_Service->getDataNoInvoiceRevisi($no_invoice_data);
 		//$kode_customer = $temp_saleretail[0]['kode_customer'];
 		//$this->view->data2 = $this->Saleretail_Service->getdatacustomerid($kode_customer);
 		
@@ -241,7 +341,8 @@ class SaleretailController extends Zend_Controller_Action {
 		$this->view->rek=$this->Saleretail_Service->getRekening();
 		$this->view->cash=$this->Saleretail_Service->getCash();
     }
-	
+
+   
 	public function printsaleretailAction() {
         $this->_helper->layout->setLayout('target-column');
 		

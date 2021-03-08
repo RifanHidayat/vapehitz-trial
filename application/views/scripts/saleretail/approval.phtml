@@ -102,7 +102,9 @@ background:url(../images/cross.png)
 								<td width="1%">:</td>
 								<td>
 									<table>
-									
+										<?php 
+											$tgl_invoice =  date("d/m/Y", strtotime($this->data[0]['tgl_invoice']));
+										?>
 										<td> <input name="tgl_invoice" id="tgl_invoice" type="text" maxlength="50" size="30" class="form-control input-sm" value="<?php echo $tgl_invoice;?>" readonly> </td>
 										<td> &nbsp; <label id="tgl_invoice-error" for="tgl_invoice" class="error"></td>
 									</table>

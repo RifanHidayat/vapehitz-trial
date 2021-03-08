@@ -73,6 +73,20 @@ class Saleretail_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
+
+    public function getDataNoInvoiceRevisi($no_invoice_data) {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+            $query ="SELECT no_revisi as jml,no_invoice_original from saleretail where no_invoice='$no_invoice_data'";
+            $result = $db->fetchAll($query);
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
 	
 	public function getlistliquid() {
         $registry = Zend_Registry::getInstance();
@@ -234,6 +248,10 @@ class Saleretail_Service {
 						 "uang_kembali" => $uang_kembali,
 						 "biaya_admin" => $biaya_admin,
 						 "kode_inv" => $data['kode_inv'],
+						 "no_invoice_original" => $data['no_invoice'],
+						 "no_revisi" => 1,
+
+
 						 "seq" => $data['seq']);
 
 					$insdata_transaksi= array(
@@ -243,10 +261,109 @@ class Saleretail_Service {
 					     "type" => "Cash In",
 					     "nama_table" => "saleretail",
 					     "id_table" => $data['no_invoice'],
+					     "id_table_original" => $data['no_invoice'],
 					     "id_akun" => $data['no_rekening']);
 
 					
 		$db->insert('saleretail',$insdata);
+		$db->insert('transaksi',$insdata_transaksi);
+		
+		if(count($data['kode_barang']) <> 0 && trim($data['kode_barang'][0]) <> ''){
+			for($x=0;$x<count($data['kode_barang']);$x++){
+				$kode_barang	 = $data['kode_barang'][$x];
+				$hj_retail		 = $data['hj_retail'][$x];
+				$discount		 = $data['discount'][$x];
+				$stok_retail	 = $data['stok_retail'][$x];
+				$qty			 = $data['qty'][$x];
+				$sub_total		 = $data['sub_total'][$x];
+				
+				$nama_tabel 	 = $data['nama_tabel'][$x];
+				$kode 			 = $data['kode'][$x];
+				
+			$insdata2 = array("kode_barang" => $kode_barang,
+							  "no_invoice" => $data['no_invoice'],
+							  "harga_jual" => $hj_retail,
+							  "discount" => $discount,
+							  "qty" => $qty,
+						      "sub_total" => $sub_total,
+							  "jenis_barang" => $nama_tabel,
+							  "kode_jenis_barang" => $kode);
+					
+			$db->insert('saleretail_sub',$insdata2);
+			
+			$hitung_stok = $stok_retail - $qty;
+			
+			$insdata3 = array("stok_retail" => $hitung_stok);
+					
+			$where = "$kode = '".$kode_barang."'";
+					
+			$db->update($nama_tabel,$insdata3,$where);
+				
+			}
+		}
+		
+		$db->commit();
+	    return 'sukses';
+	   } catch (Exception $e) {
+         $db->rollBack();
+         echo $e->getMessage().'<br>';
+	     return 'gagal';
+	   }
+	}
+
+	public function revisidata(array $data){
+		$registry = Zend_Registry::getInstance();
+		$db = $registry->get('db');
+		try {
+	    $db->beginTransaction();
+		
+		$metode_pembayaran = $data['metode_pembayaran'];
+		$uang_kembali = $data['uang_kembali'];
+		$biaya_admin = $data['biaya_admin'];
+		
+		if($data['metode_pembayaran'] == 'Transfer'){
+			$uang_kembali = '0';
+			$biaya_admin = $data['biaya_admin'];
+		}else{
+			$biaya_admin = '0';
+			$uang_kembali = $data['uang_kembali'];
+		}
+		
+		$insdata = array("no_invoice" => $data['no_invoice'],
+						 "tgl_invoice" => $data['tgl_invoice'],
+						 "total_biaya" => $data['total_biaya'],
+						 "metode_pembayaran" => $data['metode_pembayaran'],
+						 "no_rekening" => $data['no_rekening'],
+						 "jml_pembayaran" => $data['jml_pembayaran'],
+						 "uang_kembali" => $uang_kembali,
+						 "biaya_admin" => $biaya_admin,
+						 "kode_inv" => $data['kode_inv'],
+						 "no_invoice_original" => $data['no_invoice_original'],
+						  "no_revisi" => $data['jml_revisi']+1,
+						 "seq" => $data['seq']);
+
+					$insdata_transaksi= array(
+					     "deskripsi" => "Transaksi Sales Retail \n".$data['no_invoice'],
+					     "tgl_transaksi" => $data['tgl_invoice'],
+					     "nominal" => $data['jml_pembayaran'],
+					     "type" => "Cash In",
+					     "nama_table" => "saleretail",
+					     "id_table" => $data['no_invoice'],
+					     "id_table_original" => $data['no_invoice_original'],
+					     "id_akun" => $data['no_rekening']);
+					$jml_revisi_update=array(
+						"no_revisi"=>$data['jml_revisi']+1
+					);
+
+		$where_transaksi = "id_table_original = '".$data['no_invoice_original']."'AND nama_table='saleretail'";
+		$where = "no_invoice_original = '".$data['no_invoice_original']."'";
+
+
+
+
+		$db->delete('transaksi', $where_transaksi);
+		$db->insert('saleretail',$insdata);
+		$db->update('saleretail',$jml_revisi_update,$where);
 		$db->insert('transaksi',$insdata_transaksi);
 		
 		if(count($data['kode_barang']) <> 0 && trim($data['kode_barang'][0]) <> ''){

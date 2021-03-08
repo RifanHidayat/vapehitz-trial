@@ -83,7 +83,7 @@
                           			$id = $this->jenis_expense[$x]['id'];
                           		
                         		?>
-                        			<option value="<?php echo $id;?>"><?php echo $keterangan;?></option>
+                        			<option value="<?php echo $keterangan;?>"><?php echo $keterangan;?></option>
                        			 <?php } ?>
                        			</select>
 
@@ -193,15 +193,17 @@
 								 for($x=0; $x<count($this->data); $x++){
 
 										$nomer		= $x+1;
-										$tgl_transaksi 	= $this->data[$x]['tgl_transaksi'];
-										$jenis_expense 	= $this->data[$x]['keterangan'];
+										$tgl_cashincashout 	= $this->data[$x]['tgl_cashincashout'];
+									
 										$nominal 	= $this->data[$x]['nominal'];
 										$catatan 	= $this->data[$x]['catatan'];
 										$nama_akun 	= $this->data[$x]['nama_akun'];
-										$no_akun 	= $this->data[$x]['no_akun'];
-										$type 	= $this->data[$x]['type'];
-										$id 	= $this->data[$x]['id_transaksi'];
-										$type 	= $this->data[$x]['type'];
+										$type	= $this->data[$x]['status_uang'];
+										$no_akun	= $this->data[$x]['no_akun'];
+										$id	= $this->data[$x]['id_cashincashout'];
+										$id_transaksi	= $this->data[$x]['id_transaksi'];
+										
+										$jenis_expense 	= $this->data[$x]['jenis_expense'];
 										if ($no_akun==0){
 												$sumber_dana=$nama_akun; 
 
@@ -213,8 +215,10 @@
 									
 									?>	
 											<td align="center"><?php echo $nomer;?></td>	  
-											<td align="center"><?php echo $tgl_transaksi;?></td>
-											<td align="center"><?php echo $jenis_expense;?></td>
+											<td align="center"><?php echo $tgl_cashincashout;?></td>
+
+											<td ><?php echo $jenis_expense;?></td>
+											
 											<td align="center"><?php echo 'Rp. '.number_format($nominal,0,",",".")?>
 											<td align="center"><?php echo $catatan;?></td>
 											
@@ -222,7 +226,7 @@
 											<td align="center"><?php echo $type;?></td>
 											<td width="15%">
                                                 <a href="#" title="Edit" onClick="editdata('<?php echo $id;?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
-                                                <a href="#" title="Hapus" onclick="hapusdata('<?php echo $id; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
+                                                <a href="#" title="Hapus" onclick="hapusdata('<?php echo $id; ?>','<?php echo $id_transaksi ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
                                             </td>
                                           	
 										</tr>	
@@ -304,11 +308,11 @@
   $("#jenis_expense").select2();
     $("#nama_akun").select2();
   }
-	function hapusdata(id){
+	function hapusdata(id,id_transaksi){
 			var r = confirm("Anda yakin akan menghapus data ini ?");
 			if (r == true) {
 					var url = "<?php echo $this->basePath; ?>/cashincashout/hapusdata";
-					var opt = {id:id}
+					var opt = {id:id,id_transaksi:id_transaksi}
 					
 					jQuery.get(url,opt, function(data) {	
 						location.reload(true)

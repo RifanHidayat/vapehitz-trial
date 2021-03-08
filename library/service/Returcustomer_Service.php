@@ -292,7 +292,7 @@ class Returcustomer_Service {
 					     "deskripsi" => "Transaksi retur penjualan \n".$data['no_retur'],
 					     "tgl_transaksi" => $data['tgl_retur'],
 					     "nominal" => $data['total_nominal_retur'],
-					     "type" => "Cash In",
+					     "type" => "Cash Out",
 					     "nama_table" => "retur_penjualan",
 					     "id_table" => $data['no_retur'],
 					     "id_akun" => $data['id_akun']);

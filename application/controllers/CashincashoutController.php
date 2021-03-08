@@ -47,6 +47,7 @@ class CashincashoutController extends Zend_Controller_Action {
 		$this->_helper->layout->setLayout('cashincashout-layout');
 		
 		$id 	 			 = '';
+		$id_transaksi 	 	 = '';
 		$tgl_transaksi		 = '';
 		$jenis_expense		 = '';
 		$nominal		     = '';
@@ -59,6 +60,7 @@ class CashincashoutController extends Zend_Controller_Action {
 		if(isset($_POST['tgl_transaksi'])){ $tgl_transaksi = $_POST['tgl_transaksi'];}
 		if(isset($_POST['jenis_expense'])){ $jenis_expense = $_POST['jenis_expense'];}
 		if(isset($_POST['nominal'])){ $nominal = $_POST['nominal'];}
+		if(isset($_POST['id_transaksi'])){ $id_transaksi = $_POST['id_transaksi'];}
 		if(isset($_POST['catatan'])){ $catatan = $_POST['catatan'];}
 		if(isset($_POST['nama_akun'])){ $nama_akun = $_POST['nama_akun'];}
 			if(isset($_POST['type'])){ $type = $_POST['type'];}
@@ -68,11 +70,13 @@ class CashincashoutController extends Zend_Controller_Action {
 		
 		 $data = array(
 		 				"id" => $id,
+		 				"id_transaksi" => $id_transaksi,
 		 				"tgl_transaksi" => $tgl_transaksi,
                       	"id_jenisexpense" => $jenis_expense,
                        	"nominal" => $nominal,
                        	"catatan" => $catatan,
                        	"id_akun" => $nama_akun,
+                       	"id_transaksi"=> $id_transaksi,
                        	"type" => $type);
 		if($action == 'tambah'){
 			$this->view->datainsert=$this->Cashincashout_Service->insertdata($data);
@@ -84,10 +88,13 @@ class CashincashoutController extends Zend_Controller_Action {
    
    public function hapusdataAction(){
 		$id = '';
+	
+		$id_transaksi = '';
 		
 		if(isset($_REQUEST['id'])){ $id = $_REQUEST['id'];}
+		if(isset($_REQUEST['id_transaksi'])){ $id_transaksi = $_REQUEST['id_transaksi'];}
 		
-		$dataInput = array('id' => $id);
+		$dataInput = array('id' => $id,'id_transaksi'=>$id_transaksi);
 		$hasil = $this->Cashincashout_Service->hapusData($dataInput);
 
 		if ($hasil == 'sukses') {

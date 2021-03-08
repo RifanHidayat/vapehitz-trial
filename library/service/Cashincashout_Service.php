@@ -88,7 +88,7 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,jenisexpense.id as id_jenisexpense from transaksi JOIN jenisexpense on transaksi.id_jenisexpense=jenisexpense.id JOIN akun on transaksi.id_akun=akun.id order by transaksi.id ASC ";
+            $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout JOIN akun ON tb_cashincashout.id_akun=akun.id order by tgl_cashincashout ASC";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -96,7 +96,6 @@ class Cashincashout_Service{
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
-
     public function getlistjenisexpense(){
          $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
@@ -132,7 +131,8 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,jenisexpense.id as id_jenisexpense  from transaksi JOIN jenisexpense on jenisexpense.id=transaksi.id_jenisexpense JOIN akun on akun.id=transaksi.id_akun where transaksi.id = '$id'";
+           $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout JOIN akun ON tb_cashincashout.id_akun=akun.id where tb_cashincashout.id='$id'";
+
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -146,15 +146,36 @@ class Cashincashout_Service{
         $db = $registry->get('db');
         try {
         $db->beginTransaction();
+        $date = new DateTime();
+        $id_transaksi=$date->getTimestamp();
         
-        $insdata = array("tgl_transaksi" => $data['tgl_transaksi'],
-                         "id_jenisexpense" => $data['id_jenisexpense'],
+        
+
+            $insdata_transaksi= array(
+                         "deskripsi" => "",
+                         "tgl_transaksi" => $data['tgl_transaksi'],
+                         "nominal" => $data['nominal'],
+                         "type" => $data['type'],
+                         "nama_table" => "tb_cashincashout",
+                         "id_table" =>$id_transaksi,
+                         "id_table_original" => "",
+                         "id_akun" => $data['id_akun']);
+                         $jml_revisi_update=array(
+                        "no_revisi"=>$data['jml_revisi']+1
+                        );
+
+
+         $insdata = array("tgl_cashincashout" => $data['tgl_transaksi'],
+                         "jenis_expense" => $data['id_jenisexpense'],
                          "nominal" => $data['nominal'],
                          "catatan" => $data['catatan'],
-                             "id_akun" => $data['id_akun'],
-                         "type" => $data['type']);
+                        "id_akun" => $data['id_akun'],
+                          "id_transaksi" => $id_transaksi,
+                         "status_uang" => $data['type']);
                     
-        $db->insert('transaksi',$insdata);
+        $db->insert('transaksi',$insdata_transaksi);
+
+        $db->insert('tb_cashincashout',$insdata);
         $db->commit();
         return 'sukses';
        } catch (Exception $e) {
@@ -171,18 +192,34 @@ class Cashincashout_Service{
         $db->beginTransaction();
         
         $id = $data['id'];
+        $id_transaksi = $data['id_transaksi'];
         
      
-        $insdata = array("tgl_transaksi" => $data['tgl_transaksi'],
-                         "id_jenisexpense" => $data['id_jenisexpense'],
+         $insdata_transaksi= array(
+                         "deskripsi" => "",
+                         "tgl_transaksi" => $data['tgl_transaksi'],
+                         "nominal" => $data['nominal'],
+                         "type" => $data['type'],
+                         "nama_table" => "tb_cashincashout",
+                         "id_table" =>$id_transaksi,
+                         "id_table_original" => "",
+                         "id_akun" => $data['id_akun']);
+                       
+
+
+         $insdata = array("tgl_cashincashout" => $data['tgl_transaksi'],
+                         "jenis_expense" => $data['id_jenisexpense'],
                          "nominal" => $data['nominal'],
                          "catatan" => $data['catatan'],
-                             "id_akun" => $data['id_akun'],
-                         "type" => $data['type']);
+                        "id_akun" => $data['id_akun'],
+                        
+                         "status_uang" => $data['type']);
                          
         $where = "id = '".$id."'";
+         $where = "id_transaksi = '".$id_transaksi."'";
                     
-        $db->update('transaksi',$insdata,$where);
+        $db->update('tb_cashincashout',$insdata,$where);
+        $db->update('tb_cashincashout',$insdata_transaksi,$where_transaksi);
         $db->commit();
         return 'sukses';
        } catch (Exception $e) {
@@ -200,9 +237,13 @@ class Cashincashout_Service{
         
         $id = $dataInput['id'];
         
+        $id_transaksi = $dataInput['id_transaksi'];
+        
         $where = "id = '".$id."'";
+         $where_transaksi = "id_table = '".$id_transaksi."'";
                 
-        $db->delete('transaksi', $where);
+        $db->delete('tb_cashincashout', $where);
+         $db->delete('transaksi', $where_transaksi);
         $db->commit();
         return 'sukses';
        } catch (Exception $e) {

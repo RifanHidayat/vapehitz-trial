@@ -41,6 +41,7 @@
 								<th width="5%" style="text-align:center;">Kembali</th>
 								<th width="5%" style="text-align:center;">Biaya Admin</th>
 								<th width="3%" style="text-align:center;">Detail</th>
+								<th width="3%" style="text-align:center;">Revisi</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -69,7 +70,10 @@
 											<td align="center"><?php echo $uang_kembali;?></td>
 											<td align="center"><?php echo $biaya_admin;?></td>
 											<td align="center"><a href="#" title="Detail" onclick="open_url_to_div('/salestudio/detail?id=<?php echo $no_invoice;?>')" class="btn-warning btn-sm mar-ed-button">Detail</a></td>
+
+											<td align="center"><a href="#" title="Detail" onclick="open_url_to_div('/salestudio/editdata?id=<?php echo $no_invoice;?>')" class="btn-warning btn-sm mar-ed-button">Revisi</a></td>
 										</tr>	
+
 									<?php 
 										}
 									?>

@@ -79,6 +79,16 @@ background:url(../images/cross.png)
 </style>
 <form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
 	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
+	<?php
+	$no_invoice_revisi=$this->no_invoice_revisi[0]['no_invoice_original'].'-Rev'.sprintf("%04s",$this->no_invoice_revisi[0]['jml']);
+	 ?>
+	<input type="hidden" name="no_invoice_revisi" id="currentPage" size="6" maxlength="6" value="<?php echo $no_invoice_revisi ?>" class="inputbox2 narrowkey1"></input>
+
+	<input type="hidden" name="no_invoice_original" id="currentPage" size="6" maxlength="6" value="<?php echo $this->no_invoice_revisi[0]['no_invoice_original'] ?>" class="inputbox2 narrowkey1"></input>
+
+
+
+	
 		<?php 
 			$seq = $this->seq;
 			//var_dump($seq);
@@ -110,7 +120,7 @@ background:url(../images/cross.png)
 								<td>
 									<table>
 										<?php 
-											$tgl_invoice =  date("d/m/Y", strtotime($this->data[0]['tgl_invoice']));
+											$tgl_invoice =  $this->data[0]['tgl_invoice'];
 										?>
 										<td> <input name="tgl_invoice" id="tgl_invoice" type="text" maxlength="50" size="30" class="form-control input-sm" value="<?php echo $tgl_invoice;?>" readonly> </td>
 										<td> &nbsp; <label id="tgl_invoice-error" for="tgl_invoice" class="error"></td>
@@ -317,7 +327,11 @@ background:url(../images/cross.png)
 										<tr>
 								<td colspan='5'></td>
 								<td width="10%"><font style="font-size:12px;font-weight:bold;">Sumber Penerimaan 1</font></td>
-								<td>										
+								<td>
+								<?php
+										$metode_penerimaan =  $this->data[0]['metode_penerimaan'];
+										$selected3 = 'selected';
+									?>										
 								
 			                  <select id="metode_penerimaan" name="metode_penerimaan" class = "form-control input-sm" width="15%">
 			                  <option value="0">--Pilih Sumber Dana--</option>
@@ -332,7 +346,7 @@ background:url(../images/cross.png)
 			                      
 			                      $id = $this->rek[$x]['id'];
 			                    ?>
-			                   <option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+			                  <option value="<?php echo $id;?>" <?php if($metode_penerimaan == $id){echo $selected3;}?>><?php echo $cek_rek;?></option>
 			                    <?php } ?>
 			                  </select>
 
@@ -349,9 +363,13 @@ background:url(../images/cross.png)
 											<tr>
 								<td colspan='5'></td>
 								<td width="10%"><font style="font-size:12px;font-weight:bold;">Sumber Penerimaan </font></td>
-								<td>										
+								<td>
+									<?php
+										$metode_penerimaan2 =  $this->data[0]['metode_penerimaan2'];
+										$selected3 = 'selected';
+									?>											
 								
-			                  <select id="metode_penerimaan" name="metode_penerimaan" class = "form-control input-sm" width="15%">
+			                  <select id="metode_penerimaan2" name="metode_penerimaan2" class = "form-control input-sm" width="15%">
 			                  <option value="0">--Pilih Sumber Dana--</option>
 			                    <?php  
 			                      for($x=0; $x<count($this->rek); $x++){ 
@@ -365,7 +383,7 @@ background:url(../images/cross.png)
 			                      $id = $this->rek[$x]['id'];
 			                    ?>
 			                    
-			                    <option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+			                     <option value="<?php echo $id;?>" <?php if($metode_penerimaan2 == $id){echo $selected3;}?>><?php echo $cek_rek;?></option>
 			                    <?php } ?>
 			                  </select>
 
@@ -430,6 +448,9 @@ background:url(../images/cross.png)
 								<span class="fa fa-save"></span> &nbsp;Simpan
 							</button>
 							
+							<button type="button" class="btn btn-success" onCLick="PostDataRevisi()">
+								<span class="fa fa-save"></span> &nbsp;Revisi
+							</button>
 			</div>
 </div>
 </form>
@@ -665,6 +686,100 @@ background:url(../images/cross.png)
 			location.reload(true)
 		},
 		url: '<?php echo $this->baseUrl();?>/salecentral/kirimdataedit',
+		type: 'post',
+		resetForm: false
+	};
+
+	function PostDataRevisi(){
+		//alert('Testing2');
+        $("#frm_postdata").ajaxSubmit(post_data_revisi);
+    }
+	
+	var post_data_revisi = {
+		target:'',
+		beforeSubmit: function() {	
+			var tgl_invoice 	  = document.getElementById("tgl_invoice").value;
+			var shipment 	  	  = document.getElementById('shipment').value;
+			var kode_customer 	  = document.getElementById('kode_customer').value;
+			var nama_kurir		  = document.getElementById('nama_kurir').value;
+			/* var total		 	  = document.getElementById('total').value;
+			var biaya_kirim		  = document.getElementById('biaya_kirim').value;
+			var diskon		 	  = document.getElementById('diskon').value;
+			var jml_bayar_dp	  = document.getElementById('jml_bayar_dp').value;
+			var metode_bayar2	  = document.getElementById('metode_bayar2').value;
+			var no_rek	  		  = document.getElementById('no_rek').value; */
+				
+				if (!tgl_invoice) {
+					document.getElementById('tgl_invoice-error').innerHTML ="<span style='color: red;'>Tanggal Invoice Harus Diisi.</span>";
+					document.getElementById('tgl_invoice').focus();
+					exit;
+				}else document.getElementById('tgl_invoice-error').innerHTML ='';
+				
+				if (shipment=='') {
+					document.getElementById('shipment-error').innerHTML ="<span style='color: red;'>Shipment Harus Dipilih.</span>";
+					document.getElementById('shipment').focus();
+					exit;
+				}else document.getElementById('shipment-error').innerHTML ='';
+				
+				if (shipment=='Kurir') {
+					if (!nama_kurir) {
+						document.getElementById('nama_kurir-error').innerHTML ="<span style='color: red;'>Nama Kurir Harus Diisi.</span>";
+						document.getElementById('nama_kurir').focus();
+						exit;
+					}else document.getElementById('nama_kurir-error').innerHTML ='';
+				}
+				
+				if (kode_customer=='') {
+					document.getElementById('kode_customer-error').innerHTML ="<span style='color: red;'>Nama Pelanggan Harus Dipilih.</span>";
+					document.getElementById('kode_customer').focus();
+					exit;
+				}else document.getElementById('kode_customer-error').innerHTML ='';
+				
+				/* if (!biaya_kirim) {
+					document.getElementById('biaya_kirim-error').innerHTML ="<span style='color: red;'>Biaya Kirim Harus Diisi.</span>";
+					document.getElementById('biaya_kirim').focus();
+					exit;
+				}else document.getElementById('biaya_kirim-error').innerHTML ='';
+				
+				if (!diskon) {
+					document.getElementById('diskon-error').innerHTML ="<span style='color: red;'>Diskon Harus Diisi.</span>";
+					document.getElementById('diskon').focus();
+					exit;
+				}else document.getElementById('diskon-error').innerHTML ='';
+				
+				if (!jml_bayar_dp) {
+					document.getElementById('jml_bayar_dp-error').innerHTML ="<span style='color: red;'>Jumlah Bayar DP Harus Diisi.</span>";
+					document.getElementById('jml_bayar_dp').focus();
+					exit;
+				}else document.getElementById('jml_bayar_dp-error').innerHTML ='';
+				
+				if (metode_bayar2=='0') {
+					document.getElementById('metode_bayar2-error').innerHTML ="<span style='color: red;'>Metode Bayar Harus Dipilih.</span>";
+					document.getElementById('metode_bayar2').focus();
+					exit;
+				}else document.getElementById('metode_bayar2-error').innerHTML ='';
+				
+				if(metode_bayar2 == 'Transfer'){
+					if (no_rek=='0') {
+						document.getElementById('no_rek-error').innerHTML ="<span style='color: red;'>Bank Transfer Harus Dipilih.</span>";
+						document.getElementById('no_rek').focus();
+						exit;
+					}else document.getElementById('no_rek-error').innerHTML ='';
+				} */
+				
+			}, 
+		success:function(){	
+			swal({
+				    title: 'Order Sukses !',
+				    text: 'Auto Close...',
+				    icon: 'success',
+				    timer: 4000,
+				    showConfirmButton: false,
+				})
+			location.href="#";		
+			location.reload(true)
+		},
+		url: '<?php echo $this->baseUrl();?>/salecentral/kirimdatarevisi',
 		type: 'post',
 		resetForm: false
 	};
