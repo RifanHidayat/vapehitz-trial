@@ -71,7 +71,13 @@ class SupplierController extends Zend_Controller_Action {
 					  'tipe' => $tipe,
 					  'status' => $status); 
 		
-		$this->view->datainsert=$this->Master_Service->insertdata($data);
+		$insert=$this->view->datainsert=$this->Master_Service->insertdata($data);
+		if ($insert){
+			echo "berhasil";
+		}else{
+			echo "gagal";
+		}
+
    }
    
    public function hapusdataAction(){
@@ -122,5 +128,72 @@ class SupplierController extends Zend_Controller_Action {
 		
 		$this->view->datainsert=$this->Master_Service->editdata($data);
    }
+   public function detaildataAction() {
+	$this->_helper->layout->setLayout('target-column');
  
+	
+	$kode_suplier= '';
+	if(isset($_REQUEST['kode_supplier'])){ $kode_suplier = $_REQUEST['kode_supplier'];}
+	//$this->view->data=$this->Customer_Service->getDataLiquid($kode_customer);
+	//$//this->view->data=$this->Customer_Service->getDataLiquid($kode_customer);
+	//$this->view->menu = $this->Master_Service->getmenu();
+
+	$this->view->Master_Service = $this->Master_Service;
+	$this->view->data=$this->Master_Service->getlistOrderCentral($kode_suplier);
+	$this->view->payment=$this->Master_Service->getDataPayment($kode_suplier);
+	;
+	$this->view->nama_supplier=$this->Master_Service->getDataNamaSupplier($kode_suplier);
+	$this->view->rek=$this->Master_Service->getRekening();
+	$this->view->cash=$this->Master_Service->getCash();
+
+
+
+ 
+}
+
+public function bayarAction(){
+	$no_order = '';
+	$tgl_pembayaran = '';
+	$sisa_bayar = '';
+	$jml_bayar = '';
+	$akun='';
+	$akun_rek='';
+	$catatan='';
+	$akun_cash='';
+	$akun='';
+	$metode_bayar='';
+	
+	if(isset($_REQUEST['no_order'])){ $no_order = $_REQUEST['no_order'];}
+	if(isset($_REQUEST['tgl_pembayaran'])){ $tgl_pembayaran = $_REQUEST['tgl_pembayaran'];}
+	if(isset($_REQUEST['sisa_bayar'])){ $sisa_bayar = $_REQUEST['sisa_bayar'];}
+	if(isset($_REQUEST['jml_bayar'])){ $jml_bayar = $_REQUEST['jml_bayar'];}
+	if(isset($_REQUEST['akun'])){ $akun = $_REQUEST['akun'];}
+	if(isset($_REQUEST['catatan'])){ $catatan = $_REQUEST['catatan'];}
+
+	if(isset($_REQUEST['akun_cash'])){ $akun_cash = $_REQUEST['akun_cash'];}
+	if(isset($_REQUEST['akun_rek'])){ $akun_rek = $_REQUEST['akun_rek'];}
+	if(isset($_REQUEST['metode_bayar'])){ $metode_bayar = $_REQUEST['metode_bayar'];}
+	
+	if (($akun_rek=='0') || ($akun_rek=='')){
+		$akun=$akun_cash;
+
+
+	}else{
+		$akun=$akun_rek;
+
+	}
+
+
+
+	$hasil = $this->Master_Service->bayar($no_order,$tgl_pembayaran,$sisa_bayar,$jml_bayar,$catatan,$akun,$metode_bayar);
+
+	if ($hasil == 'sukses') {
+		$this->view->pesan = 'Data Berhasil Dihapus';
+		
+	}
+	/* $this->indexAction();
+	$this->render('index'); */
+}
+
+
 }

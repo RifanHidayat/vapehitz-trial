@@ -54,8 +54,9 @@
 								<th width="5%" style="text-align:center;">Status Bayar</th>
 								<th width="5%" style="text-align:center;">Berat (Gr)</th>
 								<th width="5%" style="text-align:center;">Nama Kurir</th>
-								<th width="3%" style="text-align:center;">Edit</th>
-								<th width="3%" style="text-align:center;">Hapus</th>
+								<th width="5%" style="text-align:center;">Status</th>
+								<th width="15%" style="text-align:center;">Edit</th>
+								<th width="15%" style="text-align:center;">Hapus</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -122,11 +123,9 @@
 											<td align="center"><?php echo $statusbayar;?></td>
 											<td align="center"><?php echo $total_berat;?></td>
 											<td align="center"><?php echo $nama_kurir;?></td>
+											<td align="center"><?php echo $status;?></td>
 											<?php if($status == 'Approve' OR $status == 'Not-Approve'){ ?>
-												<td width="5%"><a href="#" title="Detail" onclick="open_url_to_div('/salecentral/detail?id=<?php echo $no_invoice;?>')" class="btn-warning btn-sm mar-ed-button">Detail</a></td>
-												<td width="5%"></td>
-											<?php } else { ?>
-												<td width="5%">
+												<td width="20%"><a href="#" title="Detail" onclick="open_url_to_div('/salecentral/detail?id=<?php echo $no_invoice;?>')" class="btn-warning btn-sm mar-ed-button">Detail</a>
 												<?php if($serialize_permission) { if(in_array('editSaleCentral', $serialize_permission)) { ?>
 													<a href="#" title="Edit" onclick="open_url_to_div('/salecentral/editdata?id=<?php echo $no_invoice;?>&id_original=<?php echo $no_invoice_original ?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
 												<?php } } ?>
@@ -134,7 +133,17 @@
 													<a href="#" title="Approve" onclick="open_url_to_div('/salecentral/approval?id=<?php echo $no_invoice;?>&id_original=<?php echo $no_invoice_original ?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Appoval</a>
 												<?php } } ?>
 												</td>
-												<td width="5%">
+												<td width="10%"></td>
+											<?php } else { ?>
+												<td width="10%">
+												<?php if($serialize_permission) { if(in_array('editSaleCentral', $serialize_permission)) { ?>
+													<a href="#" title="Edit" onclick="open_url_to_div('/salecentral/editdata?id=<?php echo $no_invoice;?>&id_original=<?php echo $no_invoice_original ?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
+												<?php } } ?>
+												<?php if($serialize_permission) { if(in_array('approvalSaleCentral', $serialize_permission)) { ?>	
+													<a href="#" title="Approve" onclick="open_url_to_div('/salecentral/approval?id=<?php echo $no_invoice;?>&id_original=<?php echo $no_invoice_original ?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Appoval</a>
+												<?php } } ?>
+												</td>
+												<td width="10%">
 												<?php if($serialize_permission) { if(in_array('hapusSaleCentral', $serialize_permission)) { ?>
 													<a href="#" title="Hapus" onclick="hapusdata('<?php echo $no_invoice; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
 												<?php } } ?>

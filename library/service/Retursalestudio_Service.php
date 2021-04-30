@@ -245,6 +245,7 @@ class Retursalestudio_Service {
 			$where2 = "kode_subsale = '".$kode_subsale."'";
 			$db->update('salestudio_sub',$insdata2,$where2); */
 			
+            
 			
 			$insdata3 = array("no_retur" => $data['no_retur'],
 							  "kode_barang" => $kode_barang,
@@ -286,6 +287,8 @@ class Retursalestudio_Service {
                          "nama_table" => "retursalestudio",
                          "id_table" => $data['no_retur'],
                          "id_akun" => $data['id_akun']);
+
+
 
 		$db->insert('retursalestudio',$insdata5);
         $db->insert('transaksi',$insdata_transaksi);

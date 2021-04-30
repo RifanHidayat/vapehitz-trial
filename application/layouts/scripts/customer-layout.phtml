@@ -24,6 +24,39 @@
           <div class="content-panel">
             <div class="adv-table">
 			<div id="listprogram" align="center"  class="col-xs-12">
+			<form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
+	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
+		<?php 
+			$seq = $this->seq;
+			//var_dump($seq);
+			$seq += 1;
+			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
+		?>
+		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
+		<input type="hidden" id='action' name='action' value =''>
+		<div class="panel">
+            <fieldset class="panel-dt">	
+				<h4 align="left"><u></u></h4>
+				<br>
+					<div class="col-sm-12">
+						
+					</div>
+				<div class="col-lg-12">
+					<div class="form-group form-group-bottom" align="right">
+						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses?>">	
+						<br><br>
+							<a href="cashincashout">
+							<button hidden type="button" class="btn btn-theme02">
+								<span class="fa fa-backward"></span> &nbsp;Kembali
+							</button></a>
+							<button hidden type="button" class="btn btn-theme03" onCLick="PostData()">
+								<span class="fa fa-save"></span> &nbsp;Simpan
+							</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</form>	
 				<br>
 					<div id="page-content">
 						<div class="form-group form-group-bottom" align="left">
@@ -44,6 +77,7 @@
 								<th width="10%" style="text-align:center;">Status</th>
 								<th width="10%" style="text-align:center;">Edit</th>
 								<th width="10%" style="text-align:center;">Hapus</th>
+								<th width="10%" style="text-align:center;">Payment</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -64,7 +98,7 @@
 											$stat = 'Inactive';
 										}
 									?>	
-											<td align="center"><?php echo $nomer;?></td>	  
+											<td align="center"> <?php echo $nomer ?> </td>	  
 											<td align="center"><?php echo $kode_customer;?></td>
 											<td align="center"><?php echo $nama_customer;?></td>
 											<td align="center"><?php echo $alamat_customer;?></td>
@@ -72,6 +106,7 @@
 											<td align="center"><?php echo $no_hp;?></td>
 											<td align="center"><?php echo $email;?></td>
 											<td align="center"><?php echo $stat;?></td>
+											
 											<td width="7%">
 											<?php if($serialize_permission) { if(in_array('editCustomer', $serialize_permission)) { ?>
                                                 <a href="#" title="Edit" onclick="open_url_to_div('/customer/editdata?id=<?php echo $kode_customer;?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
@@ -80,8 +115,12 @@
                                             <td width="8%">
 											<?php if($serialize_permission) { if(in_array('hapusCustomer', $serialize_permission)) { ?>
 												<a href="#" title="Hapus" onclick="hapusdata('<?php echo $kode_customer; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
-                                            <?php } } ?>
+                                           
+										    <?php } } ?>
 											</td>	
+										 
+											<td align="center"><a href="#" title="Payment" onclick="payment('<?php echo $kode_customer; ?>')" class="btn-warning btn-sm mar-ed-button">Payment</a>
+                                           </td>
 										</tr>	
 									<?php 
 										}
@@ -132,7 +171,149 @@
 				close();
 			}
 		}
-  </script>
+		$("#frm_postdata").hide();
+
+
+		function payment(kode_customer){
+		$("#frm_postdata").show();
+		$("#tambah").hide();
+				$(document).ready(function () {
+		setTimeout(() => {
+			$("#transferTD").hide();
+			$("#cashTD").hide();
+			$('#dataTables-empp').dataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"bFilter": true,
+			"bInfo": true,
+			"bAutoWidth": true});
+		}, 200)
+		
+	
+	});
+
+
+
+		var url = "<?php echo $this->baseUrl; ?>/customer/detaildata";
+		var opt = {kode_customer:kode_customer};
+		jQuery.get(url,opt, function(data) { 
+			document.getElementById('frm_postdata').innerHTML = data;
+			document.getElementById('action').value="edit";
+		});
+		 
+		
+  }
+
+
+function payment1(){
+	var table = document.getElementById("dataTables-emp"), sisa_bayar = 0;
+		for(var t = 1; t < table.rows.length; t++)
+		{
+ 
+			var c=table.rows[t].cells[9].children[0].checked;
+			if (c){
+				var sisa_bayar1=table.rows[t].cells[6].innerHTML
+				sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
+				var sisa_bayar = sisa_bayar + Number(sisa_bayar2);
+			}else{
+				sisa_bayar==sisa_bayar;
+			}
+		}
+		var hasil=sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+		document.getElementById("payment_checked").innerHTML="Rp. "+sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+		//document.getElementById("hasil").innerHTML = "Sum Value = "+ sumHsl;
+		//console.log(c);
+}
+
+function toggle(source) {
+  var checkboxes = document.getElementsByName('checkfield');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+  payment1();
+}
+
+
+function hide(){
+	$('[name="no_rek"]').hide();
+	//$('[name="no_rek"]').hide();
+	$("#transfer").hide();
+  	$("#transfer2").hide();
+}
+function bayar(){
+	var akun='0';
+	var no_invoice=[];
+	var jml_bayar=[];
+	var sisa_bayar=[];
+	var tgl_invoice=[]
+	var catatan=[];
+	var table = document.getElementById("dataTables-emp");
+	var akun_rek=$('#no_rek').val();
+	var akun_cash=$('#cash').val();
+	var metode_bayar=$('#metode_bayar2').val();
+
+	if ((akun_rek=="0") && (akun_cash=="0")){
+
+		alert("akun belum dipilih");
+
+	}else{
+
+		for(var t = 1; t < table.rows.length; t++)
+		{
+		 
+ 
+			var c=table.rows[t].cells[9].children[0].checked;
+			if (c){
+				var sisa_bayar1=table.rows[t].cells[6].innerHTML;
+				var tgl_invoice1=table.rows[t].cells[2].innerHTML;
+				var no_invoice1=table.rows[t].cells[1].innerHTML;
+				var jml_bayar1=table.rows[t].cells[5].innerHTML;
+				var catatan1=table.rows[t].cells[8].children[0].value;
+
+				sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
+				jml_bayar2=jml_bayar1.replace(/[^\w\s]/gi, '');
+				//push to array
+				sisa_bayar.push(sisa_bayar2);
+				jml_bayar.push(jml_bayar2);
+				no_invoice.push(no_invoice1);
+				tgl_invoice.push(tgl_invoice1);
+				catatan.push(catatan1);	
+			}
+		}
+	 
+	//	console.log(akun_cash);
+
+var url = "<?php echo $this->basePath; ?>/customer/bayar";
+var opt = {no_invoice:no_invoice,tgl_invoice:tgl_invoice,sisa_bayar:sisa_bayar,jml_bayar:jml_bayar,catatan:catatan,akun_rek:akun_rek,akun_cash:akun_cash,metode_bayar:metode_bayar}
+					
+jQuery.get(url,opt, function(data) {	
+location.reload(true)
+})
+
+
+}
+
+
+}
+$("#cash").hide();
+
+function metodebayar(nilai){
+		var nilai = nilai.value;
+		if(nilai == 'Transfer'){
+			$("#transferTD").show();
+			$("#cashTD").hide();
+			$("#default").hide();
+			$("#cash").val("");
+			
+		} else {
+			$("#transferTD").hide();
+			$("#cashTD").show();
+			$("#no_rek").val("");
+			$("#default").hide();
+		}
+	}
+
+</script>
 </body>
 
 </html>

@@ -132,8 +132,105 @@
 <script>
 	function PostData()
     {
-		//alert('Testing2');
-        $("#frm_postdata").ajaxSubmit(post_data);
+		var nama_customer 	  = $('[name="nama_customer"]').val();
+		var alamat_customer   = $('[name="alamat_customer"]').val();
+		var no_tlp 		  	  = $('[name="no_tlp"]').val();
+		var no_hp 			  = $('#no_hp').val();
+		var email 			  = $('[name="email"]').val();
+		var status 			  = $('[name="status"]').val();
+		var kode_customer 	  = $('[name="kode_customer"]').val();
+		var atps			  = email.indexOf("@");
+		var dots			  = email.lastIndexOf(".");
+
+	 
+	
+		if (nama_customer=="") {
+			document.getElementById('nama_customer-error').innerHTML ="<span style='color: red;'>Nama Customer Harus Diisi.</span>";
+			document.getElementById('nama_customer').focus();
+				 
+	    }else if (alamat_customer=="") {
+			document.getElementById('alamat_customer-error').innerHTML ="<span style='color: red;'>Alamat Customer Harus Diisi.</span>";
+			document.getElementById('alamat_customer').focus();
+			document.getElementById('nama_customer-error').innerHTML ='';
+	    }else if (no_tlp=="") {
+		    document.getElementById('no_tlp-error').innerHTML ="<span style='color: red;'>Nomor Tlp Harus Diisi.</span>";
+			document.getElementById('no_tlp').focus();
+			document.getElementById('alamat_customer-error').innerHTML ='';
+			document.getElementById('nama_customer-error').innerHTML ='';
+		 
+		 }else if (no_hp=="") {
+			document.getElementById('no_hp-error').innerHTML ="<span style='color: red;'>Nomor HP Harus Diisi.</span>";
+			document.getElementById('no_hp').focus();
+			document.getElementById('no_tlp-error').innerHTML ='';
+			document.getElementById('alamat_customer-error').innerHTML ='';
+			document.getElementById('nama_customer-error').innerHTML ='';
+	 
+		}else if (email=="") {
+			document.getElementById('email-error').innerHTML ="<span style='color: red;'>Email Harus Diisi.</span>";
+			document.getElementById('email').focus();
+			document.getElementById('no_hp-error').innerHTML ='';
+			document.getElementById('no_tlp-error').innerHTML ='';
+			document.getElementById('alamat_customer-error').innerHTML ='';	 
+			document.getElementById('nama_customer-error').innerHTML ='';
+		}else if (atps<1 || dots<atps+2 || dots+2>=email.length) {
+			document.getElementById('email-error').innerHTML ="<span style='color: red;'>Alamat email tidak valid.</span>";
+			document.getElementById('email').focus();
+
+		 
+			document.getElementById('no_hp-error').innerHTML ='';
+			document.getElementById('no_tlp-error').innerHTML ='';
+			document.getElementById('alamat_customer-error').innerHTML ='';
+			document.getElementById('nama_customer-error').innerHTML ='';
+		}else if (status == '') {
+			document.getElementById('status-error').innerHTML ="<span style='color: red;'>status Harus Dipilih.</span>";
+			document.getElementById('status').focus();
+	 
+			document.getElementById('email-error').innerHTML ='';
+			document.getElementById('no_hp-error').innerHTML ='';
+			document.getElementById('no_tlp-error').innerHTML ='';
+			document.getElementById('alamat_customer-error').innerHTML ='';
+		}else{
+			document.getElementById('status-error').innerHTML ='';
+		 
+			document.getElementById('email-error').innerHTML ='';
+			document.getElementById('no_hp-error').innerHTML ='';
+			document.getElementById('no_tlp-error').innerHTML ='';
+			document.getElementById('alamat_customer-error').innerHTML ='';
+			$.ajax({
+          	type:"post",
+			url: '<?php echo $this->baseUrl();?>/customer/kirimdataedit',
+          	data:{kode_customer:kode_customer, nama_customer:nama_customer,alamat_customer:alamat_customer,no_tlp:no_tlp,no_hp:no_hp,email:email,status:status},
+          	dataType:'json',
+          	success:function(hasil){
+			swal({
+				title: 'Tambah Supplier Berhasil !',
+				text: 'Auto Close...',
+				icon: 'success',
+				timer: 4000,
+				showConfirmButton: false,
+				});
+
+			location.href="#";		
+			location.reload(true)
+			 
+                    
+          },
+          error:function(hasil){
+			swal({
+			title: 'Tambah Supplier Berhasil !',
+			text: 'Auto Close...',
+			icon: 'success',
+			timer: 4000,
+			showConfirmButton: false,
+				}); 
+				location.href="#";		
+			location.reload(true)  
+          	}
+         
+
+    	}); 
+
+		} 
     }
 	
 	var post_data = {

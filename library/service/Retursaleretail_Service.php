@@ -373,12 +373,12 @@ class Retursaleretail_Service {
         }
     }
 	
-		public function getRekening() {
+    public function getRekening() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Transfer' Order by id Asc ";
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -391,14 +391,14 @@ class Retursaleretail_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Cash' Order by id Asc ";
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
             return $e->getMessage(); //'Data tidak ada <br>';
         }
-    }
+	}
 	
 	
 	public function getDataDetailHutang($no_invoice_data) {

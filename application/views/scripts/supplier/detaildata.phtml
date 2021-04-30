@@ -1,0 +1,222 @@
+<br>
+			<br>
+			<br>
+	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
+		<?php 
+			$seq = $this->seq;
+			//var_dump($seq);
+			$seq += 1;
+			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
+		?>
+			<?php if ($this->payment[0]['total_sisabayar']<=0){
+							$disabled="disabled";
+						}else{
+							$disabled="";
+						} ?>
+		
+		<div class="panel">
+            <fieldset class="panel-dt">	
+			
+				<h4 align="left">Payment Supplier <?php echo $this->nama_supplier[0]['nama_supplier'] ?> </h4>
+				<hr style="width: 100%">
+
+					<div>
+					 
+					</div>
+				<div class="col-lg-12">
+					<div class="form-group form-group-bottom" align="right">
+				 
+						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses?>">	
+						
+						<table style="font-size:12px;" id="dataTables" border='0'>
+							<!-- baris judul -->
+							<thead>
+								<tr >
+								<td></td>
+								<td width="18%" align="right" ><font style="font-size:12px;font-weight:bold;"><b>Metode Bayar</b></font></td>
+								<td></td>
+								<td width="18%" align="right" ><font style="font-size:12px;font-weight:bold;"><b>Nama Akun</b></font></td>
+								
+								<td width="14%" align="right" ><font style="font-size:12px;font-weight:bold;" size="20"><b>Payment</b></font></td>
+								<td width="18%" align="right" ><font style="font-size:12px;font-weight:bold;"><b>Un-Finished Payment</b></font></td>
+						
+								</thead>
+								
+							</tr> 
+
+						<!-- 	Baris input -->
+
+							<tr>
+							<td></td>
+							 
+							 
+								<td> 
+									<select id="metode_bayar2" name="metode_bayar2" class = "form-control input-sm" width="15%" onchange="metodebayar(this)">
+										<option value="0">--Pilih Cara Pembayaran--</option>
+										<option value="Transfer">Transfer</option>
+										<option value="Cash">Cash</option>
+									</select>
+								</td>
+								<td></td>
+								<td id="default"></td> 
+						 
+							   <td id="transferTD">          
+								<select id="no_rek" name="no_rek" class = "form-control input-sm" width="15%">
+									<option value="0">--Pilih Akun-</option>
+
+									<?php  
+									for($x=0; $x<count($this->rek); $x++){ 
+									$cek_rek = $this->rek[$x]['nama_akun'];
+									$id_rek = $this->rek[$x]['id'];
+									?>
+									<option value="<?php echo $id_rek;?>"><?php echo $cek_rek;?></option>
+									<?php } ?>
+								</select>
+		
+								</td>
+							
+							   <td id="cashTD"> 
+						
+
+								<select  id="cash" name="cash" class = "form-control input-sm" width="15%">
+									<option value="0">--Pilih Akun-</option>
+
+									<?php  
+									for($x=0; $x<count($this->cash); $x++){ 
+									$cek_rek = $this->cash[$x]['nama_akun'];
+									$id_cash = $this->cash[$x]['id'];
+									?>
+									<option value="<?php echo $id_cash;?>"><?php echo $cek_rek;?></option>
+									<?php } ?>
+								</select>
+		
+								</td>
+								<td width="16%" align="right" id="payment_checked" >
+								</td>
+
+					
+								<td width="16%" align="right" >
+								<?php echo "Rp. ".number_format($this->payment[0]['total_sisabayar'],0,",",".");?>
+				 
+									
+								</td>
+							</tr> 
+						
+						
+							
+						</table>
+						<br>
+						<br>
+						<br>
+						
+						<table style="font-size:12px;" class="table table-striped table-bordered table-hover" id="dataTables-emp">
+							<thead>
+							<tr bgcolor="#4ECDC4">
+								<th width="3%" style="text-align:center;">No</th>
+								<th width="7%" style="text-align:center;">Nomor Order</th>
+								<th width="10%" style="text-align:center;">Tanggal Order</th>
+								<th width="20%" style="text-align:center;">Nama Supplier</th>
+								<th width="10%" style="text-align:center;">Total</th>
+								<th width="10%" style="text-align:center;">Biaya Kirim</th>
+								<th width="10%" style="text-align:center;">Diskon</th>
+								<th width="10%" style="text-align:center;">Grand Total</th>
+								<th width="10%" style="text-align:center;">Jumah Pembayaran</th>
+								<th width="10%" style="text-align:center;">Sisa Pembayaran</th>
+								<th width="10%" style="text-align:center;">Status</th>
+								<th width="10%" style="text-align:center;">Catatan</th>
+								<th width="9%" style="text-align:center;"><input type="checkbox" onClick="toggle(this)" />  <br/></th>
+								 
+							</tr>
+							</thead>
+							<tbody>
+							<?php
+								 for($x=0; $x<count($this->data); $x++){
+
+										$nomer			= $x+1;
+										$no_order 		= $this->data[$x]['no_order'];
+										$kode_supplier 	= $this->data[$x]['kode_supplier'];
+										$total 			= number_format($this->data[$x]['total'],0,",",".");
+										$biaya_kirim	= number_format($this->data[$x]['biaya_kirim'],0,",",".");
+										$diskon 		= number_format($this->data[$x]['diskon'],0,",",".");
+										$net_total	 	= number_format($this->data[$x]['net_total'],0,",",".");
+										$jml_bayar_dp 	= number_format($this->data[$x]['jml_bayar_dp'],0,",",".");
+										$sisa_bayar	 	= number_format($this->data[$x]['sisa_bayar'],0,",",".");
+										$tgl_order	 	= date_create($this->data[$x]['tgl_order']);
+										$tgl_order		= date_format($tgl_order,"d-m-Y");
+										
+										$supplier = $this->Master_Service->getdatasupplierid($kode_supplier);
+										$nama_supplier  = $supplier[0]['nama_supplier'];
+										$tipe		 	= $supplier[0]['tipe'];
+										
+										if($net_total == $jml_bayar_dp){
+											$status = 'Finished';
+										} else {
+											$status = 'Un-Finished';
+										}
+									?>	
+										<tr>
+											<td align="center"><?php echo $nomer;?></td>	  
+											<td align="center"><?php echo $no_order;?></td>
+											<td align="center"><?php echo $tgl_order;?></td>
+											<td align="center"><?php echo $nama_supplier;?></td>
+											<td align="center"><?php echo $total;?></td>
+											<td align="center"><?php echo $biaya_kirim;?></td>
+											<td align="center"><?php echo $diskon;?></td>
+											<td align="center"><?php echo $net_total;?></td>
+											<td align="center"><?php echo $jml_bayar_dp;?></td>
+											<td align="center"><?php echo $sisa_bayar;?></td>
+											<td align="center"><?php echo $status;?></td>
+											<?php if ($status=="Finished"){ ?>
+											<td><input type="text" disabled name="catatan" value="" /></td> 
+											<td><input type="checkbox" disabled name="checkfield" value="<?php echo $nomer ?>"   onclick="payment1()"/></td>
+										     
+											
+											 <?php }else{?>
+											<td><input type="text"  name="catatan" value="" /></td> 
+											<td><input type="checkbox" name="checkfield" value="<?php echo $nomer ?>"   onclick="payment1()"/></td>
+										     
+											 <?php } ?>
+											 
+										</tr>	
+									<?php 
+										}
+									?>
+								
+							</tbody>
+						</table>
+						<br>
+							<br>
+
+	<br>
+
+
+							<button type="button" class="btn btn-theme02">
+								<span class="fa fa-backward"></span> &nbsp;Kembali
+							</button></a>
+							<button type="button" class="btn btn-success" onclick="bayar()">
+								 &nbsp; Bayar
+							</button>
+							
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		 
+<script>
+
+	$(document).ready(function () {
+		setTimeout(() => {
+			$('#dataTables-detail').dataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"bFilter": true,
+			"bInfo": true,
+			"bAutoWidth": true});
+		}, 200)
+	});
+
+ 
+
+
+	 
+</script>

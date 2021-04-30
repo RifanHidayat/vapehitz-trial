@@ -20,7 +20,7 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 
     public function indexAction() {
 		$sessionlogin = new Zend_Session_Namespace('sessionlogin');
-		$this->view->permission = $sessionlogin->permission;
+		$this->view->permission =  $sessionlogin->permission;
 		
         $this->_helper->layout->setLayout('penyelesaianpenjualan-layout');
 		
@@ -47,6 +47,7 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpenjualan_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpenjualan_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpenjualan_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpenjualan_Service->getCash();
     }
 	
 	public function dataatomizerAction(){
@@ -201,6 +202,7 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpenjualan_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpenjualan_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpenjualan_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpenjualan_Service->getCash();
     }
 	
 	public function kirimdataeditAction() { 
@@ -216,6 +218,8 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 		$metode_bayar2	 = '';
 		$no_rek			 = '';
 		$catatan		 = '';
+		$cash   		 = '';
+		$id_akun         ='';
 		
 		if(isset($_POST['no_invoice'])){ $no_invoice = $_POST['no_invoice'];}
 		if(isset($_POST['no_retur'])){ $no_retur = $_POST['no_retur'];}
@@ -224,11 +228,20 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 		if(isset($_POST['sisa_hutang'])){ $sisa_hutang = $_POST['sisa_hutang'];}
 		if(isset($_POST['metode_bayar2'])){ $metode_bayar2 = $_POST['metode_bayar2'];}
 		if(isset($_POST['no_rek'])){ $no_rek = $_POST['no_rek'];}
+		if(isset($_POST['cash'])){ $cash = $_POST['cash'];}
 		if(isset($_POST['catatan'])){ $catatan = $_POST['catatan'];}
 		
 		$jml_bayar_dp= str_replace(".", "", $jml_bayar_dp);
 		$total_bayar= str_replace(".", "", $total_bayar);
 		$sisa_hutang= str_replace(".", "", $sisa_hutang);
+
+		if (($no_rek==0) || ($no_rek=="")){
+			$id_akun=$cash;
+
+		}else{
+				$id_akun=$no_rek;
+
+		}
 		
 		$data = array('no_invoice' => $no_invoice,
 					  'no_retur' => $no_retur,
@@ -236,7 +249,7 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 					  'total_bayar' => $total_bayar,
 					  'sisa_hutang' => $sisa_hutang,
 					  'metode_bayar2' => $metode_bayar2,
-					  'no_rek' => $no_rek,
+					  'no_rek' => $id_akun,
 					  'catatan' => $catatan,
 					  'tgl_pembayaran' => $tgl_pembayaran);
 		
@@ -261,6 +274,7 @@ class PenyelesaianpenjualanController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpenjualan_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpenjualan_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpenjualan_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpenjualan_Service->getCash();
     }
 	
 	public function detailreturAction() {

@@ -35,7 +35,145 @@ $currentPage  = $this->currentPage;
             <div class="adv-table">
 			<div id="listprogram" align="center"  class="col-xs-12">
 				<br>
-					<div id="page-content">
+				
+						<form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
+	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
+		<?php 
+			$seq = $this->seq;
+			//var_dump($seq);
+			$seq += 1;
+			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
+		?>
+		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
+		<input type="hidden" id='action' name='action' value =''>
+		<div class="panel">
+            <fieldset class="panel-dt">	
+				<h4 align="left"><u>Cash In Cash Out</u></h4>
+				<br>
+					<div class="col-sm-12">
+						<table width="100%">
+							<!-- baris judul -->
+							<tr>
+								<td width="10%"><font style="font-size:12px;font-weight:bold;">Tanggal Transaksi</font></td>
+								<td> &nbsp;</td>
+								<td width="14%"><font style="font-size:12px;font-weight:bold;">Jenis Transaksi</font></td>
+								<td> &nbsp;</td>
+								<td width="14%"><font style="font-size:12px;font-weight:bold;">Nominal</font></td>
+								<td> &nbsp;</td>
+								<td width="18%"><font style="font-size:12px;font-weight:bold;">Catatan</font></td>
+								<td> &nbsp;</td>
+								<td width="14%"><font style="font-size:12px;font-weight:bold;">Sumber Dana</font></td>
+								<td> &nbsp;</td>
+								<td width="14%"></td>
+							</tr> 
+						<!-- 	Baris input -->
+
+							<tr>
+								<td width="14%"> 
+								
+											<input name="tgl_transaksi" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value=""> 
+											<span class="input-group-btn add-on">
+											<button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
+											</span>
+										
+								</td>
+								<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td width="16%"> 
+									<select class="jenis_expense" id="jenis_expense" name="jenis_expense" class="form-control select_group product" style="width: 100%">
+                        			<option value="">--Jenis Expense--</option>
+                        		<?php  
+                          			for($x=0; $x<count($this->jenis_expense); $x++){ 
+                          			$keterangan = $this->jenis_expense[$x]['keterangan'];
+                          			$id = $this->jenis_expense[$x]['id'];
+                          		
+                        		?>
+                        			<option value="<?php echo $id;?>"><?php echo $keterangan;?></option>
+                       			 <?php } ?>
+                       			</select>
+
+								</td>
+								<td> </td>
+
+								<td width="16%"> 
+									<input name="nominal" id="nominal" type="text" maxlength="30" size="30" class="form-control input-sm" placeholder="0"  onkeyup='masking("nominal")'> 
+
+								</td>
+								<td> &nbsp;</td>
+
+								<td width="20%">
+									<input name="catatan" id="catatan" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
+								</td>
+								<td> &nbsp;</td>
+								<td width="16%">
+									<select id="nama_akun" name="nama_akun" class="form-control select_group product" style="width: 100%">
+                        			<option value="">--Sumber Dana--</option>
+                        			<?php  
+                          			for($x=0; $x<count($this->akun); $x++){ 
+                          			$nama_akun = $this->akun[$x]['nama_akun'];
+                          			$no_akun = $this->akun[$x]['no_akun'];
+                          			$id = $this->akun[$x]['id'];
+                          		
+                        		?>
+                        			<option value="<?php echo $id ?>"><?php echo $nama_akun.' | '.$no_akun;?></option>
+                       			 <?php } ?>
+                       			</select>
+
+
+								</td>
+								<td> &nbsp;</td>
+								<td width="16%">
+									<label for="cashin">
+									 	<input required=""  name="type" type="radio" id="cashin" name="cashin" value="Cash In">
+
+										Cash in
+									</label>
+									
+									<label for="Cash In">
+										<input required="" name="type"  type="radio" id="cashout" name="cashout" value="Cash Out">
+										Cash out
+									</label>
+									
+								</td>
+							</tr> 
+
+								<tr>
+								<td width="10%">&nbsp; <label id="tgl_transaksi-error" for="nama_akun" class="error"></font></td>
+								<td> &nbsp;</td>
+								<td width="14%">&nbsp; <label id="jenis_expense-error" for="jenis_expense" class="error"></font></td>
+								<td> &nbsp;</td>
+								<td width="14%">&nbsp; <label id="nominal-error" for="nominal" class="error"></td>
+								<td> &nbsp;</td>
+								<td width="18%">&nbsp; <label id="catatan-error" for="catatan" class="error"></td>
+								<td> &nbsp;</td>
+								<td width="14%">&nbsp; <label id="nama_akun-error" for="nama_akun" class="error"></td>
+								<td> &nbsp;</td>
+								<td width="14%">&nbsp; <label id="type-error" for="nama_akun" class="error"></td>
+								<td> &nbsp;</td>
+
+								
+							</tr> 
+
+
+							
+						</table>
+					</div>
+				<div class="col-lg-12">
+					<div class="form-group form-group-bottom" align="right">
+						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses?>">	
+						<br><br>
+							<a href="cashincashout">
+							<button type="button" class="btn btn-theme02">
+								<span class="fa fa-backward"></span> &nbsp;Kembali
+							</button></a>
+							<button type="button" class="btn btn-theme03" onCLick="PostData()">
+								<span class="fa fa-save"></span> &nbsp;Simpan
+							</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</form>	
+	<div id="page-content">
 						<div class="col-md-6" align="left">
 						<?php if($serialize_permission) { if(in_array('tambahSupplier', $serialize_permission)) { ?>
 							<button class="right btn btn-success  btn-xs" onClick="open_url_to_div('/supplier/tambahdata')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Supplier</button>		
@@ -61,6 +199,7 @@ $currentPage  = $this->currentPage;
 								<th width="10%" style="text-align:center;">Status</th>
 								<th width="10%" style="text-align:center;">Edit</th>
 								<th width="10%" style="text-align:center;">Hapus</th>
+								<th width="10%" style="text-align:center;">Payment</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -83,7 +222,7 @@ $currentPage  = $this->currentPage;
 											$stat = 'Inactive';
 										}
 									?>	
-											<td align="center"><?php echo $noUrut;?></td>	  
+											<td align="center"><?php echo $nomer;?></td>	  
 											<td align="center"><?php echo $kode_supplier;?></td>
 											<td align="center"><?php echo $nama_supplier;?></td>
 											<td align="center"><?php echo $alamat_supplier;?></td>
@@ -102,6 +241,10 @@ $currentPage  = $this->currentPage;
 												<a href="#" title="Hapus" onclick="hapusdata('<?php echo $kode_supplier; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
                                             <?php } } ?>
 											</td>	
+											</td>	
+										 
+											<td align="center"><a href="#" title="Payment" onclick="payment('<?php echo $kode_supplier; ?>')" class="btn-warning btn-sm mar-ed-button">Payment</a>
+                                           </td>
 										</tr>	
 									<?php 
 										}
@@ -149,7 +292,7 @@ $currentPage  = $this->currentPage;
 			//location.reload(true)
 		}); 
 	}
-  
+	$("#frm_postdata").hide();
 	function hapusdata(kode_supplier){
 			var r = confirm("Anda yakin akan menghapus data ini ?");
 			if (r == true) {
@@ -194,6 +337,158 @@ $currentPage  = $this->currentPage;
       //do something, like clearing an input
       $('#perioddate').val('');
     });
+
+	
+	function payment(kode_supplier){
+		$("#frm_postdata").show();
+		$("#tambah").hide();
+				$(document).ready(function () {
+		setTimeout(() => {
+			$("#transferTD").hide();
+			$("#cashTD").hide();
+			$('#dataTables-empp').dataTable({
+			"bPaginate": true,
+			"bLengthChange": true,
+			"bFilter": true,
+			"bInfo": true,
+			"bAutoWidth": true});
+		}, 200)
+	});
+
+
+
+		var url = "<?php echo $this->baseUrl; ?>/supplier/detaildata";
+		var opt = {kode_supplier:kode_supplier};
+		jQuery.get(url,opt, function(data) { 
+			document.getElementById('frm_postdata').innerHTML = data;
+			document.getElementById('action').value="edit";
+		});
+  
+  }
+
+
+function payment1(){
+	var table = document.getElementById("dataTables-emp"), sisa_bayar = 0;
+		for(var t = 1; t < table.rows.length; t++)
+		{
+	// 	if ($('#chk')[t].is(':checked')) {
+	// 		sumHsl = sumHsl + Number(table.rows[t].cells[0].getElementsByTagName('input')[0].value);
+
+    //   }
+	var c=table.rows[t].cells[12].children[0].checked;
+	if (c==true){
+		var sisa_bayar1=table.rows[t].cells[9].innerHTML
+		sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
+		var sisa_bayar = sisa_bayar + Number(sisa_bayar2);
+	
+
+	}else{
+		sisa_bayar==sisa_bayar;
+	}
+//	console.log(c);
+	
+ 
+	
+
+		}
+		
+		 
+		var hasil=sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+		 
+		 
+		document.getElementById("payment_checked").innerHTML="Rp. "+sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+		//document.getElementById("hasil").innerHTML = "Sum Value = "+ sumHsl;
+
+
+}
+function toggle(source) {
+  var checkboxes = document.getElementsByName('checkfield');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+  payment1();
+}
+	
+
+
+
+function bayar(){
+	var no_order=[];
+	var jml_bayar=[];
+	var sisa_bayar=[];
+	var tgl_pembayaran=[]
+	var catatan=[];
+	var table = document.getElementById("dataTables-emp");
+	var akun_rek=$('#no_rek').val();
+	var akun_cash=$('#cash').val();
+	var akun_rek=$('#no_rek').val();
+	var akun_cash=$('#cash').val();
+	var metode_bayar=$('#metode_bayar2').val();
+
+
+
+	if ((akun_rek=="0") && (akun_cash=="0")){
+
+		alert("akun belum dipilih");
+
+	}else{
+
+	for(var t = 1; t < table.rows.length; t++)
+		{
+		 
+ 
+			var c=table.rows[t].cells[12].children[0].checked;
+			if (c){
+				var sisa_bayar1=table.rows[t].cells[9].innerHTML;
+				var jml_bayar1=table.rows[t].cells[8].innerHTML;
+				var tgl_pembayaran1=table.rows[t].cells[2].innerHTML;
+				var no_order1=table.rows[t].cells[1].innerHTML;
+				var catatan1=table.rows[t].cells[11].children[0].value;
+
+				sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
+				jml_bayar2=jml_bayar1.replace(/[^\w\s]/gi, '');
+				//push to array
+				sisa_bayar.push(sisa_bayar2);
+				jml_bayar.push(jml_bayar2);
+				no_order.push(no_order1);
+				tgl_pembayaran.push(tgl_pembayaran1);
+				catatan.push(catatan1);	
+				//console.log(sisa_bayar1);
+				
+			}
+		}
+	 
+
+var url = "<?php echo $this->basePath; ?>/supplier/bayar";
+var opt = {no_order:no_order,tgl_pembayaran:tgl_pembayaran,sisa_bayar:sisa_bayar,jml_bayar:jml_bayar,catatan:catatan,akun_rek:akun_rek,akun_cash:akun_cash,metode_bayar:metode_bayar}
+					
+jQuery.get(url,opt, function(data) {
+	
+
+
+location.reload(true)
+})
+ 	}
+
+}
+
+function metodebayar(nilai){
+		var nilai = nilai.value;
+		if(nilai == 'Transfer'){
+			$("#transferTD").show();
+			$("#cashTD").hide();
+			$("#default").hide();
+			$("#cash").val("");
+			
+		} else {
+			$("#transferTD").hide();
+			$("#cashTD").show();
+			$("#no_rek").val("");
+			$("#default").hide();
+		}
+	}
+
+
   </script>
 </div>
 </body>

@@ -161,7 +161,7 @@ class Penyelesaianpenjualan_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select a.no_retur, a.no_invoice, a.tgl_retur, a.total_qty_retur, 
+            $query ="select a.no_retur, b.keterangan, a.no_invoice, a.tgl_retur, a.total_qty_retur, 
 					 a.total_nominal_retur, b.tgl_invoice, b.kode_customer, b.sisa_bayar, b.net_total
 					 from retur_penjualan a, salecentral b, customer c 
 					 where a.no_invoice = b.no_invoice 
@@ -291,8 +291,21 @@ class Penyelesaianpenjualan_Service {
 						  "metode_pembayaran" => $data['metode_bayar2'],
 						  "catatan" => $data['catatan'],
 						  "no_rekening" => $data['no_rek']);
-					
+
+        $insdata_transaksi= array(
+                            "deskripsi" => "Transaksi Penyelesaian penjualan \n".$data['no_retur'],
+                            "tgl_transaksi" => $data['tgl_pembayaran'],
+                            "nominal" => $data['jml_bayar_dp'],
+                            "type" => "Cash Out",
+                            "nama_table" => "selisi_penjualan",
+                            "id_table" => $data['no_retur'],
+                            "catatan" => $data['catatan'],
+                            "id_table_original" => $data['no_retur'],
+                            "id_akun" => $data['no_rek']);
+
+        	
 		$db->insert('selisih_penjualan',$insdata2);
+        $db->insert('transaksi',$insdata_transaksi);
 		
 		
 		$db->commit();
@@ -366,27 +379,14 @@ class Penyelesaianpenjualan_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
-	
-	public function getRekening() {
-        $registry = Zend_Registry::getInstance();
-        $db = $registry->get('db');
-
-        try {
-            $query ="select * FROM rekening Order by no_id Asc";
-            $result = $db->fetchAll($query);
-            return $result;
-        } catch (Exception $e) {
-            echo $e->getMessage() . '<br>';
-            return $e->getMessage(); //'Data tidak ada <br>';
-        }
-    }
+ 
 	
 	public function getDataDetailHutang($no_retur_data) {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from selisih_penjualan where no_retur = '$no_retur_data' order by id_hutang Asc";
+            $query ="SELECT * from selisih_penjualan JOIN akun ON selisih_penjualan.no_rekening=akun.id where no_retur = '$no_retur_data' order by id_hutang Asc";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -419,6 +419,35 @@ class Penyelesaianpenjualan_Service {
 
         try {
             $query ="SELECT * from sub_returpembelian where no_retur = '$no_retur_data' order by no_subretur Asc";
+            $result = $db->fetchAll($query);
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
+
+        public function getRekening() {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
+            $result = $db->fetchAll($query);
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
+
+    
+    public function getCash() {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

@@ -83,7 +83,7 @@ class OrdercentralController extends Zend_Controller_Action {
 		$this->view->Ordercentral_Service = $this->Ordercentral_Service;
 		$this->view->data = $this->Ordercentral_Service->getlistliquid();
 
-				$this->view->rek=$this->Ordercentral_Service->getRekening();
+		$this->view->rek=$this->Ordercentral_Service->getRekening();
 		$this->view->cash=$this->Ordercentral_Service->getCash();
     }
 	
@@ -126,13 +126,11 @@ class OrdercentralController extends Zend_Controller_Action {
 		if(isset($_POST['jml_bayar_dp'])){ $jml_bayar_dp = $_POST['jml_bayar_dp'];}
 		if(isset($_POST['sisa_bayar'])){ $sisa_bayar = $_POST['sisa_bayar'];}
 		if(isset($_POST['metode_bayar2'])){ $metode_bayar2 = $_POST['metode_bayar2'];}
-		if(isset($_POST['no_rek'])){ $no_rek = $_POST['no_rek'];}
-		
+		if(isset($_POST['no_rek'])){ $no_rek = $_POST['no_rek'];}	
 		if(isset($_POST['kode_barang'])){ $kode_barang = $_POST['kode_barang'];}
 		if(isset($_POST['harga_beli'])){ $harga_beli = $_POST['harga_beli'];}
 		if(isset($_POST['qty'])){ $qty = $_POST['qty'];}
 		if(isset($_POST['sub_total'])){ $sub_total = $_POST['sub_total'];}
-		
 		if(isset($_POST['nama_tabel'])){ $nama_tabel = $_POST['nama_tabel'];}
 		if(isset($_POST['stok_gudang_baru'])){ $stok_gudang_baru = $_POST['stok_gudang_baru'];}
 		if(isset($_POST['harga_beli_baru'])){ $harga_beli_baru = $_POST['harga_beli_baru'];}
@@ -151,7 +149,7 @@ class OrdercentralController extends Zend_Controller_Action {
 		$harga_beli= str_replace(".", "", $harga_beli);
 		$sub_total= str_replace(".", "", $sub_total);
 		//$harga_beli_baru= str_replace(".", "", $harga_beli_baru);
-		if(isset($_POST['cash'])){ $cash = $_POST['cash'];}
+ 
 
 		if (($no_rek==0) || ($no_rek=="")){
 			$id_akun=$cash;

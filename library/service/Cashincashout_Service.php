@@ -88,7 +88,7 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout JOIN akun ON tb_cashincashout.id_akun=akun.id order by tgl_cashincashout ASC";
+            $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout  order by tgl_cashincashout ASC";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -115,7 +115,7 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from akun order by id ASC ";
+            $query ="SELECT * from akun where akun.type Not In ('None')  AND akun.id Not In ('23') order by id ASC ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -131,7 +131,7 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-           $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout JOIN akun ON tb_cashincashout.id_akun=akun.id where tb_cashincashout.id='$id'";
+           $query ="SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout  where tb_cashincashout.id='$id'";
 
             $result = $db->fetchAll($query);
             return $result;
@@ -148,32 +148,47 @@ class Cashincashout_Service{
         $db->beginTransaction();
         $date = new DateTime();
         $id_transaksi=$date->getTimestamp();
+
+
         
         
 
-            $insdata_transaksi= array(
-                         "deskripsi" => "",
+            $insdata_transaksi_in= array(
+                "deskripsi" => "Transaksi In Out",
                          "tgl_transaksi" => $data['tgl_transaksi'],
                          "nominal" => $data['nominal'],
-                         "type" => $data['type'],
+                         "type" => "Cash In",
                          "nama_table" => "tb_cashincashout",
                          "id_table" =>$id_transaksi,
-                         "id_table_original" => "",
-                         "id_akun" => $data['id_akun']);
-                         $jml_revisi_update=array(
-                        "no_revisi"=>$data['jml_revisi']+1
-                        );
+                         "id_table_original" => $id_transaksi,
+                           "catatan" => $data['catatan'],
+                         "id_akun" => $data['id_akun_in']);
+                         
+                         $insdata_transaksi_out= array(
+                            "deskripsi" => "Transaksi In Out",
+                         "tgl_transaksi" => $data['tgl_transaksi'],
+                         "nominal" => $data['nominal'],
+                         "type" => "Cash Out",
+                         "nama_table" => "tb_cashincashout",
+                         "id_table" =>$id_transaksi,
+                         "id_table_original" => $id_transaksi,
+                           "catatan" => $data['catatan'],
+                         "id_akun" => $data['id_akun_out']);
+                         
 
 
          $insdata = array("tgl_cashincashout" => $data['tgl_transaksi'],
-                         "jenis_expense" => $data['id_jenisexpense'],
                          "nominal" => $data['nominal'],
-                         "catatan" => $data['catatan'],
-                        "id_akun" => $data['id_akun'],
+                        "catatan" => $data['catatan'],
+                        "akun_in" => $data['id_akun_in'],
+                        "akun_out" => $data['id_akun_out'],
                           "id_transaksi" => $id_transaksi,
-                         "status_uang" => $data['type']);
-                    
-        $db->insert('transaksi',$insdata_transaksi);
+                                "nama_akun_in"=>$data['nama_akun_in'],
+                          "nama_akun_out"=>$data['nama_akun_out']
+                          );
+                  
+         $db->insert('transaksi',$insdata_transaksi_in);
+        $db->insert('transaksi',$insdata_transaksi_out);
 
         $db->insert('tb_cashincashout',$insdata);
         $db->commit();
@@ -195,31 +210,51 @@ class Cashincashout_Service{
         $id_transaksi = $data['id_transaksi'];
         
      
-         $insdata_transaksi= array(
-                         "deskripsi" => "",
-                         "tgl_transaksi" => $data['tgl_transaksi'],
-                         "nominal" => $data['nominal'],
-                         "type" => $data['type'],
-                         "nama_table" => "tb_cashincashout",
-                         "id_table" =>$id_transaksi,
-                         "id_table_original" => "",
-                         "id_akun" => $data['id_akun']);
-                       
+        $insdata_transaksi_in= array(
+            "deskripsi" => "Transaksi In Out",
+            "tgl_transaksi" => $data['tgl_transaksi'],
+            "nominal" => $data['nominal'],
+            
+            "nama_table" => "tb_cashincashout",
+           
+              "catatan" => $data['catatan'],
+            "id_akun" => $data['id_akun_in']);
+            
+            $insdata_transaksi_out= array(
+                "deskripsi" => "Transaksi In Out",
+            "tgl_transaksi" => $data['tgl_transaksi'],
+            "nominal" => $data['nominal'],
+            "deskripsi" => "Transaksi In Out",
+            
+          
+        
+              "catatan" => $data['catatan'],
+            "id_akun" => $data['id_akun_out']);
+            
 
 
-         $insdata = array("tgl_cashincashout" => $data['tgl_transaksi'],
-                         "jenis_expense" => $data['id_jenisexpense'],
-                         "nominal" => $data['nominal'],
-                         "catatan" => $data['catatan'],
-                        "id_akun" => $data['id_akun'],
-                        
-                         "status_uang" => $data['type']);
+$insdata = array("tgl_cashincashout" => $data['tgl_transaksi'],
+            "nominal" => $data['nominal'],
+            "catatan" => $data['catatan'],
+            "akun_in" => $data['id_akun_in'],
+            "akun_out" => $data['id_akun_out'],
+            // "id_transaksi" => $id_transaksi,
+            "nama_akun_in"=>$data['nama_akun_in'],
+            "nama_akun_out"=>$data['nama_akun_out']
+             );
                          
-        $where = "id = '".$id."'";
-         $where = "id_transaksi = '".$id_transaksi."'";
+          $where = "id = '".$id."'";
+         
+          $where_transaksi_in = "id_table = '".$id_transaksi."'AND nama_table='tb_cashincashout' AND type='Cash In'";
+         
+         $where_transaksi_out = "id_table = '".$id_transaksi."'AND nama_table='tb_cashincashout' AND type='Cash Out'";
+         
+         $db->update('transaksi',$insdata_transaksi_out,$where_transaksi_out);
+         //$db->update('transaksi',$insdata_transaksi_in,$where_transaksi_in);
                     
         $db->update('tb_cashincashout',$insdata,$where);
-        $db->update('tb_cashincashout',$insdata_transaksi,$where_transaksi);
+       
+        
         $db->commit();
         return 'sukses';
        } catch (Exception $e) {

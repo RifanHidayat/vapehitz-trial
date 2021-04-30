@@ -288,6 +288,8 @@ class Returcustomer_Service {
 						 "total_nominal_retur" => $data['total_nominal_retur'],
 						 "seq" => $data['seq'],
 						 "tgl_retur" => $data['tgl_retur']);
+
+
 		$insdata_transaksi= array(
 					     "deskripsi" => "Transaksi retur penjualan \n".$data['no_retur'],
 					     "tgl_transaksi" => $data['tgl_retur'],
@@ -295,6 +297,7 @@ class Returcustomer_Service {
 					     "type" => "Cash Out",
 					     "nama_table" => "retur_penjualan",
 					     "id_table" => $data['no_retur'],
+                         "id_table_original" => $data['no_retur'],
 					     "id_akun" => $data['id_akun']);
 
 					
@@ -379,7 +382,7 @@ class Returcustomer_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Transfer' Order by id Asc ";
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -392,14 +395,14 @@ class Returcustomer_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Cash' Order by id Asc ";
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
             return $e->getMessage(); //'Data tidak ada <br>';
         }
-    }
+	}
 	
 	public function getDataDetailHutang($no_invoice_data) {
         $registry = Zend_Registry::getInstance();

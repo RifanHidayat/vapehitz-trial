@@ -282,6 +282,16 @@ class Penyelesaianpembelian_Service {
 		$where = "no_order = '".$no_order."'";
 					
 		$db->update('ordercentral',$insdata,$where);
+
+        $insdata_transaksi= array(
+            "deskripsi" => "Transaksi Penyelesaian pembelian \n".$data['no_retur'],
+            "tgl_transaksi" => $data['tgl_pembayaran'],
+            "nominal" => $data['jml_bayar_dp'],
+            "type" => "Cash In",
+            "nama_table" => "selisi_pembelian",
+            "id_table" => $data['no_retur'],
+            "id_table_original" => $data['no_retur'],
+            "id_akun" => $data['no_rek']);
 		
 		$insdata2 = array("no_retur" => $data['no_retur'],
 						  "no_order" => $data['no_order'],
@@ -291,8 +301,11 @@ class Penyelesaianpembelian_Service {
 						  "metode_pembayaran" => $data['metode_bayar2'],
 						  "catatan" => $data['catatan'],
 						  "no_rekening" => $data['no_rek']);
+
+        
 					
 		$db->insert('selisih_pembelian',$insdata2);
+        $db->insert('transaksi',$insdata_transaksi);
 		
 		
 		$db->commit();
@@ -367,12 +380,27 @@ class Penyelesaianpembelian_Service {
         }
     }
 	
-	public function getRekening() {
+    public function getRekening() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM rekening Order by no_id Asc";
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
+            $result = $db->fetchAll($query);
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
+
+    
+    public function getCash() {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -386,7 +414,7 @@ class Penyelesaianpembelian_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from selisih_pembelian where no_retur = '$no_retur_data' order by id_hutang Asc";
+            $query ="SELECT * from selisih_pembelian JOIN akun ON selisih_pembelian.no_rekening=akun.id where no_retur = '$no_retur_data' order by id_hutang Asc";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

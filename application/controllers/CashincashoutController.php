@@ -52,18 +52,30 @@ class CashincashoutController extends Zend_Controller_Action {
 		$jenis_expense		 = '';
 		$nominal		     = '';
 		$catatan		     = '';
-		$nama_akun		     = '';
-		$type		         = '';
+	 
+		$id_akun_in		     = '';
+		$nama_akun_in		 = '';
+
+		$id_akun_out		 = '';
+		$nama_akun_out		 = '';
+		$akun_in		     = '';
+		
+ 
 		$action		         = '';
 		
 		if(isset($_POST['id'])){ $id = $_POST['id'];}
 		if(isset($_POST['tgl_transaksi'])){ $tgl_transaksi = $_POST['tgl_transaksi'];}
-		if(isset($_POST['jenis_expense'])){ $jenis_expense = $_POST['jenis_expense'];}
+		 
 		if(isset($_POST['nominal'])){ $nominal = $_POST['nominal'];}
 		if(isset($_POST['id_transaksi'])){ $id_transaksi = $_POST['id_transaksi'];}
 		if(isset($_POST['catatan'])){ $catatan = $_POST['catatan'];}
-		if(isset($_POST['nama_akun'])){ $nama_akun = $_POST['nama_akun'];}
-			if(isset($_POST['type'])){ $type = $_POST['type'];}
+		if(isset($_POST['id_akun_in'])){ $id_akun_in = $_POST['id_akun_in'];}
+		if(isset($_POST['nama_akun_in'])){ $nama_akun_in = $_POST['nama_akun_in'];}
+		if(isset($_POST['nama_akun_out'])){ $nama_akun_out = $_POST['nama_akun_out'];}
+		if(isset($_POST['id_akun_out'])){ $id_akun_out = $_POST['id_akun_out'];}
+		
+
+			 
 		if(isset($_POST['action'])){ $action = $_POST['action'];}
 		
 		$nominal = str_replace(".", "", $nominal);
@@ -72,12 +84,16 @@ class CashincashoutController extends Zend_Controller_Action {
 		 				"id" => $id,
 		 				"id_transaksi" => $id_transaksi,
 		 				"tgl_transaksi" => $tgl_transaksi,
-                      	"id_jenisexpense" => $jenis_expense,
+                      
                        	"nominal" => $nominal,
                        	"catatan" => $catatan,
-                       	"id_akun" => $nama_akun,
-                       	"id_transaksi"=> $id_transaksi,
-                       	"type" => $type);
+                     
+                       	"id_akun_out" => $id_akun_out,
+						"id_akun_in" => $id_akun_in,
+						"nama_akun_out" => $nama_akun_out,
+						"nama_akun_in" => $nama_akun_in,
+                      
+                       	 );
 		if($action == 'tambah'){
 			$this->view->datainsert=$this->Cashincashout_Service->insertdata($data);
 		} else {

@@ -329,7 +329,7 @@ background:url(../images/cross.png)
 										$metode_bayar_data =  $this->data[0]['metode_bayar2'];
 										$selected2 = 'selected';
 									?>
-									<select id="metode_bayar2" name="metode_bayar2" class = "form-control input-sm" width="15%" onclick="metodebayar(this)">
+									<select id="metode_bayar2" name="metode_bayar2" class = "form-control input-sm" width="15%" onchange="metodebayar(this)">
 										<option value="0">--Pilih Cara Pembayaran--</option>
 										<option value="Transfer" <?php if($metode_bayar_data == 'Transfer'){echo $selected2;}?>>Transfer</option>
 										<option value="Cash" <?php if($metode_bayar_data == 'Cash'){echo $selected2;}?>>Cash</option>

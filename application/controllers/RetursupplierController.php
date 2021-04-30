@@ -167,7 +167,7 @@ class RetursupplierController extends Zend_Controller_Action {
 					  'stok_gudang_baru' => $stok_gudang_baru,
 					  'harga_beli_baru' => $harga_beli_baru,
 					  'kode' => $kode);
-		//var_dump($data);
+		var_dump($data);
 		$this->view->datainsert=$this->Retursupplier_Service->insertdata($data);
    }
    

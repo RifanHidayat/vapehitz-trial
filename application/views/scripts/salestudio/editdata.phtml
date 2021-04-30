@@ -287,7 +287,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 										$metode_bayar_data =  $this->data[0]['metode_pembayaran'];
 										$selected2 = 'selected';
 									?>
-									<select id="metode_pembayaran" name="metode_pembayaran" class = "form-control input-sm" width="15%" onclick="metodebayar(this)">
+									<select id="metode_pembayaran" name="metode_pembayaran" class = "form-control input-sm" width="15%" onchange="metodebayar(this)">
 										<option value="0">--Pilih Cara Pembayaran--</option>
 										<option value="Tunai" <?php if($metode_bayar_data == 'Tunai'){echo $selected2;}?>>Tunai</option>
 										<option value="Transfer" <?php if($metode_bayar_data == 'Transfer'){echo $selected2;}?>>Transfer</option>
@@ -298,7 +298,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<tr><td colspan='7' align="right"><label id="metode_pembayaran-error" for="metode_pembayaran" class="error"></td></tr>
 							<tr id='transfer'>
 								<td colspan='5'></td>
-								<td width="10%"><font style="font-size:12px;font-weight:bold;">Sumber Dana</font></td>
+								<td width="10%"><font style="font-size:12px;font-weight:bold;">Akun</font></td>
 								<td>										
 									  <!--   menampilkan semua bang transfer    -->
 
@@ -309,13 +309,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 										$metode_penerimaan =  $this->data[0]['no_rekening'];
 										$selected3 = 'selected';
 									?>	
-                    <option value="0">--Pilih Sumber Dana--</option>
+                    <option value="0">--Pilih Akun--</option>
 
 
 
 	                    <?php  
 	                      for($x=0; $x<count($this->rek); $x++){ 
-	                      $cek_rek = $this->rek[$x]['nama_akun'].' - '.$this->rek[$x]['no_akun'] .' ('.$this->rek[$x]['nama_cabang_pembuka'].')';
+	                      $cek_rek = $this->rek[$x]['nama_akun'];
 	                      $id = $this->rek[$x]['id'];
 	                    ?>
 	                   <option value="<?php echo $id;?>" <?php if($metode_penerimaan == $id){echo $selected3;}?>><?php echo $cek_rek;?></option>
@@ -328,7 +328,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 										$metode_penerimaan =  $this->data[0]['no_rekening'];
 										$selected3 = 'selected';
 									?>	
-	                  <option value="0">--Pilih Sumber Dana--</option>
+	                  <option value="0">--Pilih Akun--</option>
 	                    <?php  
 	                      for($x=0; $x<count($this->cash); $x++){ 
 	                      $cek_rek = $this->cash[$x]['nama_akun'];

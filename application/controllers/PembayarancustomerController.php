@@ -207,6 +207,18 @@ class PembayarancustomerController extends Zend_Controller_Action {
 		$this->view->rek=$this->Pembayarancustomer_Service->getRekening();
 		$this->view->cash=$this->Pembayarancustomer_Service->getCash();
     }
+	public function bayarAction() {
+		$this->_helper->layout->setLayout('target-column');
+		
+        $id = '';
+		if(isset($_REQUEST['id'])){ $id = $_REQUEST['id'];}
+		
+		$this->view->data=$this->Pembayarancustomer_Service->getDataLiquid($id);
+		$this->view->transaksi=$this->Pembayarancustomer_Servicee->getDataCustomer($id);
+	 
+		$this->view->Pembayarancustomer_Service = $this->Pembayarancustomer_Service;
+    }
+	
 	
 	public function kirimdataeditAction() { 
 	

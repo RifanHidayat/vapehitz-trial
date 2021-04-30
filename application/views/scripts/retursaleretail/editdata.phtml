@@ -193,7 +193,7 @@ background:url(../images/cross.png)
 								<td width="25%"></td>
 								<td width="35%"><font style="font-size:12px;font-weight:bold;">Cara Pembayaran</font></td>
 								<td> 
-	                  				<select id="metode_bayar" name="metode_bayar" class = "form-control input-sm" width="15%" onclick="metodebayar(this)">
+	                  				<select id="metode_bayar" name="metode_bayar" class = "form-control input-sm" width="15%" onchange="metodebayar(this)">
 	                   				 <option value="0">--Pilih Cara Pembayaran--</option>
 	                    				<option value="Transfer">Transfer</option>
 	                    				<option value="Cash">Cash</option>
@@ -203,16 +203,16 @@ background:url(../images/cross.png)
 							<tr><td>&nbsp;</td></tr>
 							<tr id='transfer'>
 								<td width="25%"></td>
-								<td width="35%"><font style="font-size:12px;font-weight:bold;">Sumber Dana</font></td>
+								<td width="35%"><font style="font-size:12px;font-weight:bold;">Akun</font></td>
 
 								<td>
 									 <!--   menampilkan semua bang transfer    -->               
                 		  <select id="no_rek" name="no_rek" class = "form-control input-sm" width="15%">
-                  			  <option value="0">--Pilih Sumber Dana--</option>
+                  			  <option value="0">--Pilih Akun--</option>
 
                     			<?php  
                      		 for($x=0; $x<count($this->rek); $x++){ 
-                     		 $cek_rek = $this->rek[$x]['nama_akun'].' - '.$this->rek[$x]['no_akun'] .' ('.$this->rek[$x]['nama_cabang_pembuka'].')';
+                     		 $cek_rek = $this->rek[$x]['nama_akun'];
                       		$id = $this->rek[$x]['id'];
                    			 ?>
                    			 <option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
@@ -221,7 +221,7 @@ background:url(../images/cross.png)
                   <!--   menampilkan semua bang transfer    -->   
 
                 		  <select id="cash" name="cash" class = "form-control input-sm" width="15%">
-                 		 <option value="0">--Pilih Sumber Dana--</option>
+                 		 <option value="0">--Pilih  Akun-</option>
                  		   <?php  
                    		   for($x=0; $x<count($this->cash); $x++){ 
                       		$cek_rek = $this->cash[$x]['nama_akun'];

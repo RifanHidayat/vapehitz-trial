@@ -267,12 +267,12 @@ background:url(../images/cross.png)
 										$jumlah_pembayaran  = number_format($this->data4[$e]['jumlah_pembayaran'],0,",",".");
 										$sisa_pembayaran 	= number_format($this->data4[$e]['sisa_pembayaran'],0,",",".");
 										$metode_pembayaran 	= $this->data4[$e]['metode_pembayaran'];
-										$no_rekening 	= $this->data4[$e]['no_rekening'];
+										$nama_akun 	= $this->data4[$e]['nama_akun'];
 										$catatan 	= $this->data4[$e]['catatan'];
 										if($metode_pembayaran == 'Transfer'){
-											$rekening = $no_rekening;
+											$rekening = "Transfer/".$nama_akun;
 										} else {
-											$rekening = 'Cash / Tunai';
+											$rekening = 'Cash /'.$nama_akun;
 										}
 										$row_terakhir = count($this->data4) - 1;
 										

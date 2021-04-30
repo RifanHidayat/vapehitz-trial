@@ -253,6 +253,8 @@ class Pembayaransupplier_Service {
 		$where = "no_order = '".$no_order."'";
 					
 		$db->update('ordercentral',$insdata,$where);
+
+   
 		
 		$insdata2 = array("no_order" => $data['no_order'],
 						 "tgl_pembayaran" => $data['tgl_pembayaran'],
@@ -260,15 +262,20 @@ class Pembayaransupplier_Service {
 						 "sisa_pembayaran" => $data['sisa_hutang'],
 						 "metode_pembayaran" => $data['metode_bayar2'],
 						 "catatan" => $data['catatan'],
+                         "tgl_entry"=> "0000-00-00 00:00:00",
 						 "no_rekening" => $data['no_rek']);
 
+                         
+                         
+
 			$insdata_transaksi= array(
-					     "deskripsi" => "Transaksi Pembayaran Suplier \n".$data['no_order'],
+					     "deskripsi" => "Transaksi Pembayaran Supplier \n".$data['no_order'],
 					     "tgl_transaksi" => $data['tgl_pembayaran'],
 					     "nominal" => $data['jml_bayar_dp'],
 					     "type" => "Cash Out",
 					     "nama_table" => "pembayaransuplier",
 					     "id_table" => $data['no_order'],
+                         "id_table_original" => $data['no_order'],
 					      "catatan" => $data['catatan'],
 					     "id_akun" => $data['no_rek']);
 					
@@ -354,7 +361,7 @@ class Pembayaransupplier_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Transfer' Order by id Asc ";
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -362,12 +369,14 @@ class Pembayaransupplier_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
+
+    
     public function getCash() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Cash' Order by id Asc ";
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -375,13 +384,15 @@ class Pembayaransupplier_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
+
+
 	
 	public function getDataDetailHutang($no_order_data) {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from hutang where no_order = '$no_order_data' order by id_hutang Asc";
+            $query ="SELECT * from hutang JOIN akun ON  hutang.no_rekening=akun.id where no_order = '$no_order_data' order by id_hutang Asc";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

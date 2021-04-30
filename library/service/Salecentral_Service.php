@@ -235,6 +235,11 @@ class Salecentral_Service {
 						 "total_berat" => $data['total_berat'],
 						 "total_biaya" => $data['total_biaya'],
 						 "diskon" => $data['diskon'],
+						 "jenis_diskon" => $data['jenis_diskon'],
+						 "sub_total" => $data['sub_total'],
+						 "biaya_lain" => $data['biaya_lain'],
+						 "ket_biaya_lain" => $data['ket_biaya_lain'],
+						 "deposit" => $data['deposit'],
 						 "biaya_kirim" => $data['biaya_kirim'],
 						 "net_total" => $data['net_total'],
 						 "metode_penerimaan" => $data['metode_penerimaan'],
@@ -247,6 +252,7 @@ class Salecentral_Service {
 						 "alamat_penerima" => $data['alamat_penerima'],
 						 "keterangan" => $data['keterangan'],
 						 "seq" => $data['seq'],
+						 "termin_hutang" => $data['termin_hutang'],
 						 "kode_inv" => $data['kode_inv']);
 		
 		$db->insert('salecentral',$insdata);
@@ -276,25 +282,25 @@ class Salecentral_Service {
 							  "jenis_barang" => $nama_tabel,
 							  "kode_jenis_barang" => $kode);
 					
-			$db->insert('sub_salecentral',$insdata2);
+		 	$db->insert('sub_salecentral',$insdata2);
 			
-			$insdata3 = array("on_hand" => $on_hand);
+		 	$insdata3 = array("on_hand" => $on_hand);
 					
-			$where = "$kode = '".$kode_barang."'";
+		 	$where = "$kode = '".$kode_barang."'";
 					
-			$db->update($nama_tabel,$insdata3,$where);
+		 	$db->update($nama_tabel,$insdata3,$where);
 				
 			}
 		}
 		
-		/* $insdata4 = array("no_order" => $data['no_order'],
-						 "tgl_pembayaran" => $data['tgl_order'],
-						 "jumlah_pembayaran" => $data['jml_bayar_dp'],
-						 "sisa_pembayaran" => $data['sisa_bayar'],
-						 "metode_pembayaran" => $data['metode_bayar2'],
-						 "no_rekening" => $data['no_rek']);
+		//  $insdata4 = array("no_order" => $data['no_order'],
+		// 				 "tgl_pembayaran" => $data['tgl_order'],
+		// 				 "jumlah_pembayaran" => $data['jml_bayar_dp'],
+		// 				 "sisa_pembayaran" => $data['sisa_bayar'],
+		// 				 "metode_pembayaran" => $data['metode_bayar2'],
+		// 				 "no_rekening" => $data['no_rek']);
 					
-		$db->insert('hutang',$insdata4); */
+		//  $db->insert('hutang',$insdata4); 
 		
 		$db->commit();
 	    return 'sukses';
@@ -342,7 +348,7 @@ class Salecentral_Service {
 				$hj_retail		 = $data['hj_retail'][$x];
 				$qty			 = $data['qty'][$x];
 				$free			 = $data['free'][$x];
-				$sub_total		 = $data['sub_total'][$x];
+				$sub_total_barang		 = $data['sub_total_barang'][$x];
 				$sub_total_berat = $data['sub_total_berat'][$x];
 				
 				$nama_tabel 	 = $data['nama_tabel'][$x];
@@ -355,7 +361,7 @@ class Salecentral_Service {
 							  "harga_jual" => $hj_retail,
 							  "qty" => $qty,
 							  "free" => $free,
-						      "sub_total" => $sub_total,
+						      "sub_total" => $sub_total_barang,
 							  "sub_total_berat" => $sub_total_berat,
 							  "jenis_barang" => $nama_tabel,
 							  "kode_jenis_barang" => $kode);
@@ -405,6 +411,11 @@ class Salecentral_Service {
 						 "total_berat" => $data['total_berat'],
 						 "total_biaya" => $data['total_biaya'],
 						 "diskon" => $data['diskon'],
+						 "jenis_diskon" => $data['jenis_diskon'],
+						 "sub_total" => $data['sub_total'],
+						 "biaya_lain" => $data['biaya_lain'],
+						 "ket_biaya_lain" => $data['ket_biaya_lain'],
+						 "deposit" => $data['deposit'],
 						 "biaya_kirim" => $data['biaya_kirim'],
 						 "net_total" => $data['net_total'],
 						 "metode_penerimaan" => $data['metode_penerimaan'],
@@ -417,6 +428,7 @@ class Salecentral_Service {
 						 "alamat_penerima" => $data['alamat_penerima'],
 						 "keterangan" => $data['keterangan'],
 						 "seq" => $data['seq'],
+						 "termin_hutang" => $data['termin_hutang'],
 						 "kode_inv" => $data['kode_inv']);
 
 						 
@@ -461,7 +473,7 @@ class Salecentral_Service {
 				$hj_retail		 = $data['hj_retail'][$x];
 				$qty			 = $data['qty'][$x];
 				$free			 = $data['free'][$x];
-				$sub_total		 = $data['sub_total'][$x];
+				$sub_total_barang		 = $data['sub_total_barang'][$x];
 				$sub_total_berat = $data['sub_total_berat'][$x];
 				
 				$nama_tabel 	 = $data['nama_tabel'][$x];
@@ -474,7 +486,7 @@ class Salecentral_Service {
 							  "harga_jual" => $hj_retail,
 							  "qty" => $qty,
 							  "free" => $free,
-						      "sub_total" => $sub_total,
+						      "sub_total_barang" => $sub_total_barang,
 							  "sub_total_berat" => $sub_total_berat,
 							  "jenis_barang" => $nama_tabel,
 							  "kode_jenis_barang" => $kode);
@@ -518,28 +530,7 @@ class Salecentral_Service {
 		
 		$no_invoice = $data['no_invoice'];
 		
-	   $insdata = array("no_invoice" => $data['no_invoice'],
-						 "tgl_invoice" => $data['tgl_invoice'],
-						 "kode_customer" => $data['kode_customer'],
-						 "shipment" => $data['shipment'],
-						 "nama_kurir" => $data['nama_kurir'],
-						 "total_berat" => $data['total_berat'],
-						 "total_biaya" => $data['total_biaya'],
-						 "diskon" => $data['diskon'],
-						 "biaya_kirim" => $data['biaya_kirim'],
-						 "net_total" => $data['net_total'],
-						 "metode_penerimaan" => $data['metode_penerimaan'],
-						 "jml_penerimaan" => $data['jml_penerimaan'],
-						 "metode_penerimaan2" => $data['metode_penerimaan2'],
-						 "jml_penerimaan2" => $data['jml_penerimaan2'],
-						 "jml_bayar" => $data['jml_bayar'],
-						 "sisa_bayar" => $data['sisa_bayar'],
-						 "nama_penerima" => $data['nama_penerima'],
-						 "alamat_penerima" => $data['alamat_penerima'],
-						 "keterangan" => $data['keterangan'],
-						 "seq" => $data['seq'],
-						 "kode_inv" => $data['kode_inv'],
-						 "status" => 'Approve');
+	   $insdata = array("status" => 'Approve');
 						 
 		$where = "no_invoice = '".$no_invoice."'";
 
@@ -549,27 +540,39 @@ class Salecentral_Service {
 
 		$insdata_transaksi1= array(
 					 "deskripsi" => "Transaksi Penjualan \n".$no_invoice,
-					 "tgl_transaksi" => $data['tgl_invoice'],
+					 "tgl_transaksi" => "2021-03-06 00:00:00",
 					 "nominal" => $data['jml_penerimaan'],
 					 "type" => "Cash In",
 					 "nama_table" => "salecentral",
 					 "id_table" => $no_invoice,
 					   "id_table_original" => $data['no_invoice_original'],
 					 "id_akun" => $data['metode_penerimaan']);
+
 		$insdata_transaksi2= array(
 					  "deskripsi" => "Transaksi Penjualan \n".$no_invoice,
-					  "tgl_transaksi" => $data['tgl_invoice'],
+					  "tgl_transaksi" => "2021-03-06 00:00:00",
 					  "nominal" => $data['jml_penerimaan2'],
 					  "type" => "Cash In",
 					  "nama_table" => "salecentral",
 					  "id_table" => $no_invoice,
 					  "id_table_original" => $data['no_invoice_original'],
 					  "id_akun" => $data['metode_penerimaan2']);
+
+		$insdata_transaksi3= array(
+						"deskripsi" => "Biaya Kirim transaksi Penjualan \n".$no_invoice,
+						"tgl_transaksi" => $data['tgl_invoice'],
+						"nominal" => $data['biaya_kirim'],
+						"type" => "Cash In",
+						"nama_table" => "biayakirim_salecentral",
+						"id_table" => $no_invoice,
+						"id_table_original" => $data['no_invoice_original'],
+						"id_akun" => "23");
 					
 		$db->update('salecentral',$insdata,$where);
 
 		$db->insert('transaksi',$insdata_transaksi1);
 		$db->insert('transaksi',$insdata_transaksi2);
+		$db->insert('transaksi',$insdata_transaksi3);
 		
 		if(count($data['kode_barang']) <> 0 && trim($data['kode_barang'][0]) <> ''){
 			
@@ -589,8 +592,8 @@ class Salecentral_Service {
 				$hj_retail_baru  = $data['hj_retail_baru'][$x];
 				$kode 			 = $data['kode'][$x];
 				
-				$sisa_on_hand	 = $on_hand - $qty;
-				$sisa_stok_pusat = $stok_gudang - $qty;
+				$sisa_on_hand	 = $on_hand - ($qty + $free);
+				$sisa_stok_pusat = $stok_gudang - ($qty + $free);
 				
 			$insdata2 = array("kode_barang" => $kode_barang,
 							  "no_invoice" => $data['no_invoice'],
@@ -686,8 +689,8 @@ class Salecentral_Service {
 				$hj_retail_baru  = $data['hj_retail_baru'][$x];
 				$kode 			 = $data['kode'][$x];
 				
-				$sisa_on_hand	 = $on_hand - $qty;
-				$sisa_stok_pusat = $stok_gudang - $qty;
+				$sisa_on_hand	 = $on_hand - ($qty + $free);
+				$sisa_stok_pusat = $stok_gudang - ($qty + $free);
 				
 			$insdata2 = array("kode_barang" => $kode_barang,
 							  "no_invoice" => $data['no_invoice'],
@@ -760,7 +763,7 @@ class Salecentral_Service {
         try {
             $query ="SELECT a.kode_device, a.merk_device, a.nama_device, a.jenis_device, 
 					 a.ket, a.on_hand, a.stok_pusat, a.stok_retail, a.stok_studio, a.berat,
-					 a.hj_retail, b.nama_warna
+					 a.hj_retail, b.nama_warna, a.otorisasi_harga
 					 from device a, warna b
 					 where a.kode_warna = b.kode_warna
 					 order by a.kode_device ASC ";
@@ -793,7 +796,7 @@ class Salecentral_Service {
         try {
             $query ="SELECT a.kode_atomizer, a.merk_atomizer, a.nama_atomizer,
 					 a.on_hand, a.stok_pusat, a.stok_retail, a.stok_studio,
-					 a.berat, a.hj_retail, b.nama_warna
+					 a.berat, a.hj_retail, b.nama_warna, a.otorisasi_harga
 					 from atomizer a, warna b
 					 where a.kode_warna = b.kode_warna
 					 order by a.kode_atomizer ASC ";
@@ -810,7 +813,7 @@ class Salecentral_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun Order by id Asc ";
+            $query ="select * FROM akun where akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

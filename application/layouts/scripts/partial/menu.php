@@ -269,16 +269,14 @@
               </a>
             <ul class="sub">
             	<?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)) { ?>
-              <li <?php if($source == "akun") echo "class='active'";?>><a href="tambahakun">Tambah Sumber Dana</a></li>
+              <li <?php if($source == "akun") echo "class='active'";?>><a href="akun">Akun</a></li>
 			<?php } } ?>
 
 			<?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)) { ?>
               <li <?php if($source == "cashincashout") echo "class='active'";?>><a href="cashincashout">Cash In  Cash Out</a></li>
 			<?php } } ?>
 
-				<?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)) { ?>
-              <li <?php if($source == "transaksi") echo "class='active'";?>><a href="transaksi">Transaksi</a></li>
-			<?php } } ?>
+				 
 			
 
 			

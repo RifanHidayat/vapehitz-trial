@@ -47,6 +47,7 @@ class PenyelesaianpembelianController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpembelian_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpembelian_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpembelian_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpembelian_Service->getCash();
     }
 	
 	public function dataatomizerAction(){
@@ -201,6 +202,7 @@ class PenyelesaianpembelianController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpembelian_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpembelian_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpembelian_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpembelian_Service->getCash();
     }
 	
 	public function kirimdataeditAction() { 
@@ -241,6 +243,9 @@ class PenyelesaianpembelianController extends Zend_Controller_Action {
 					  'tgl_pembayaran' => $tgl_pembayaran);
 		
 		$this->view->datainsert=$this->Penyelesaianpembelian_Service->editdata($data);
+
+
+		
    }
    
    public function detailAction() {
@@ -261,6 +266,7 @@ class PenyelesaianpembelianController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpembelian_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpembelian_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpembelian_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpembelian_Service->getCash();
     }
 	
 	public function detailreturAction() {
@@ -282,6 +288,7 @@ class PenyelesaianpembelianController extends Zend_Controller_Action {
 		$this->view->warna=$this->Penyelesaianpembelian_Service->getWarna();
 		$this->view->seq=$this->Penyelesaianpembelian_Service->getNoSeq();
 		$this->view->rek=$this->Penyelesaianpembelian_Service->getRekening();
+		$this->view->cash=$this->Penyelesaianpembelian_Service->getCash();
     }
  
 }

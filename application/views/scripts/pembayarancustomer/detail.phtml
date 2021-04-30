@@ -231,8 +231,11 @@ background:url(../images/cross.png)
 										$berat		  = $barang[0]['berat'];
 										$on_hand	  = $barang[0]['on_hand'];
 										$stok_gudang  = $barang[0]['stok_pusat'];
-										
 										$on_hands 	  = $on_hand - ($qty + $free);
+
+										
+
+
 									?>	
 							<tr>
 								<td><input type='text' class='form-control input-sm' name='kode_barang[]' value='<?php echo $kode_barang;?>' readonly></td>
@@ -320,7 +323,7 @@ background:url(../images/cross.png)
 										<input type="hidden" id="id_piutang<?php echo $e;?>" value="<?php echo $id_piutang;?>"> 
 								<?php } ?>
 								</td>
-								<td align="center"><?php echo $rekening;?></td>
+								<td align="center"><?php echo $no_rekening;?></td>
 								<?php
 								if($e == $row_terakhir){ ?>
 								<td align="center">
@@ -649,20 +652,17 @@ background:url(../images/cross.png)
 	
 	function beli(button){
 		var x = button;
-		
 		var total = document.getElementById("total").value;
 		var total2 = total.replaceAll(".", "");
 		var sub_total = document.getElementById("sub_total"+x).value;
 		var sub_total2 = sub_total.replaceAll(".", "");
-		
 		var hitung_total = parseInt(total2) - parseInt(sub_total2);
 		var qty = document.getElementById("qty"+x).value;
-		
 		var harga_beli = document.getElementById("harga_beli"+x).value;
 		var harga_beli2 = harga_beli.replaceAll(".", "");
 		var harga_beli3 = harga_beli2.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 		document.getElementById("harga_beli"+x).value=harga_beli3;
-		
+
 		var kali = qty * harga_beli2;
 		var kali2 = kali.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 		
@@ -781,6 +781,8 @@ background:url(../images/cross.png)
 			document.getElementById("total_bayar").value=jumlah_total_bayar2;
 	}
 	
+
+
 	function metodebayar(nilai){
 		var nilai = nilai.value;
 		if(nilai == 'Transfer'){

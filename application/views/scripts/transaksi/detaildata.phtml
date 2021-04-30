@@ -14,7 +14,8 @@
 				<hr style="width: 100%">
 
 					<div>
-					<p align="left" style="margin-left: 20px;"><font style="font-size:20px;font-weight:bold;"><b><?php echo "Sumber Dana ".$this->data[0]['nama_akun'];?></b> </font></p>
+				 
+					<p align="left" style="margin-left: 20px;"><font style="font-size:20px;font-weight:bold;"><b><?php echo "Akun ".$this->data[0]['nama_akun'];?></b> </font></p>
 					
 					</div>
 				<div class="col-lg-12">
@@ -24,7 +25,6 @@
 							
 
 									<?php 
-
 									$cashin=$this->transaksi[0]['cashin'];
 									$cashout=$this->transaksi[0]['cashout'];
 									$opening_balance=$this->transaksi[0]['opening_balance'];
@@ -37,9 +37,9 @@
 								<tr bgcolor="#4ECDC4">
 								<td width="10%"><font style="font-size:12px;font-weight:bold;">Opening Balance</font></td>
 							
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Total Cash In</font></td>
+								<td width="14%"><font style="font-size:12px;font-weight:bold;">Total In</font></td>
 							
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Total Cash Out</font></td>
+								<td width="14%"><font style="font-size:12px;font-weight:bold;">Total Out</font></td>
 							
 								<td width="18%"><font style="font-size:12px;font-weight:bold;">Balance</font></td>
 							
@@ -83,11 +83,11 @@
 								<th width="3%" style="text-align:center;">No</th>
 								<th width="7%" style="text-align:center;">Tanggal</th>
 								<th width="10%" style="text-align:center;">Type</th>
-								<th width="10%" style="text-align:center;">Description</th>
+								<th width="10%" style="text-align:center;">Deskripsi</th>
 								<th width="10%" style="text-align:center;">Catatan</th>
-								<th width="10%" style="text-align:center;">Cash In</th>
-								<th width="10%" style="text-align:center;">Cash Out</th>
-								<th width="10%" style="text-align:center;">Saldo</th>
+								<th width="10%" style="text-align:center;">In</th>
+								<th width="10%" style="text-align:center;">Out</th>
+								<th width="10%" style="text-align:center;">Balance</th>
 								
 							</tr>
 							</thead>
@@ -100,7 +100,7 @@
 										$tgl_transaksi 	= $this->data[$x]['tgl_transaksi'];
 									
 										$nominal 	= $this->data[$x]['nominal'];
-										$catatan 	= $this->data[$x]['catatan'];
+										$catatan 	= $this->data[$x]['nama_akun'];
 										$nama_akun 	= $this->data[$x]['nama_akun'];
 										$no_akun 	= $this->data[$x]['no_akun'];
 										$type 	= $this->data[$x]['type_transaksi'];
@@ -126,13 +126,7 @@
 											
 											$cashout='Rp. '.number_format($this->data[$x]['nominal'],0,",",".");
 											$cashin="-";
-												 if ($deskripsi!=''){
-											 	$type="Cost";
-
-											 }else{
-											 	$type="Expense";
-
-											 }
+													$type="Expense";
 
 
 										}
@@ -156,6 +150,10 @@
 							</tbody>
 						</table>
 						<br>
+							<br>
+
+	<br>
+
 
 							<button type="button" class="btn btn-theme02">
 								<span class="fa fa-backward"></span> &nbsp;Kembali

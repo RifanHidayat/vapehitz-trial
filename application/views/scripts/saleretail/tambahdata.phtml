@@ -238,7 +238,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 								<td colspan='5'></td>
 								<td><font style="font-size:12px;font-weight:bold;">Cara Pembayaran</font></td>
 								<td> 
-									<select id="metode_pembayaran" name="metode_pembayaran" class = "form-control input-sm" width="15%" onclick="metodebayar(this)">
+									<select id="metode_pembayaran" name="metode_pembayaran" class = "form-control input-sm" width="15%" onchange="metodebayar(this)">
 										<option value="0">--Pilih Cara Pembayaran--</option>
 										<option value="Tunai">Tunai</option>
 										<option value="Transfer">Transfer</option>
@@ -249,17 +249,34 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<tr><td colspan='7' align="right"><label id="metode_pembayaran-error" for="metode_pembayaran" class="error"></td></tr>
 							<tr id='transfer'>
 								<td colspan='5'></td>
-								<td width="10%"><font style="font-size:12px;font-weight:bold;">Bank Transfer</font></td>
+								<td width="10%"><font style="font-size:12px;font-weight:bold;">Akun</font></td>
 								<td>										
-									<select id="no_rek" name="no_rek" class = "form-control input-sm" width="15%">
-										<option value="0">--Pilih Bank--</option>
-										<?php  
-											for($x=0; $x<count($this->rek); $x++){ 
-											$cek_rek = $this->rek[$x]['nama_bank'].' - '.$this->rek[$x]['no_rekening'] .' ('.$this->rek[$x]['atas_nama'].')';
-										?>
-										<option value="<?php echo $cek_rek;?>"><?php echo $cek_rek;?></option>
-										<?php } ?>
-									</select>
+												 <!--   menampilkan semua bang transfer    -->               
+												 <select id="no_rek" name="no_rek" class = "form-control input-sm" width="15%">
+												<option value="0">--Pilih Akun--</option>
+
+												<?php  
+												for($x=0; $x<count($this->rek); $x++){ 
+												$cek_rek = $this->rek[$x]['nama_akun'];
+												$id = $this->rek[$x]['id'];
+												?>
+												<option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+												<?php } ?>
+											</select>
+											<!--   menampilkan semua bang transfer    -->   
+
+											<select id="cash" name="cash" class = "form-control input-sm" width="15%">
+											<option value="0">--Pilih Akun--</option>
+												<?php  
+												for($x=0; $x<count($this->cash); $x++){ 
+												$cek_rek = $this->cash[$x]['nama_akun'];
+												$id = $this->cash[$x]['id'];
+												?>
+												<option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+												<?php } ?>
+												
+											</select>
+											
 								</td>
 							</tr>
 							<tr id='transfer2'><td colspan='7' align="right"><label id="no_rek-error" for="no_rek" class="error"></td></tr>
@@ -297,7 +314,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<button type="button" class="btn btn-theme02">
 								<span class="fa fa-backward"></span> &nbsp;Kembali
 							</button></a>
-							<button id="button1" type="button" class="btn btn-theme03" disabled><span class="fa fa-save"></span> &nbsp;Simpan</button>
+							<!-- <button id="button1" type="button" class="btn btn-theme03" ><span class="fa fa-save"></span> &nbsp;Simpan</button> -->
 							<button id="button2" type="button" class="btn btn-theme03" onCLick="PostData()"><span class="fa fa-save"></span> &nbsp;Simpan</button>
 							
 			</div>
@@ -773,20 +790,27 @@ body {font-family: Arial, Helvetica, sans-serif;}
 	
 	function metodebayar(nilai){
 		var nilai = nilai.value;
-		if(nilai == 'Transfer'){
+		if(nilai == 'Transfer' || nilai=="Kredit"){
 			$("#transfer").show();
 			$("#transfer2").show();
 			$("#admin").show();
 			$("#admin2").show();
 			$("#sisa").hide();
 			$("#sisa2").hide();
+			$("#no_rek").show();
+			$("#cash").hide();
+			$("#cash").val("");
+
 		} else {
-			$("#transfer").hide();
-			$("#transfer2").hide();
+			$("#transfer").show();
+			$("#transfer2").show();
 			$("#admin").hide();
 			$("#admin2").hide();
 			$("#sisa").show();
 			$("#sisa2").show();
+			$("#cash").show();
+			$("#no_rek").hide();
+			$("#no_rek").val("");
 		}
 	}
 	

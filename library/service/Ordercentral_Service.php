@@ -137,7 +137,7 @@ class Ordercentral_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from ordercentral where no_order = '$no_order_data'";
+            $query ="SELECT * from ordercentral JOIN akun ON ordercentral.no_rekening=akun.id where no_order = '$no_order_data'";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -177,7 +177,12 @@ class Ordercentral_Service {
 						 "jml_bayar_dp" => $data['jml_bayar_dp'],
 						 "sisa_bayar" => $data['sisa_bayar'],
 						 "metode_bayar2" => $data['metode_bayar2'],
+                         "metode_bayar" => "-",
+                         'user_id'=>'-',
+                         "tgl_entry"=> "0000-00-00 00:00:00",
 						 "no_rekening" => $data['no_rek']);
+
+    
 			$insdata_transaksi= array(
 					     "deskripsi" => "Transaksi Pembelian \n".$data['no_order'],
 					     "tgl_transaksi" => $data['tgl_order'],
@@ -185,11 +190,26 @@ class Ordercentral_Service {
 					     "type" => "Cash Out",
 					     "nama_table" => "ordercentral",
 					     "id_table" => $data['no_order'],
+                         "id_table_original" => $data['no_order'],
 					     "id_akun" => $data['no_rek']);
+
+            $insdata_transaksi_biaya_kirim= array(
+                "deskripsi" => "Biaya kirim transaksi Pembelian \n".$data['no_order'],
+                            "tgl_transaksi" => $data['tgl_order'],
+                            "nominal" => $data['biaya_kirim'],
+                            "type" => "Cash Out",
+                            "nama_table" => "ordercentral",
+                            "id_table" => 'biaya_kirim_'.$data['no_order'],
+                            "id_table_original" => 'biaya_kirim_'.$data['no_order'],
+                            "id_akun" => "23");
+
+                         
+                         
 		
 		$db->insert('ordercentral',$insdata);
 
 		$db->insert('transaksi',$insdata_transaksi);
+        $db->insert('transaksi',$insdata_transaksi_biaya_kirim);
 		
 		if(count($data['kode_barang']) <> 0 && trim($data['kode_barang'][0]) <> ''){
 			for($x=0;$x<count($data['kode_barang']);$x++){
@@ -222,12 +242,14 @@ class Ordercentral_Service {
 				
 			}
 		}
-		
+       
 		$insdata4 = array("no_order" => $data['no_order'],
-						 "tgl_pembayaran" => $data['tgl_order'],
+						 "tgl_pembayaran" => "2021-03-06 00:00:00",
 						 "jumlah_pembayaran" => $data['jml_bayar_dp'],
 						 "sisa_pembayaran" => $data['sisa_bayar'],
 						 "metode_pembayaran" => $data['metode_bayar2'],
+                         "tgl_entry"=> "0000-00-00 00:00:00",
+                         "catatan" => "-",
 						 "no_rekening" => $data['no_rek']);
 					
 		$db->insert('hutang',$insdata4);
@@ -442,9 +464,10 @@ class Ordercentral_Service {
 	public function getRekening() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
+ 
 
         try {
-            $query ="select * FROM akun where type='Transfer' Order by id Asc ";
+            $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -457,7 +480,7 @@ class Ordercentral_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="select * FROM akun where type='Cash' Order by id Asc ";
+            $query ="select * FROM akun where type='Cash' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
