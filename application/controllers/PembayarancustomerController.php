@@ -249,13 +249,22 @@ class PembayarancustomerController extends Zend_Controller_Action {
 		$total_bayar= str_replace(".", "", $total_bayar);
 		$sisa_hutang= str_replace(".", "", $sisa_hutang);
 
-		if (($no_rek==0) || ($no_rek=="")){
-			$id_akun=$cash;
+		if ($sisa_hutang=="0"){
+			$id_akun="90";
 
 		}else{
-				$id_akun=$no_rek;
+
+			if (($no_rek==0) || ($no_rek=="")){
+				$id_akun=$cash;
+	
+			}else{
+					$id_akun=$no_rek;
+	
+			}
 
 		}
+
+	
 		
 		$data = array('no_invoice' => $no_invoice,
 					  'jml_bayar_dp' => $jml_bayar_dp,

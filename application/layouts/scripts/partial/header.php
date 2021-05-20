@@ -12,6 +12,7 @@
 
   <!-- Favicons -->
   <link href="<?php echo $this->baseUrl(); ?>/img/favicon.png" rel="icon">
+  <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl(); ?>/css/sweetalert.css">
   <link href="<?php echo $this->baseUrl(); ?>/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Bootstrap core CSS -->

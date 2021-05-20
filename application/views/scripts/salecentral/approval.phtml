@@ -91,7 +91,7 @@ background:url(../images/cross.png)
 	 ?>
 	<input type="hidden" name="no_invoice_revisi" id="currentPage" size="6" maxlength="6" value="<?php echo $no_invoice_revisi ?>" class="inputbox2 narrowkey1"></input>
 
-	<input type="hidden" name="no_invoice_original" id="currentPage" size="6" maxlength="6" value="<?php echo $this->no_invoice_revisi[0]['no_invoice_original'] ?>" class="inputbox2 narrowkey1"></input>
+	<input type="hidden" name="no_invoice_original" id="currentPage" size="6" maxlength="6" value="<?php echo $this->data[0]['no_invoice_original'] ?>" class="inputbox2 narrowkey1"></input>
 		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
 		<div id="popupview"></div>
 		<div class="panel">
@@ -262,7 +262,7 @@ background:url(../images/cross.png)
 										$harga_jual2 	= $this->data3[$d]['harga_jual'];
 										$qty 			= $this->data3[$d]['qty'];
 										$free 			= $this->data3[$d]['free'];
-										$sub_total		= number_format($this->data3[$d]['sub_total'],0,",",".");
+										$sub_total		= number_format($this->data3[$d]['sub_total_barang'],0,",",".");
 										$sub_total_berat = number_format($this->data3[$d]['sub_total_berat'],0,",",".");
 										$jenis_barang	= $this->data3[$d]['jenis_barang'];
 										$kode_jenis_barang = $this->data3[$d]['kode_jenis_barang'];
@@ -675,8 +675,8 @@ background:url(../images/cross.png)
 				    timer: 4000,
 				    showConfirmButton: false,
 				})
-			location.href="#";		
-			location.reload(true)
+			//location.href="#";		
+			//location.reload(true)
 		},
 		url: '<?php echo $this->baseUrl();?>/salecentral/kirimdataapprove',
 		type: 'post',

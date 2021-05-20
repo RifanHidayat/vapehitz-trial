@@ -241,7 +241,7 @@ class Customer_Service {
         }
     }
 
-            public function bayar(array $no_invoice, array $tgl_invoice,array $sisa_bayar,array $jml_bayar,array $catatan,$akun){
+            public function bayar(array $no_invoice, array $tgl_invoice,array $sisa_bayar,array $jml_bayar,array $catatan,$akun,$tgl_pembayaran){
  
             $registry = Zend_Registry::getInstance();
             $db = $registry->get('db');
@@ -258,7 +258,7 @@ class Customer_Service {
                 
                  
                 $where = "no_invoice = '".$no_invoice[$i]."'";
-                $tgl_invoice1	= date_create($tgl_invoice[$i]);
+                $tgl_invoice1	= date_create($tgl_pembayaran);
                 $tgl_invoice2	= date_format($tgl_invoice1,"y-m-d");
             
 

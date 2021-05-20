@@ -967,10 +967,7 @@
     let app = new Vue({
         el: '#main-content',
         data: {
-            // liquids: JSON.parse(`<?= json_encode($liquid) ?>`),
-            // atomizers: JSON.parse(`<?= json_encode($atomizer) ?>`),
-            // accesories: JSON.parse(`<?= json_encode($accessories) ?>`),
-            // devices: JSON.parse(`<?= json_encode($device) ?>`),
+       
             invoiceNumber: 'SO/VH/<?php echo date("dmy H:i:s"); ?>/<?php echo $seq; ?>',
             invoiceDate: '',
             shipment: '',
@@ -1193,7 +1190,7 @@
         })
 
         $('#termin_hutang').on('select2:select', function(e) {
-            app.$data.customer.customer.debtDuration = e.params.data.id;
+            app.$data.customer.debtDuration = e.params.data.id;
 
         })
 

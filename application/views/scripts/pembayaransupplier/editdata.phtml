@@ -226,7 +226,7 @@ background:url(../images/cross.png)
 										$harga_beli 	= number_format($this->data3[$d]['harga_beli'],0,",",".");
 										$harga_beli2 	= $this->data3[$d]['harga_beli'];
 										$qty 			= $this->data3[$d]['qty'];
-										$sub_total		= number_format($this->data3[$d]['sub_total'],0,",",".");
+										$sub_total		= number_format($this->data3[$d]['sub_total_barang'],0,",",".");
 										$jenis_barang	= $this->data3[$d]['jenis_barang'];
 										$kode_jenis_barang = $this->data3[$d]['kode_jenis_barang'];
 										
@@ -274,12 +274,14 @@ background:url(../images/cross.png)
 										$sisa_pembayaran 	= number_format($this->data4[$e]['sisa_pembayaran'],0,",",".");
 										$metode_pembayaran 	= $this->data4[$e]['metode_pembayaran'];
 										$no_rekening 	= $this->data4[$e]['no_rekening'];
+										$nama_akun 	= $this->data4[$e]['nama_akun'];
 										$catatan 	= $this->data4[$e]['catatan'];
 										if($metode_pembayaran == 'Transfer'){
-											$rekening = $no_rekening;
+											$rekening = "Transfer/".$nama_akun;
 										} else {
-											$rekening = 'Cash / Tunai';
+											$rekening = 'Cash /'.$nama_akun;
 										}
+									
 										$row_terakhir = count($this->data4) - 1;
 										
 										$data_net_total  = $this->data[0]['net_total'];

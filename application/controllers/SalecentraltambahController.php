@@ -217,9 +217,11 @@ class SalecentraltambahController extends Zend_Controller_Action
             }
         }
 
+
+
         $data = array(
             'no_invoice' => $body->no_invoice,
-            'tgl_invoice' => $body->tgl_invoice,
+            'tgl_invoice' => date("Y-m-d", strtotime(str_replace('/', '-', $body->tgl_invoice))),
             'kode_customer' => $body->kode_customer,
             'shipment' => $body->shipment,
             'nama_kurir' => $body->nama_kurir,

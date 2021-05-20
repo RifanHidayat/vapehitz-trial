@@ -266,7 +266,6 @@ class Pembayaransupplier_Service {
 						 "no_rekening" => $data['no_rek']);
 
                          
-                         
 
 			$insdata_transaksi= array(
 					     "deskripsi" => "Transaksi Pembayaran Supplier \n".$data['no_order'],
@@ -278,10 +277,22 @@ class Pembayaransupplier_Service {
                          "id_table_original" => $data['no_order'],
 					      "catatan" => $data['catatan'],
 					     "id_akun" => $data['no_rek']);
+
+        $insdata_transaksi_hutang= array(
+                        "deskripsi" => "Transaksi Pembayaran hutang\n".$data['no_order'],
+                        "tgl_transaksi" => $data['tgl_pembayaran'],
+                        "nominal" => $data['jml_bayar_dp'],
+                        "type" => "Cash Out",
+                        "nama_table" => "Pembayaran Hutang",
+                        "id_table" => $data['no_order'],
+                        "id_table_original" => $data['no_order'],
+                        "catatan" => $data['catatan'],
+                        "id_akun" => "88");
 					
 		$db->insert('hutang',$insdata2);
 
 		$db->insert('transaksi',$insdata_transaksi);
+        $db->insert('transaksi',$insdata_transaksi_hutang);
 		
 		
 		$db->commit();

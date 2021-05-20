@@ -135,7 +135,7 @@ class OrdercentralController extends Zend_Controller_Action {
 		if(isset($_POST['stok_gudang_baru'])){ $stok_gudang_baru = $_POST['stok_gudang_baru'];}
 		if(isset($_POST['harga_beli_baru'])){ $harga_beli_baru = $_POST['harga_beli_baru'];}
 		if(isset($_POST['kode'])){ $kode = $_POST['kode'];}
-			if(isset($_POST['cash'])){ $cash = $_POST['cash'];}
+		if(isset($_POST['cash'])){ $cash = $_POST['cash'];}
 		
 		$tgl_order = str_replace('/', '-', $tgl_order);
 		$tgl_order = date("Y-m-d H:i", strtotime($tgl_order));
@@ -149,16 +149,20 @@ class OrdercentralController extends Zend_Controller_Action {
 		$harga_beli= str_replace(".", "", $harga_beli);
 		$sub_total= str_replace(".", "", $sub_total);
 		//$harga_beli_baru= str_replace(".", "", $harga_beli_baru);
- 
-
-		if (($no_rek==0) || ($no_rek=="")){
-			$id_akun=$cash;
+		if ($jml_bayar_dp=="0"){
+			$id_akun='87';
 
 		}else{
-				$id_akun=$no_rek;
+			if (($no_rek==0) || ($no_rek=="")){
+				$id_akun=$cash;
+	
+			}else{
+					$id_akun=$no_rek;
+	
+			}
+
 
 		}
-		
 		
 		$data = array('kode_supplier' => $kode_supplier,
 					  'no_order' => $no_order,
@@ -318,11 +322,18 @@ class OrdercentralController extends Zend_Controller_Action {
 		$sub_total= str_replace(".", "", $sub_total);
 		//$harga_beli_baru= str_replace(".", "", $harga_beli_baru);
 
-			if (($no_rek==0) || ($no_rek=="")){
-			$id_akun=$cash;
+		if ($jml_bayar_dp=="0"){
+			$id_akun='87';
 
 		}else{
-				$id_akun=$no_rek;
+			if (($no_rek==0) || ($no_rek=="")){
+				$id_akun=$cash;
+	
+			}else{
+					$id_akun=$no_rek;
+	
+			}
+
 
 		}
 		

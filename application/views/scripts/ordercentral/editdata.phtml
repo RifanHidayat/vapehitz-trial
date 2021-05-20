@@ -295,7 +295,7 @@ background:url(../images/cross.png)
 							<tr>
 								<td colspan='5'></td>
 								<td><font style="font-size:12px;font-weight:bold;">Jumlah Bayar/DP</font></td>
-								<td> <input type='text' class="form-control input-sm" name='jml_bayar_dp' id='jml_bayar_dp' value='<?php echo number_format($this->data[0]['jml_bayar_dp'],0,",",".");?>' onkeyup='jumlahdp()'> </td>
+								<td> <input readonly type='text' class="form-control input-sm" name='jml_bayar_dp' id='jml_bayar_dp' value='<?php echo number_format($this->data[0]['jml_bayar_dp'],0,",",".");?>' onkeyup='jumlahdp()'> </td>
 							</tr>
 							<tr><td colspan='7' align="right"><label id="jml_bayar_dp-error" for="jml_bayar_dp" class="error"></td></tr>
 							<tr>
@@ -321,7 +321,8 @@ background:url(../images/cross.png)
 								<td> <input type='text' class="form-control input-sm" name='sisa_bayar' id='sisa_bayar' value='<?php echo number_format($this->data[0]['sisa_bayar'],0,",",".");?>' readonly> </td>
 							</tr>
 							<tr><td>&nbsp;</td></tr>
-							<tr>
+							<tr id="cara_pembayaran">
+							
 								<td colspan='5'></td>
 								<td><font style="font-size:12px;font-weight:bold;">Cara Pembayaran</font></td>
 								<td> 
@@ -340,20 +341,21 @@ background:url(../images/cross.png)
 
 					<tr id='transfer'>
              
-                     <tr id='transfer'>
+                      
                 <td colspan='5'></td>
-                <td width="10%"><font style="font-size:12px;font-weight:bold;">Sumber Dana</font></td>
+                <td width="10%"><font style="font-size:12px;font-weight:bold;">Akun</font></td>
                 <td>  
               <!--   menampilkan semua bang transfer    -->               
                   <select id="no_rek" name="no_rek" class = "form-control input-sm" width="15%">
-                    <option value="0">--Pilih Sumber Dana--</option>
+                    <option value="0">--Pilih Akun--</option>
 
                     <?php  
                       for($x=0; $x<count($this->rek); $x++){ 
-                      $cek_rek = $this->rek[$x]['nama_akun'].' - '.$this->rek[$x]['no_akun'] .' ('.$this->rek[$x]['nama_cabang_pembuka'].')';
+                      $cek_rek = $this->rek[$x]['nama_akun'];
                       $id = $this->rek[$x]['id'];
                     ?>
-                    <option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+                    
+					<option value="<?php echo $id;?>" <?php if($this->rek[$x]['id'] == $this->data[0]['id']) echo 'selected'; ?>><?php echo $cek_rek;?></option>
                     <?php } ?>
                   </select>
                   <!--   menampilkan semua bang transfer    -->   
@@ -365,7 +367,7 @@ background:url(../images/cross.png)
                       $cek_rek = $this->cash[$x]['nama_akun'];
                       $id = $this->cash[$x]['id'];
                     ?>
-                    <option value="<?php echo $id;?>"><?php echo $cek_rek;?></option>
+                   <option value="<?php echo $id;?>" <?php if($this->cash[$x]['id'] == $this->data[0]['id']) echo 'selected'; ?>><?php echo $cek_rek;?></option>
                     <?php } ?>
                   </select>
                 </td>
@@ -580,19 +582,9 @@ background:url(../images/cross.png)
 					exit;
 				}else document.getElementById('jml_bayar_dp-error').innerHTML ='';
 				
-				if (metode_bayar2=='0') {
-					document.getElementById('metode_bayar2-error').innerHTML ="<span style='color: red;'>Metode Bayar Harus Dipilih.</span>";
-					document.getElementById('metode_bayar2').focus();
-					exit;
-				}else document.getElementById('metode_bayar2-error').innerHTML ='';
+				 
 				
-				if(metode_bayar2 == 'Transfer'){
-					if (no_rek=='0') {
-						document.getElementById('no_rek-error').innerHTML ="<span style='color: red;'>Bank Transfer Harus Dipilih.</span>";
-						document.getElementById('no_rek').focus();
-						exit;
-					}else document.getElementById('no_rek-error').innerHTML ='';
-				}
+				 
 			}, 
 		success:function(){	
 			swal({
@@ -760,6 +752,14 @@ background:url(../images/cross.png)
 		var sisa_bayar = parseInt(net_total2)-parseInt(jml_bayar_dp2);
 		var sisa_bayar2 = sisa_bayar.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 			document.getElementById("sisa_bayar").value=sisa_bayar2;
+
+			$("#transfer").hide();
+      $("#transfer2").hide();
+      $("#no_rek").hide();
+      $("#cash").hide();
+       $("#cash").val("");
+       $("#no_rek").val("");
+       $("#cara_pembayaran").hide();
 	}
 	
 	function lunasin2(){
@@ -772,6 +772,7 @@ background:url(../images/cross.png)
 		var sisa_bayar = parseInt(net_total2)-parseInt(jml_bayar_dp2);
 		var sisa_bayar2 = sisa_bayar.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 			document.getElementById("sisa_bayar").value=sisa_bayar2;
+			$("#cara_pembayaran").show();
 	}
 	
  function metodebayar(nilai){

@@ -221,7 +221,7 @@ background:url(../images/cross.png)
 										$harga_jual2 	= $this->data3[$d]['harga_jual'];
 										$qty 			= $this->data3[$d]['qty'];
 										$free 			= $this->data3[$d]['free'];
-										$sub_total		= number_format($this->data3[$d]['sub_total'],0,",",".");
+										$sub_total		= number_format($this->data3[$d]['sub_total_barang'],0,",",".");
 										$sub_total_berat = number_format($this->data3[$d]['sub_total_berat'],0,",",".");
 										$jenis_barang	= $this->data3[$d]['jenis_barang'];
 										$kode_jenis_barang = $this->data3[$d]['kode_jenis_barang'];
@@ -286,11 +286,11 @@ background:url(../images/cross.png)
 										$metode_pembayaran 	= $this->data4[$e]['metode_pembayaran'];
 										$no_rekening 	= $cek_rek;
 										$catatan 	= $this->data4[$e]['catatan'];
-										// if($metode_pembayaran == 'Transfer'){
-										// 	$rekening = $no_rekening;
-										// } else {
-										// 	$rekening = 'Cash / Tunai';
-										// }
+										if($metode_pembayaran == 'Transfer'){
+											$rekening = 'Transfer /'.$no_rekening;
+										} else {
+											$rekening = 'Cash /'.$no_rekening;
+										}
 										$row_terakhir = count($this->data4) - 1;
 										
 										$data_net_total  = $this->data[0]['net_total'];
@@ -323,7 +323,7 @@ background:url(../images/cross.png)
 										<input type="hidden" id="id_piutang<?php echo $e;?>" value="<?php echo $id_piutang;?>"> 
 								<?php } ?>
 								</td>
-								<td align="center"><?php echo $no_rekening;?></td>
+								<td align="center"><?php echo $rekening;?></td>
 								<?php
 								if($e == $row_terakhir){ ?>
 								<td align="center">
@@ -624,7 +624,7 @@ background:url(../images/cross.png)
 		var x = button.parentNode.parentNode.rowIndex;
 		var total = document.getElementById("total").value;
 		var total2 = total.replaceAll(".", "");
-		var sub_total = document.getElementById("sub_total"+rows).value;
+		var sub_total = document.getElementById("sub_total_barang"+rows).value;
 		var sub_total2 = sub_total.replaceAll(".", "");
 		
 		var biaya_kirim = document.getElementById("biaya_kirim").value;
@@ -654,7 +654,7 @@ background:url(../images/cross.png)
 		var x = button;
 		var total = document.getElementById("total").value;
 		var total2 = total.replaceAll(".", "");
-		var sub_total = document.getElementById("sub_total"+x).value;
+		var sub_total = document.getElementById("sub_total_barang"+x).value;
 		var sub_total2 = sub_total.replaceAll(".", "");
 		var hitung_total = parseInt(total2) - parseInt(sub_total2);
 		var qty = document.getElementById("qty"+x).value;

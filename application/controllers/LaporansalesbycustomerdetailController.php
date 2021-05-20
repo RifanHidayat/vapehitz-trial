@@ -46,6 +46,17 @@ class LaporansalesbycustomerdetailController extends Zend_Controller_Action
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
     // $mpdf->Output();
   }
+  public function tesAction()
+  {
+    $sessionlogin = new Zend_Session_Namespace('sessionlogin');
+    $this->view->permission = $sessionlogin->permission;
+    $this->_helper->layout->setLayout('target-column');
+
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+    // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
+    // $mpdf->WriteHTML('<h1>Hello world!</h1>');
+    // $mpdf->Output();
+  }
 
   public function excelAction()
   {

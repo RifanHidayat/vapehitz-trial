@@ -178,8 +178,14 @@
               </div>
 
               <!-- <form @submit.prevent="submitForm" id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST" autocomplete="off"> -->
-              <form @submit.prevent="submitForm" autocomplete="off">
+              <form @submit.prevent="submitForm" autocomplete="off">x
                 <input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage; ?>" class="inputbox2 narrowkey1"></input>
+               <?php $no_invoice_revisi=$this->no_invoice_revisi[0]['no_invoice_original'].'-Rev'.sprintf("%04s",$this->no_invoice_revisi[0]['jml']);?>
+              
+              	<input type="hidden" v-model="invoiceNumberRevisi"  name="no_invoice_revisi" id="no_invoice_revisi" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
+	              <input type="hidden" v-model="invoiceNumberOriginal"  name="no_invoice_original" id="no_invoice_original" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
+
+
                 <?php
                 $seq = $this->seq;
                 //var_dump($seq);
@@ -726,9 +732,13 @@
                         <span class="fa fa-backward"></span> &nbsp;Kembali
                       </button>
                     </a>
-                    <button type="submit" class="btn btn-theme03" :disabled="finalSelectedGoods.length < 1 || loading">
-                      <span class="fa fa-save"></span> &nbsp;Simpan
+                    <button type="button" @click="revision" class="btn btn-success" :disabled="finalSelectedGoods.length < 1 || loading">
+                      <span class="fa fa-save" value="revisi"></span> &nbsp;Revisi
                     </button>
+                    <button type="submit"  name="btnSubmit"  class="btn btn-theme03" :disabled="finalSelectedGoods.length < 1 || loading">
+                      <span class="fa fa-save" value="edit" ></span> &nbsp;Simpan
+                    </button>
+                    
                   </div>
                   <!-- <pre><?= print_r($this->subsale) ?></pre> -->
                   <div v-if="loading" class="progress progress-striped active" style="margin-top: 30px; margin-bottom: 0; border-radius: 0;">
@@ -964,6 +974,8 @@
         </tr>
         `
   })
+ 
+
 
   let app = new Vue({
     el: '#main-content',
@@ -973,6 +985,8 @@
       // accesories: JSON.parse(`<?= json_encode($accessories) ?>`),
       // devices: JSON.parse(`<?= json_encode($device) ?>`),
       invoiceNumber: '<?= $this->sale[0]['no_invoice']; ?>',
+      invoiceNumberRevisi: '<?= $no_invoice_revisi ?>',
+      invoiceNumberOriginal: '<?= $this->no_invoice_revisi[0]['no_invoice_original'] ?>',
       invoiceDate: '<?= date("d/m/Y", strtotime($this->sale[0]['tgl_invoice'])) ?>',
       shipment: '<?= $this->sale[0]['shipment']; ?>',
       courier: '<?= $this->sale[0]['nama_kurir']; ?>',
@@ -1012,6 +1026,8 @@
         vm.loading = true;
         axios.post('<?= $this->baseUrl(); ?>/salecentral/tesresponse', {
             no_invoice: this.invoiceNumber,
+            no_invoice_revisi: this.invoiceNumberRevisi,
+            no_invoice_original:this.invoiceNumberOriginal,
             tgl_invoice: this.invoiceDate,
             kode_customer: this.customer.name,
             shipment: this.shipment,
@@ -1040,6 +1056,7 @@
             jenis_diskon: this.discountType,
             keranjang: this.finalSelectedGoods,
             seq: this.seq,
+            
             // sub_total_berat: this.totalWeight,
           })
           .then(function(response) {
@@ -1065,6 +1082,67 @@
             })
           });
         // url: '<?php echo $this->baseUrl(); ?>/salecentral/kirimdata',
+      },
+      revision: function() {
+        const vm = this;
+        vm.loading = true;
+        axios.post('<?= $this->baseUrl(); ?>/salecentral/tesresponserevision', {
+            no_invoice: this.invoiceNumber,
+            no_invoice_revisi: this.invoiceNumberRevisi,
+            no_invoice_original:this.invoiceNumberOriginal,
+            tgl_invoice: this.invoiceDate,
+            kode_customer: this.customer.name,
+            shipment: this.shipment,
+            nama_kurir: this.courier,
+            total_berat: this.totalWeight,
+            total_biaya: this.totalSubtotal,
+            diskon: this.discount,
+            biaya_kirim: this.shipping,
+            net_total: this.netTotal,
+            metode_penerimaan: this.receiptSource1,
+            jml_penerimaan: this.receiptSourceTotal1,
+            metode_penerimaan2: this.receiptSource2,
+            jml_penerimaan2: this.receiptSourceTotal2,
+            jml_bayar: this.totalPayment,
+            sisa_bayar: this.changePayment,
+            nama_penerima: this.recipientName,
+            alamat_penerima: this.recipientAddress,
+            keterangan: this.information,
+            //seq: '',
+            termin_hutang: this.customer.debtDuration,
+            //kode_inv: '',
+            sub_total: this.mainSubtotal,
+            biaya_lain: this.paymentOther,
+            ket_biaya_lain: this.paymentOtherDescription,
+            deposit: this.deposit,
+            jenis_diskon: this.discountType,
+            keranjang: this.finalSelectedGoods,
+            seq: this.seq,
+            
+            // sub_total_berat: this.totalWeight,
+          })
+          .then(function(response) {
+            vm.loading = false;
+            console.log(response);
+            swal({
+              title: 'Order Sukses !',
+              text: 'Auto Close...',
+              icon: 'success',
+              timer: 4000,
+              showConfirmButton: false,
+            })
+          })
+          .catch(function(error) {
+            vm.loading = false;
+            console.log(error);
+            swal({
+              title: 'Order Gagal !',
+              text: 'Auto Close...',
+              icon: 'error',
+              timer: 4000,
+              showConfirmButton: false,
+            })
+          });
       },
       onClickButton: function() {
         swal({

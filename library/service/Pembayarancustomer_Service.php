@@ -300,6 +300,15 @@ class Pembayarancustomer_Service {
 					     "nama_table" => "pembayarancustomer",
 					     "id_table" => $data['no_invoice'],
 					     "id_akun" => $data['no_rek']);
+		
+		$insdata_transaksi_pitang= array(
+							"deskripsi" => "Transaksi pembayaran piutang \n".$data['no_invoice'],
+							"tgl_transaksi" => $data['tgl_pembayaran'],
+							"nominal" => $data['jml_bayar_dp'],
+							"type" => "Cash In",
+							"nama_table" => "pembayarancustomer",
+							"id_table" => $data['no_invoice'],
+							"id_akun" => "90");
 
 
 		

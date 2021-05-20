@@ -115,7 +115,10 @@ class Cashincashout_Service{
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT * from akun where akun.type Not In ('None')  AND akun.id Not In ('23') order by id ASC ";
+            //$query ="SELECT * from akun where akun.type Not In ('None')  AND akun.id Not In ('23') order by id ASC ";
+           
+            $query ="SELECT * from akun order by id ASC ";
+           
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

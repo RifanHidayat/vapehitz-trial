@@ -12,6 +12,7 @@ class Akun_Service {
 
        return self::$instance;
     }
+
 	
 	public function getmenu() {
         $registry = Zend_Registry::getInstance();
@@ -26,10 +27,13 @@ class Akun_Service {
             return $e->getMessage(); //'Data tidak ada <br>';
         }
     }
+
+
 	
 	public function getNoSeq() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
+
 
         try {
             $query ="select max(seq) FROM volliquid";
@@ -102,7 +106,7 @@ class Akun_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,transaksi.type as type_transaksi,akun.type as type_akun from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' AND akun.type Not In ('None')  order by tgl_transaksi ASC";
+            $query ="SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,transaksi.type as type_transaksi,akun.type as type_akun from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id'   order by tgl_transaksi DESC";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
@@ -212,7 +216,7 @@ class Akun_Service {
         $db = $registry->get('db');
 
         try {
-            $query ="SELECT saldo_awal as opening_balance, SUM(if((transaksi.Type='Cash In'),nominal,0)) as cashin,SUM(if((transaksi.type='Cash out'),nominal,0)) as cashout  from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' AND akun.type Not In ('None')";
+            $query ="SELECT saldo_awal as opening_balance, SUM(if((transaksi.Type='Cash In'),nominal,0)) as cashin,SUM(if((transaksi.type='Cash out'),nominal,0)) as cashout  from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' ";
 
 
 

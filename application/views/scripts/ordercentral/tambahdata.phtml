@@ -261,16 +261,18 @@ background:url(../images/cross.png)
               <tr>
                 <td colspan='5'></td>
                 <td><font style="font-size:12px;font-weight:bold;">Jumlah Bayar/DP</font></td>
-                <td> <input type='text' class="form-control input-sm" name='jml_bayar_dp' id='jml_bayar_dp' value='0' onkeyup='jumlahdp()'> </td>
+                <td> <input type='text' readonly class="form-control input-sm" name='jml_bayar_dp' id='jml_bayar_dp' value='0' onkeyup='jumlahdp()'> </td>
               </tr>
               <tr><td colspan='7' align="right"><label id="jml_bayar_dp-error" for="jml_bayar_dp" class="error"></td></tr>
               <tr>
                 <td colspan='6'></td>
                 <td> 
-                  <input type="radio" id="metode_bayar_a" name="metode_bayar" value="Hutang" onclick='lunasin()' checked>
-                  <label for="vehicle1"> Hutang</label> &nbsp;&nbsp;&nbsp;
+                <input type="radio" id="metode_bayar_a" name="metode_bayar" value="Hutang" onclick='lunasin()' 
+                  <label for="vehicle1" checked> Hutang</label> &nbsp;&nbsp;&nbsp;
                   <input type="radio" id="metode_bayar_b" name="metode_bayar" value="Lunas" onclick='lunasin2()'>
                   <label for="vehicle2"> Lunas</label>
+                  
+                  
                 </td>
               </tr>
               <tr><td>&nbsp;</td></tr>
@@ -280,7 +282,7 @@ background:url(../images/cross.png)
                 <td> <input type='text' class="form-control input-sm" name='sisa_bayar' id='sisa_bayar' value='0' readonly> </td>
               </tr>
               <tr><td>&nbsp;</td></tr>
-              <tr>
+              <tr id="cara_pembayaran">
                 <td colspan='5'></td>
                 <td><font style="font-size:12px;font-weight:bold;">Cara Pembayaran</font></td>
                 <td> 
@@ -533,19 +535,19 @@ background:url(../images/cross.png)
           exit;
         }else document.getElementById('jml_bayar_dp-error').innerHTML ='';
         
-        if (metode_bayar2=='0') {
-          document.getElementById('metode_bayar2-error').innerHTML ="<span style='color: red;'>Metode Bayar Harus Dipilih.</span>";
-          document.getElementById('metode_bayar2').focus();
-          exit;
-        }else document.getElementById('metode_bayar2-error').innerHTML ='';
+        // if (metode_bayar2=='0') {
+        //   document.getElementById('metode_bayar2-error').innerHTML ="<span style='color: red;'>Metode Bayar Harus Dipilih.</span>";
+        //   document.getElementById('metode_bayar2').focus();
+        //   exit;
+        // }else document.getElementById('metode_bayar2-error').innerHTML ='';
         
-        if(metode_bayar2 == 'Transfer'){
-          if (no_rek=='0') {
-            document.getElementById('no_rek-error').innerHTML ="<span style='color: red;'>Bank Transfer Harus Dipilih.</span>";
-            document.getElementById('no_rek').focus();
-            exit;
-          }else document.getElementById('no_rek-error').innerHTML ='';
-        }
+        // if(metode_bayar2 == 'Transfer'){
+        //   if (no_rek=='0') {
+        //     document.getElementById('no_rek-error').innerHTML ="<span style='color: red;'>Bank Transfer Harus Dipilih.</span>";
+        //     document.getElementById('no_rek').focus();
+        //     exit;
+        //   }else document.getElementById('no_rek-error').innerHTML ='';
+        // }
         
       }, 
     success:function(){ 
@@ -654,6 +656,8 @@ background:url(../images/cross.png)
     
     document.getElementById("stok_gudang_baru"+x).value=jumlah2;
     document.getElementById("harga_beli_baru"+x).value=jumlah4;
+
+    console.log("tew");
   }
   
   function biaya(){
@@ -701,6 +705,7 @@ background:url(../images/cross.png)
     var sisa_bayar = parseInt(net_total2)-parseInt(jml_bayar_dp2);
     var sisa_bayar2 = sisa_bayar.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
       document.getElementById("sisa_bayar").value=sisa_bayar2;
+     
   }
   
   function lunasin(){
@@ -709,10 +714,21 @@ background:url(../images/cross.png)
       document.getElementById("jml_bayar_dp").value='0';
     var jml_bayar_dp = document.getElementById("jml_bayar_dp").value;
     var jml_bayar_dp2 = jml_bayar_dp.replaceAll(".", "");
+
+    var t
     
     var sisa_bayar = parseInt(net_total2)-parseInt(jml_bayar_dp2);
     var sisa_bayar2 = sisa_bayar.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
       document.getElementById("sisa_bayar").value=sisa_bayar2;
+
+      $("#transfer").hide();
+      $("#transfer2").hide();
+      $("#no_rek").hide();
+      $("#cash").hide();
+       $("#cash").val("");
+       $("#no_rek").val("");
+       $("#cara_pembayaran").hide();
+       
   }
   
   function lunasin2(){
@@ -725,6 +741,8 @@ background:url(../images/cross.png)
     var sisa_bayar = parseInt(net_total2)-parseInt(jml_bayar_dp2);
     var sisa_bayar2 = sisa_bayar.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
       document.getElementById("sisa_bayar").value=sisa_bayar2;
+      $("#cara_pembayaran").show();
+
   }
   
   function metodebayar(nilai){
@@ -750,6 +768,7 @@ background:url(../images/cross.png)
   </script>
   <script>
    $(document).ready(function(){
+     $('#cara_pembayaran').hide();
     $(function() {
       $('#tgl_order').datepicker({
         dateFormat: 'dd/mm/yy',

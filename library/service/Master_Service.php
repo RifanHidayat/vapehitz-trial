@@ -206,7 +206,7 @@ class Master_Service {
         }
 
      
-        public function bayar(array $no_order, array $tgl_pembayaran,array $sisa_bayar,array $jml_bayar,array $catatan,$akun,$metode_bayar){
+        public function bayar(array $no_order,$tgl_pembayaran,array $sisa_bayar,array $jml_bayar,array $catatan,$akun,$metode_bayar){
  
             $registry = Zend_Registry::getInstance();
             $db = $registry->get('db');
@@ -225,7 +225,7 @@ class Master_Service {
                 
                  
                 $where = "no_order = '".$no_order[$i]."'";
-                $tgl_pembayaran1	= date_create($tgl_pembayaran[$i]);
+                $tgl_pembayaran1	= date_create($tgl_pembayaran);
                 $tgl_pembayaran2	= date_format($tgl_pembayaran1,"y-m-d");
             
 
@@ -251,9 +251,21 @@ class Master_Service {
                 "id_table_original"=>$no_order[$i],
                 "id_akun" => $akun);
 
+                $insdata_transaksi_hutang= array(
+                    "deskripsi" => "Transaksi pembayaran hutang supplier  \n".$no_order[$i],
+                    "tgl_transaksi" => $tgl_pembayaran2,
+                    "nominal" => $sisa_bayar[$i],
+                    "type" => "Cash Out",
+                    "catatan" => $catatan[$i],
+                    "nama_table" => "pembayaransupplier",
+                    "id_table" => $no_order[$i],
+                    "id_table_original"=>$no_order[$i],
+                    "id_akun" => "88");
+
                 $db->update('ordercentral',$dataupdate,$where);
                  $db->insert('hutang',$insdata_piutang);
                  $db->insert('transaksi',$insdata_transaksi);
+                 $db->insert('transaksi',$insdata_transaksi_hutang);
             }
               
             

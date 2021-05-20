@@ -166,32 +166,71 @@ class Ordercentral_Service {
 		try {
 	    $db->beginTransaction();
 		
-		$insdata = array("kode_supplier" => $data['kode_supplier'],
-						 "no_order" => $data['no_order'],
-						 "tgl_order" => $data['tgl_order'],
-						 "seq" => $data['seq'],
-						 "total" => $data['total'],
-						 "biaya_kirim" => $data['biaya_kirim'],
-						 "diskon" => $data['diskon'],
-						 "net_total" => $data['net_total'],
-						 "jml_bayar_dp" => $data['jml_bayar_dp'],
-						 "sisa_bayar" => $data['sisa_bayar'],
-						 "metode_bayar2" => $data['metode_bayar2'],
-                         "metode_bayar" => "-",
-                         'user_id'=>'-',
-                         "tgl_entry"=> "0000-00-00 00:00:00",
-						 "no_rekening" => $data['no_rek']);
+	
+        
 
-    
-			$insdata_transaksi= array(
-					     "deskripsi" => "Transaksi Pembelian \n".$data['no_order'],
-					     "tgl_transaksi" => $data['tgl_order'],
-					     "nominal" => $data['jml_bayar_dp'],
-					     "type" => "Cash Out",
-					     "nama_table" => "ordercentral",
-					     "id_table" => $data['no_order'],
-                         "id_table_original" => $data['no_order'],
-					     "id_akun" => $data['no_rek']);
+
+        if ($data['jml_bayar_dp']=="0"){
+            $insdata_transaksi= array(
+                "deskripsi" => "Transaksi Hutang \n".$data['no_order'],
+                "tgl_transaksi" => $data['tgl_order'],
+                "nominal" => $data['sisa_bayar'],
+                "type" => "Cash In",
+                "nama_table" => "ordercentral",
+                "id_table" => $data['no_order'],
+                "id_table_original" => $data['no_order'],
+                "id_akun" => $data['no_rek']);
+
+
+
+                $insdata = array("kode_supplier" => $data['kode_supplier'],
+                "no_order" => $data['no_order'],
+                "tgl_order" => $data['tgl_order'],
+                "seq" => $data['seq'],
+                "total" => $data['total'],
+                "biaya_kirim" => $data['biaya_kirim'],
+                "diskon" => $data['diskon'],
+                "net_total" => $data['net_total'],
+                "jml_bayar_dp" => $data['jml_bayar_dp'],
+                "sisa_bayar" => $data['sisa_bayar'],
+                "metode_bayar2" => "None",
+                "metode_bayar" => "-",
+                'user_id'=>'-',
+                "tgl_entry"=> "0000-00-00 00:00:00",
+                "no_rekening" => $data['no_rek']);
+
+                
+
+        }else{
+            $insdata_transaksi= array(
+                "deskripsi" => "Transaksi Pembelian \n".$data['no_order'],
+                "tgl_transaksi" => $data['tgl_order'],
+                "nominal" => $data['jml_bayar_dp'],
+                "type" => "Cash Out",
+                "nama_table" => "ordercentral",
+                "id_table" => $data['no_order'],
+                "id_table_original" => $data['no_order'],
+                "id_akun" => $data['no_rek']);
+                
+
+                $insdata = array("kode_supplier" => $data['kode_supplier'],
+                "no_order" => $data['no_order'],
+                "tgl_order" => $data['tgl_order'],
+                "seq" => $data['seq'],
+                "total" => $data['total'],
+                "biaya_kirim" => $data['biaya_kirim'],
+                "diskon" => $data['diskon'],
+                "net_total" => $data['net_total'],
+                "jml_bayar_dp" => $data['jml_bayar_dp'],
+                "sisa_bayar" => $data['sisa_bayar'],
+                "metode_bayar2" => $data['metode_bayar2'],
+                "metode_bayar" => "-",
+                'user_id'=>'-',
+                "tgl_entry"=> "0000-00-00 00:00:00",
+                "no_rekening" => $data['no_rek']);
+
+        }        
+		
 
             $insdata_transaksi_biaya_kirim= array(
                 "deskripsi" => "Biaya kirim transaksi Pembelian \n".$data['no_order'],
@@ -287,8 +326,23 @@ class Ordercentral_Service {
 	    $db->beginTransaction();
 		
 		$no_order = $data['no_order'];
-		
-	   $insdata = array("kode_supplier" => $data['kode_supplier'],
+
+        if ($data['jml_bayar_dp']=="0"){
+            $insdata = array("kode_supplier" => $data['kode_supplier'],
+						 "tgl_order" => $data['tgl_order'],
+						 "seq" => $data['seq'],
+						 "total" => $data['total'],
+						 "biaya_kirim" => $data['biaya_kirim'],
+						 "diskon" => $data['diskon'],
+						 "net_total" => $data['net_total'],
+						 "jml_bayar_dp" => $data['jml_bayar_dp'],
+						 "sisa_bayar" => $data['sisa_bayar'],
+						 "metode_bayar2" => "None",
+						 "no_rekening" => $data['no_rek']);
+
+
+        }else{
+            $insdata = array("kode_supplier" => $data['kode_supplier'],
 						 "tgl_order" => $data['tgl_order'],
 						 "seq" => $data['seq'],
 						 "total" => $data['total'],
@@ -299,13 +353,36 @@ class Ordercentral_Service {
 						 "sisa_bayar" => $data['sisa_bayar'],
 						 "metode_bayar2" => $data['metode_bayar2'],
 						 "no_rekening" => $data['no_rek']);
-	   	$insdata_transaksi= array(
-					   
-					     "tgl_transaksi" => $data['tgl_order'],
-					     "nominal" => $data['jml_bayar_dp'],
-					     "type" => "Cash Out",
-					     "id_akun" => $data['no_rek']);
+
+        }
+		
+	   
+
+    if ($data['jml_bayar_dp']=="0"){
+                $insdata_transaksi= array(
+                        "deskripsi" => "Transaksi Hutang \n".$data['no_order'],
+                        "tgl_transaksi" => $data['tgl_order'],
+                        "nominal" => $data['sisa_bayar'],
+                        "type" => "Cash In",
+                        "nama_table" => "ordercentral",
+                        "id_table" => $data['no_order'],
+                        "id_table_original" => $data['no_order'],
+                        "id_akun" => $data['no_rek']);
+                
+    }else{
+                $insdata_transaksi= array(
+                "deskripsi" => "Transaksi Pembelian \n".$data['no_order'],
+                "tgl_transaksi" => $data['tgl_order'],
+                "nominal" => $data['jml_bayar_dp'],
+                "type" => "Cash Out",
+                "nama_table" => "ordercentral",
+                "id_table" => $data['no_order'],
+                "id_table_original" => $data['no_order'],
+                "id_akun" => $data['no_rek']);
+                
+                     } 
 						 
+
 		$where = "no_order = '".$no_order."'";
 		$where_transaksi="id_table = '".$no_order."'";
 

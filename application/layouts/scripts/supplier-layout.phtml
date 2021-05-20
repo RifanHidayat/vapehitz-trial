@@ -276,6 +276,9 @@ $currentPage  = $this->currentPage;
   <script type="text/javascript" src="lib/advanced-datatable/js/DT_bootstrap.js"></script>
   <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/moment.min.js"></script>
   <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/daterangepicker.js"></script>
+  <script src="<?php echo $this->baseUrl();?>/lib/sweetalert.min.js"></script>
+
+  
   <!--common script for all pages-->
   <script src="lib/common-scripts.js"></script>
   <!--script for this page-->
@@ -416,18 +419,21 @@ function bayar(){
 	var no_order=[];
 	var jml_bayar=[];
 	var sisa_bayar=[];
-	var tgl_pembayaran=[]
+ 
 	var catatan=[];
 	var table = document.getElementById("dataTables-emp");
 	var akun_rek=$('#no_rek').val();
 	var akun_cash=$('#cash').val();
 	var akun_rek=$('#no_rek').val();
 	var akun_cash=$('#cash').val();
+	var tgl_pembayaran=$('#tgl_pembayaran').val();
 	var metode_bayar=$('#metode_bayar2').val();
 
 
+	if (tgl_pembayaran==''){
+		alert("tanggal pembayaran belum diisi");
 
-	if ((akun_rek=="0") && (akun_cash=="0")){
+	}else if ((akun_rek=="0") && (akun_cash=="0")){
 
 		alert("akun belum dipilih");
 
@@ -441,7 +447,7 @@ function bayar(){
 			if (c){
 				var sisa_bayar1=table.rows[t].cells[9].innerHTML;
 				var jml_bayar1=table.rows[t].cells[8].innerHTML;
-				var tgl_pembayaran1=table.rows[t].cells[2].innerHTML;
+			 
 				var no_order1=table.rows[t].cells[1].innerHTML;
 				var catatan1=table.rows[t].cells[11].children[0].value;
 
@@ -451,7 +457,7 @@ function bayar(){
 				sisa_bayar.push(sisa_bayar2);
 				jml_bayar.push(jml_bayar2);
 				no_order.push(no_order1);
-				tgl_pembayaran.push(tgl_pembayaran1);
+			 
 				catatan.push(catatan1);	
 				//console.log(sisa_bayar1);
 				
@@ -463,6 +469,13 @@ var url = "<?php echo $this->basePath; ?>/supplier/bayar";
 var opt = {no_order:no_order,tgl_pembayaran:tgl_pembayaran,sisa_bayar:sisa_bayar,jml_bayar:jml_bayar,catatan:catatan,akun_rek:akun_rek,akun_cash:akun_cash,metode_bayar:metode_bayar}
 					
 jQuery.get(url,opt, function(data) {
+	swal({
+		 title: 'Pembayaran sukses !',
+		 text: 'Auto Close...',
+		  icon: 'success',
+				    timer: 4000,
+				    showConfirmButton: false,
+				});
 	
 
 
@@ -487,6 +500,7 @@ function metodebayar(nilai){
 			$("#default").hide();
 		}
 	}
+ 
 
 
   </script>
