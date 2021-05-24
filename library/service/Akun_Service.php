@@ -116,8 +116,10 @@ class Akun_Service
         $db = $registry->get('db');
 
         try {
+
             $query = "SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,transaksi.type as type_transaksi,akun.type as type_akun from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id'   order by transaksi.id ASC";
             $result = $db->fetchAll($query);
+            //$query = "SELECT * from akun where id = '$id'";
             return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
@@ -236,21 +238,25 @@ class Akun_Service
 
 
         try {
-            // $count = "select count(*) as jml from transaksi where id_akun='$id'";
-
-            // if ($count['jml'] >= 1) {
-
-            //     $query = "SELECT saldo_awal as opening_balance, SUM(if((transaksi.Type='Cash In'),nominal,0)) as cashin,SUM(if((transaksi.type='Cash out'),nominal,0)) as cashout  from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' ";
-            //     $result = $db->fetchAll($query);
-            // } else {
-            //     $query = "SELECT saldo_awal as opening_balance ,(saldo_awal-saldo_awal) as cashin,(saldo_awal-saldo_awal) as cashout from akun where id='$id'";
-
-            //     $result = $db->fetchAll($query);
-            // }
-            $query = "SELECT saldo_awal as opening_balance ,(saldo_awal-saldo_awal) as cashin,(saldo_awal-saldo_awal) as cashout from akun where id='$id'";
-            $result = $db->fetchAll($query);
+            $count = "select count(*) as jml from transaksi where id_akun='$id'";
+            $count1 = $db->fetchAll($count);
 
 
+
+
+
+            if ($count1[0]['jml'] > 0) {
+
+                $query = "SELECT saldo_awal as opening_balance, SUM(if((transaksi.Type='Cash In'),nominal,0)) as cashin,SUM(if((transaksi.type='Cash out'),nominal,0)) as cashout  from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' ";
+
+                $result = $db->fetchAll($query);
+            } else {
+                $query = "SELECT saldo_awal as opening_balance ,(saldo_awal-saldo_awal) as cashin,(saldo_awal-saldo_awal) as cashout from akun where id='$id'";
+
+                $result = $db->fetchAll($query);
+            }
+            // $query = "SELECT saldo_awal as opening_balance ,(saldo_awal-saldo_awal) as cashin,(saldo_awal-saldo_awal) as cashout from akun where id='$id'";
+            // $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
@@ -262,11 +268,18 @@ class Akun_Service
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
 
+
         try {
-            $query = "SELECT  (saldo_awal +SUM(if((transaksi.Type='Cash In'),nominal,0)) - SUM(if((transaksi.type='Cash out'),nominal,0))) as balance    from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' ";
 
-
-
+            $count = "select count(*) as jml from transaksi where id_akun='$id'";
+            $count1 = $db->fetchAll($count);
+            if ($count1[0]['jml'] > 0) {
+                $query = "SELECT  (saldo_awal +SUM(if((transaksi.Type='Cash In'),nominal,0)) - SUM(if((transaksi.type='Cash out'),nominal,0))) as balance    from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id' ";
+                $result = $db->fetchAll($query);
+            } else {
+                $query = "SELECT saldo_awal as balance ,(saldo_awal-saldo_awal) as cashin,(saldo_awal-saldo_awal) as cashout from akun where id='$id'";
+                $result = $db->fetchAll($query);
+            }
             $result = $db->fetchAll($query);
             $result1 = json_encode($result);
             return $result;
