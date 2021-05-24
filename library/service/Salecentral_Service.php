@@ -665,6 +665,8 @@ class Salecentral_Service {
 					  "id_table_original" => $data['no_invoice_original'],
 					  "id_akun" => $data['metode_penerimaan2']);
 
+
+
 		$insdata_transaksi3= array(
 						"deskripsi" => "Biaya Kirim transaksi Penjualan \n".$no_invoice,
 						"tgl_transaksi" => $data['tgl_invoice'],
@@ -674,6 +676,9 @@ class Salecentral_Service {
 						"id_table" => $no_invoice,
 						"id_table_original" => $data['no_invoice_original'],
 						"id_akun" => "23");
+
+
+						
 		if ($data['sisa_bayar']>0){
 
 			$insdata_transaksi_piutang= array(

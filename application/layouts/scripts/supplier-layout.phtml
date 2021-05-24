@@ -1,509 +1,407 @@
 <div id="layoutnya">
-<?php require('partial/header.php');?>
-<?php require('partial/menu.php');?>   
-<?php
-require_once 'Zend/View.php';
-require_once 'share/oa_page.php';
-$halaman = new oa_page();
-$ctrlFrm = new Zend_View();
+	<?php require('partial/header.php'); ?>
+	<?php require('partial/menu.php'); ?>
+	<?php
+	require_once 'Zend/View.php';
+	require_once 'share/oa_page.php';
+	$halaman = new oa_page();
+	$ctrlFrm = new Zend_View();
 
-$currentPage  = $this->currentPage;
-?>
-<script>
-	$(document).ready(function () {
-		$('#dataTables-emp').dataTable({
-			"bPaginate": true,
-			"bLengthChange": true,
-			"bFilter": true,
-			"bInfo": true,
-			"bAutoWidth": true});
-	});
-	 
-</script>
-<link rel="stylesheet" href="<?php echo $this->baseUrl();?>/calendar/daterangepicker-master/daterangepicker.css" />
-    <!-- **********************************************************************************************************************************************************
+	$currentPage  = $this->currentPage;
+	?>
+	<script>
+		$(document).ready(function() {
+			$('#dataTables-emp').dataTable({
+				"bPaginate": true,
+				"bLengthChange": true,
+				"bFilter": true,
+				"bInfo": true,
+				"bAutoWidth": true
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/daterangepicker.css" />
+	<!-- **********************************************************************************************************************************************************
         MAIN CONTENT
         *********************************************************************************************************************************************************** -->
-    <!--main content start-->
-	<?php $serialize_permission = unserialize($this->permission);?>
-    <section id="main-content">
-      <section class="wrapper">
-        <h3><i class="fa fa-angle-right"></i> Master Data Supplier</h3>
-        <div class="row mb">
-          <!-- page start-->
-          <div class="content-panel">
-            <div class="adv-table">
-			<div id="listprogram" align="center"  class="col-xs-12">
-				<br>
-				
-						<form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
-	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
-		<?php 
-			$seq = $this->seq;
-			//var_dump($seq);
-			$seq += 1;
-			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
-		?>
-		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
-		<input type="hidden" id='action' name='action' value =''>
-		<div class="panel">
-            <fieldset class="panel-dt">	
-				<h4 align="left"><u>Cash In Cash Out</u></h4>
-				<br>
-					<div class="col-sm-12">
-						<table width="100%">
-							<!-- baris judul -->
-							<tr>
-								<td width="10%"><font style="font-size:12px;font-weight:bold;">Tanggal Transaksi</font></td>
-								<td> &nbsp;</td>
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Jenis Transaksi</font></td>
-								<td> &nbsp;</td>
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Nominal</font></td>
-								<td> &nbsp;</td>
-								<td width="18%"><font style="font-size:12px;font-weight:bold;">Catatan</font></td>
-								<td> &nbsp;</td>
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Sumber Dana</font></td>
-								<td> &nbsp;</td>
-								<td width="14%"></td>
-							</tr> 
-						<!-- 	Baris input -->
+	<!--main content start-->
+	<?php $serialize_permission = unserialize($this->permission); ?>
+	<section id="main-content">
+		<section class="wrapper">
+			<h3><i class="fa fa-angle-right"></i> Master Data Supplier</h3>
+			<div class="row mb">
+				<!-- page start-->
+				<div class="content-panel">
+					<div class="adv-table">
+						<div id="listprogram" align="center" class="col-xs-12">
+							<br>
 
-							<tr>
-								<td width="14%"> 
-								
-											<input name="tgl_transaksi" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value=""> 
-											<span class="input-group-btn add-on">
-											<button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
-											</span>
-										
-								</td>
-								<td >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-								<td width="16%"> 
-									<select class="jenis_expense" id="jenis_expense" name="jenis_expense" class="form-control select_group product" style="width: 100%">
-                        			<option value="">--Jenis Expense--</option>
-                        		<?php  
-                          			for($x=0; $x<count($this->jenis_expense); $x++){ 
-                          			$keterangan = $this->jenis_expense[$x]['keterangan'];
-                          			$id = $this->jenis_expense[$x]['id'];
-                          		
-                        		?>
-                        			<option value="<?php echo $id;?>"><?php echo $keterangan;?></option>
-                       			 <?php } ?>
-                       			</select>
+							<form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
+								<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage; ?>" class="inputbox2 narrowkey1"></input>
+								<?php
+								$seq = $this->seq;
+								//var_dump($seq);
+								$seq += 1;
+								$seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
+								?>
+								<input type="hidden" id='seq' name='seq' value='<?php echo $seq; ?>'>
+								<input type="hidden" id='action' name='action' value=''>
 
-								</td>
-								<td> </td>
+							</form>
+							<div id="page-content">
+								<div class="col-md-6" align="left">
+									<?php if ($serialize_permission) {
+										if (in_array('tambahSupplier', $serialize_permission)) { ?>
+											<button class="right btn btn-success  btn-xs" onClick="open_url_to_div('/supplier/tambahdata')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Supplier</button>
+									<?php }
+									} ?>
+								</div>
+								<div class="col-md-6" align="right">
+									<?php if ($serialize_permission) {
+										if (in_array('laporanSupplier', $serialize_permission)) { ?>
+											<a href='/supplier/dataxls'><button class="right btn btn-success  btn-xs">Laporan</button></a>
+									<?php }
+									} ?>
+								</div>
+								<br><br>
+								<table style="font-size:12px;" class="table table-striped table-bordered table-hover" id="dataTables-emp">
+									<thead>
+										<tr bgcolor="#4ECDC4">
+											<th width="3%" style="text-align:center;">No</th>
+											<th width="11%" style="text-align:center;">Kode Supplier</th>
+											<th width="12%%" style="text-align:center;">Nama Supplier</th>
+											<th width="12%" style="text-align:center;">Alamat</th>
+											<th width="10%" style="text-align:center;">No Tlp</th>
+											<th width="10%" style="text-align:center;">No Handphone</th>
+											<th width="10%" style="text-align:center;">Email</th>
+											<th width="10%" style="text-align:center;">Tipe</th>
+											<th width="10%" style="text-align:center;">Status</th>
+											<th width="10%" style="text-align:center;">Edit</th>
+											<th width="10%" style="text-align:center;">Hapus</th>
+											<th width="10%" style="text-align:center;">Payment</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										for ($x = 0; $x < count($this->data); $x++) {
 
-								<td width="16%"> 
-									<input name="nominal" id="nominal" type="text" maxlength="30" size="30" class="form-control input-sm" placeholder="0"  onkeyup='masking("nominal")'> 
-
-								</td>
-								<td> &nbsp;</td>
-
-								<td width="20%">
-									<input name="catatan" id="catatan" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
-								</td>
-								<td> &nbsp;</td>
-								<td width="16%">
-									<select id="nama_akun" name="nama_akun" class="form-control select_group product" style="width: 100%">
-                        			<option value="">--Sumber Dana--</option>
-                        			<?php  
-                          			for($x=0; $x<count($this->akun); $x++){ 
-                          			$nama_akun = $this->akun[$x]['nama_akun'];
-                          			$no_akun = $this->akun[$x]['no_akun'];
-                          			$id = $this->akun[$x]['id'];
-                          		
-                        		?>
-                        			<option value="<?php echo $id ?>"><?php echo $nama_akun.' | '.$no_akun;?></option>
-                       			 <?php } ?>
-                       			</select>
-
-
-								</td>
-								<td> &nbsp;</td>
-								<td width="16%">
-									<label for="cashin">
-									 	<input required=""  name="type" type="radio" id="cashin" name="cashin" value="Cash In">
-
-										Cash in
-									</label>
-									
-									<label for="Cash In">
-										<input required="" name="type"  type="radio" id="cashout" name="cashout" value="Cash Out">
-										Cash out
-									</label>
-									
-								</td>
-							</tr> 
-
-								<tr>
-								<td width="10%">&nbsp; <label id="tgl_transaksi-error" for="nama_akun" class="error"></font></td>
-								<td> &nbsp;</td>
-								<td width="14%">&nbsp; <label id="jenis_expense-error" for="jenis_expense" class="error"></font></td>
-								<td> &nbsp;</td>
-								<td width="14%">&nbsp; <label id="nominal-error" for="nominal" class="error"></td>
-								<td> &nbsp;</td>
-								<td width="18%">&nbsp; <label id="catatan-error" for="catatan" class="error"></td>
-								<td> &nbsp;</td>
-								<td width="14%">&nbsp; <label id="nama_akun-error" for="nama_akun" class="error"></td>
-								<td> &nbsp;</td>
-								<td width="14%">&nbsp; <label id="type-error" for="nama_akun" class="error"></td>
-								<td> &nbsp;</td>
-
-								
-							</tr> 
-
-
-							
-						</table>
-					</div>
-				<div class="col-lg-12">
-					<div class="form-group form-group-bottom" align="right">
-						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses?>">	
-						<br><br>
-							<a href="cashincashout">
-							<button type="button" class="btn btn-theme02">
-								<span class="fa fa-backward"></span> &nbsp;Kembali
-							</button></a>
-							<button type="button" class="btn btn-theme03" onCLick="PostData()">
-								<span class="fa fa-save"></span> &nbsp;Simpan
-							</button>
-					</div>
-				</div>
-			</fieldset>
-		</div>
-	</form>	
-	<div id="page-content">
-						<div class="col-md-6" align="left">
-						<?php if($serialize_permission) { if(in_array('tambahSupplier', $serialize_permission)) { ?>
-							<button class="right btn btn-success  btn-xs" onClick="open_url_to_div('/supplier/tambahdata')"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Supplier</button>		
-						<?php } } ?>
-						</div>	
-						<div class="col-md-6" align="right">
-						<?php if($serialize_permission) { if(in_array('laporanSupplier', $serialize_permission)) { ?>
-							<a href ='/supplier/dataxls'><button class="right btn btn-success  btn-xs">Laporan</button></a>
-						<?php } } ?>
-						</div>	
-						<br><br>
-						<table style="font-size:12px;" class="table table-striped table-bordered table-hover" id="dataTables-emp">
-							<thead>
-							<tr bgcolor="#4ECDC4">
-								<th width="3%" style="text-align:center;">No</th>
-								<th width="11%" style="text-align:center;">Kode Supplier</th>
-								<th width="12%%" style="text-align:center;">Nama Supplier</th>
-								<th width="12%" style="text-align:center;">Alamat</th>
-								<th width="10%" style="text-align:center;">No Tlp</th>
-								<th width="10%" style="text-align:center;">No Handphone</th>
-								<th width="10%" style="text-align:center;">Email</th>
-								<th width="10%" style="text-align:center;">Tipe</th>
-								<th width="10%" style="text-align:center;">Status</th>
-								<th width="10%" style="text-align:center;">Edit</th>
-								<th width="10%" style="text-align:center;">Hapus</th>
-								<th width="10%" style="text-align:center;">Payment</th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php
-								 for($x=0; $x<count($this->data); $x++){
-										
-										$noUrut 		= ((($this->numPage * 1) - 1) * 10) + $x + 1;
-										$nomer			= $x+1;
-										$kode_supplier 	= $this->data[$x]['kode_supplier'];
-										$nama_supplier 	= $this->data[$x]['nama_supplier'];
-										$alamat_supplier = $this->data[$x]['alamat_supplier'];
-										$no_tlp 		= $this->data[$x]['no_tlp'];
-										$no_hp 			= $this->data[$x]['no_hp'];
-										$email 			= $this->data[$x]['email'];
-										$tipe 			= $this->data[$x]['tipe'];
-										$status 		= $this->data[$x]['status'];
-										if($status=='1'){
-											$stat = 'Active';
-										} else {
-											$stat = 'Inactive';
-										}
-									?>	
-											<td align="center"><?php echo $nomer;?></td>	  
-											<td align="center"><?php echo $kode_supplier;?></td>
-											<td align="center"><?php echo $nama_supplier;?></td>
-											<td align="center"><?php echo $alamat_supplier;?></td>
-											<td align="center"><?php echo $no_tlp;?></td>
-											<td align="center"><?php echo $no_hp;?></td>
-											<td align="center"><?php echo $email;?></td>
-											<td align="center"><?php echo $tipe;?></td>
-											<td align="center"><?php echo $stat;?></td>
+											$noUrut 		= ((($this->numPage * 1) - 1) * 10) + $x + 1;
+											$nomer			= $x + 1;
+											$kode_supplier 	= $this->data[$x]['kode_supplier'];
+											$nama_supplier 	= $this->data[$x]['nama_supplier'];
+											$alamat_supplier = $this->data[$x]['alamat_supplier'];
+											$no_tlp 		= $this->data[$x]['no_tlp'];
+											$no_hp 			= $this->data[$x]['no_hp'];
+											$email 			= $this->data[$x]['email'];
+											$tipe 			= $this->data[$x]['tipe'];
+											$status 		= $this->data[$x]['status'];
+											if ($status == '1') {
+												$stat = 'Active';
+											} else {
+												$stat = 'Inactive';
+											}
+										?>
+											<td align="center"><?php echo $nomer; ?></td>
+											<td align="center"><?php echo $kode_supplier; ?></td>
+											<td align="center"><?php echo $nama_supplier; ?></td>
+											<td align="center"><?php echo $alamat_supplier; ?></td>
+											<td align="center"><?php echo $no_tlp; ?></td>
+											<td align="center"><?php echo $no_hp; ?></td>
+											<td align="center"><?php echo $email; ?></td>
+											<td align="center"><?php echo $tipe; ?></td>
+											<td align="center"><?php echo $stat; ?></td>
 											<td width="7%">
-											<?php if($serialize_permission) { if(in_array('editSupplier', $serialize_permission)) { ?>
-                                                <a href="#" title="Edit" onclick="open_url_to_div('/supplier/editdata?id=<?php echo $kode_supplier;?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
-                                            <?php } } ?>
+												<?php if ($serialize_permission) {
+													if (in_array('editSupplier', $serialize_permission)) { ?>
+														<a href="#" title="Edit" onclick="open_url_to_div('/supplier/editdata?id=<?php echo $kode_supplier; ?>')" class="btn-warning btn-sm mar-ed-button"><i class="fa fa-edit pad-ico-button"></i>Edit</a>
+												<?php }
+												} ?>
 											</td>
-                                            <td width="8%">
-											<?php if($serialize_permission) { if(in_array('hapusSupplier', $serialize_permission)) { ?>
-												<a href="#" title="Hapus" onclick="hapusdata('<?php echo $kode_supplier; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
-                                            <?php } } ?>
-											</td>	
-											</td>	
-										 
+											<td width="8%">
+												<?php if ($serialize_permission) {
+													if (in_array('hapusSupplier', $serialize_permission)) { ?>
+														<a href="#" title="Hapus" onclick="hapusdata('<?php echo $kode_supplier; ?>')" class="btn-danger btn-sm mar-ed-button"><i class="fa fa-trash-o pad-ico-button"></i>Hapus</a>
+												<?php }
+												} ?>
+											</td>
+											</td>
+
 											<td align="center"><a href="#" title="Payment" onclick="payment('<?php echo $kode_supplier; ?>')" class="btn-warning btn-sm mar-ed-button">Payment</a>
-                                           </td>
-										</tr>	
-									<?php 
+											</td>
+											</tr>
+										<?php
 										}
-									?>
-								
-							</tbody>
-						</table>
+										?>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
-            </div>
-          </div>
-          <!-- page end-->
-        </div>
-        <!-- /row -->
-      </section>
-      <!-- /wrapper -->
-    </section>
-    <!--main content end-->
-    <?php require('partial/main-footer.php');?> 
-  </section>
-   <!-- js placed at the end of the document so the pages load faster -->
-  <script src="lib/jquery/jquery.min.js"></script>
-  <script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
-  <script src="lib/jquery.scrollTo.min.js"></script>
-  <script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
-  <script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" src="lib/advanced-datatable/js/DT_bootstrap.js"></script>
-  <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/moment.min.js"></script>
-  <script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/daterangepicker.js"></script>
-  <script src="<?php echo $this->baseUrl();?>/lib/sweetalert.min.js"></script>
+				<!-- page end-->
+			</div>
+			<!-- /row -->
+		</section>
+		<!-- /wrapper -->
+	</section>
+	<!--main content end-->
+	<?php require('partial/main-footer.php'); ?>
+	</section>
+	<!-- js placed at the end of the document so the pages load faster -->
+	<script src="lib/jquery/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script class="include" type="text/javascript" src="lib/jquery.dcjqaccordion.2.7.js"></script>
+	<script src="lib/jquery.scrollTo.min.js"></script>
+	<script src="lib/jquery.nicescroll.js" type="text/javascript"></script>
+	<script type="text/javascript" language="javascript" src="lib/advanced-datatable/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="lib/advanced-datatable/js/DT_bootstrap.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/moment.min.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/calendar/daterangepicker-master/daterangepicker.js"></script>
+	<script src="<?php echo $this->baseUrl(); ?>/lib/sweetalert.min.js"></script>
 
-  
-  <!--common script for all pages-->
-  <script src="lib/common-scripts.js"></script>
-  <!--script for this page-->
-  <script type="text/javascript">
-	function getCari(){
-		var kata_kunci = document.getElementById('kata_kunci').value;
-		var perioddate = document.getElementById('perioddate').value;
-		
-		var url = "<?php echo $this->basePath; ?>/supplier/index";
-		var opt = {kata_kunci:kata_kunci, perioddate:perioddate};
-		
-		jQuery.get(url, opt, function(data) {
-			jQuery("#layoutnya").html(data);
-			//location.reload(true)
-		}); 
-	}
-	$("#frm_postdata").hide();
-	function hapusdata(kode_supplier){
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+
+	<!--common script for all pages-->
+	<script src="lib/common-scripts.js"></script>
+	<!--script for this page-->
+	<script type="text/javascript">
+		function getCari() {
+			var kata_kunci = document.getElementById('kata_kunci').value;
+			var perioddate = document.getElementById('perioddate').value;
+
+			var url = "<?php echo $this->basePath; ?>/supplier/index";
+			var opt = {
+				kata_kunci: kata_kunci,
+				perioddate: perioddate
+			};
+
+			jQuery.get(url, opt, function(data) {
+				jQuery("#layoutnya").html(data);
+				//location.reload(true)
+			});
+		}
+		$("#frm_postdata").hide();
+
+		function hapusdata(kode_supplier) {
 			var r = confirm("Anda yakin akan menghapus data ini ?");
 			if (r == true) {
-					var url = "<?php echo $this->basePath; ?>/supplier/hapusdata";
-					var opt = {kode_supplier:kode_supplier}
-					
-					jQuery.get(url,opt, function(data) {	
-						location.reload(true)
-						//jQuery("div#example1").html(data);
-						//jQuery("#page-content").html(data);
-					})
-					//open_url_to_div('<?php echo $this->baseUrl(); ?>/pengaduan/index');
-					//location.reload(true)
+				var url = "<?php echo $this->basePath; ?>/supplier/hapusdata";
+				var opt = {
+					kode_supplier: kode_supplier
+				}
+
+				jQuery.get(url, opt, function(data) {
+					location.reload(true)
+					//jQuery("div#example1").html(data);
+					//jQuery("#page-content").html(data);
+				})
+				//open_url_to_div('<?php echo $this->baseUrl(); ?>/pengaduan/index');
+				//location.reload(true)
 			} else {
 				close();
 			}
 		}
-	
-	function toXls(){
-		var proses = 'xls';
-		/* var n_dcr = document.getElementById('n_dcr').value;
-		var n_doc_number = document.getElementById('n_doc_number').value;
-		var e_title = document.getElementById('e_title').value; */
-		//alert ('sdasdas');
-		var modul = '<?php echo $this->basePath; ?>/supplier/dataxls';
-		windowOpens(modul);	
-	}
-	
-	$('#perioddate').daterangepicker({
-      autoUpdateInput: true,
-      "opens": "left",
-      locale: {
-        "format": "DD/MM/YYYY",
-        "separator": " - ",
-        "applyLabel": "Apply",
-        "cancelLabel": "Clear",
-        "firstDay": 1
-      }
-    });
 
-    $('#perioddate').on('cancel.daterangepicker', function(ev, picker) {
-      //do something, like clearing an input
-      $('#perioddate').val('');
-    });
-
-	
-	function payment(kode_supplier){
-		$("#frm_postdata").show();
-		$("#tambah").hide();
-				$(document).ready(function () {
-		setTimeout(() => {
-			$("#transferTD").hide();
-			$("#cashTD").hide();
-			$('#dataTables-empp').dataTable({
-			"bPaginate": true,
-			"bLengthChange": true,
-			"bFilter": true,
-			"bInfo": true,
-			"bAutoWidth": true});
-		}, 200)
-	});
+		function toXls() {
+			var proses = 'xls';
+			/* var n_dcr = document.getElementById('n_dcr').value;
+			var n_doc_number = document.getElementById('n_doc_number').value;
+			var e_title = document.getElementById('e_title').value; */
+			//alert ('sdasdas');
+			var modul = '<?php echo $this->basePath; ?>/supplier/dataxls';
+			windowOpens(modul);
+		}
 
 
 
-		var url = "<?php echo $this->baseUrl; ?>/supplier/detaildata";
-		var opt = {kode_supplier:kode_supplier};
-		jQuery.get(url,opt, function(data) { 
-			document.getElementById('frm_postdata').innerHTML = data;
-			document.getElementById('action').value="edit";
+		$('#perioddate').on('cancel.daterangepicker', function(ev, picker) {
+			//do something, like clearing an input
+			$('#perioddate').val('');
 		});
-  
-  }
 
 
-function payment1(){
-	var table = document.getElementById("dataTables-emp"), sisa_bayar = 0;
-		for(var t = 1; t < table.rows.length; t++)
-		{
-	// 	if ($('#chk')[t].is(':checked')) {
-	// 		sumHsl = sumHsl + Number(table.rows[t].cells[0].getElementsByTagName('input')[0].value);
+		function payment(kode_supplier) {
+			$("#frm_postdata").show();
+			$("#tambah").hide();
+			$(document).ready(function() {
 
-    //   }
-	var c=table.rows[t].cells[12].children[0].checked;
-	if (c==true){
-		var sisa_bayar1=table.rows[t].cells[9].innerHTML
-		sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
-		var sisa_bayar = sisa_bayar + Number(sisa_bayar2);
-	
+				setTimeout(() => {
+					$("#transferTD").hide();
+					$("#cashTD").hide();
+					$('#dataTables-emp').dataTable({
+						"bPaginate": true,
+						"bLengthChange": true,
+						"bFilter": true,
+						"bInfo": true,
+						"bAutoWidth": true
+					});
+					$('#tgl_pembayaran').datepicker({
+						dateFormat: 'yy-mm-dd',
+						changeMonth: true,
+						changeYear: true
+					});
 
-	}else{
-		sisa_bayar==sisa_bayar;
-	}
-//	console.log(c);
-	
- 
-	
+				}, 200)
+			});
+
+
+
+			var url = "<?php echo $this->baseUrl; ?>/supplier/detaildata";
+			var opt = {
+				kode_supplier: kode_supplier
+			};
+			jQuery.get(url, opt, function(data) {
+				document.getElementById('frm_postdata').innerHTML = data;
+				document.getElementById('action').value = "edit";
+			});
 
 		}
-		
-		 
-		var hasil=sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
-		 
-		 
-		document.getElementById("payment_checked").innerHTML="Rp. "+sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
-		//document.getElementById("hasil").innerHTML = "Sum Value = "+ sumHsl;
 
 
-}
-function toggle(source) {
-  var checkboxes = document.getElementsByName('checkfield');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
-  payment1();
-}
-	
+		function payment1() {
+			var table = document.getElementById("dataTables-emp"),
+				sisa_bayar = 0;
+			for (var t = 1; t < table.rows.length; t++) {
+				// 	if ($('#chk')[t].is(':checked')) {
+				// 		sumHsl = sumHsl + Number(table.rows[t].cells[0].getElementsByTagName('input')[0].value);
+
+				//   }
+				var c = table.rows[t].cells[12].children[0].checked;
+				if (c == true) {
+					var sisa_bayar1 = table.rows[t].cells[9].innerHTML
+					sisa_bayar2 = sisa_bayar1.replace(/[^\w\s]/gi, '');
+					var sisa_bayar = sisa_bayar + Number(sisa_bayar2);
+
+
+				} else {
+					sisa_bayar == sisa_bayar;
+				}
+				//	console.log(c);
 
 
 
-function bayar(){
-	var no_order=[];
-	var jml_bayar=[];
-	var sisa_bayar=[];
- 
-	var catatan=[];
-	var table = document.getElementById("dataTables-emp");
-	var akun_rek=$('#no_rek').val();
-	var akun_cash=$('#cash').val();
-	var akun_rek=$('#no_rek').val();
-	var akun_cash=$('#cash').val();
-	var tgl_pembayaran=$('#tgl_pembayaran').val();
-	var metode_bayar=$('#metode_bayar2').val();
+
+			}
 
 
-	if (tgl_pembayaran==''){
-		alert("tanggal pembayaran belum diisi");
+			var hasil = sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 
-	}else if ((akun_rek=="0") && (akun_cash=="0")){
 
-		alert("akun belum dipilih");
+			document.getElementById("payment_checked").innerHTML = "Rp. " + sisa_bayar.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+			//document.getElementById("hasil").innerHTML = "Sum Value = "+ sumHsl;
 
-	}else{
 
-	for(var t = 1; t < table.rows.length; t++)
-		{
-		 
- 
-			var c=table.rows[t].cells[12].children[0].checked;
-			if (c){
-				var sisa_bayar1=table.rows[t].cells[9].innerHTML;
-				var jml_bayar1=table.rows[t].cells[8].innerHTML;
-			 
-				var no_order1=table.rows[t].cells[1].innerHTML;
-				var catatan1=table.rows[t].cells[11].children[0].value;
+		}
 
-				sisa_bayar2=sisa_bayar1.replace(/[^\w\s]/gi, '');
-				jml_bayar2=jml_bayar1.replace(/[^\w\s]/gi, '');
-				//push to array
-				sisa_bayar.push(sisa_bayar2);
-				jml_bayar.push(jml_bayar2);
-				no_order.push(no_order1);
-			 
-				catatan.push(catatan1);	
-				//console.log(sisa_bayar1);
-				
+		function toggle(source) {
+			var checkboxes = document.getElementsByName('checkfield');
+			for (var i = 0, n = checkboxes.length; i < n; i++) {
+				checkboxes[i].checked = source.checked;
+			}
+			payment1();
+		}
+
+
+
+
+		function bayar() {
+			var no_order = [];
+			var jml_bayar = [];
+			var sisa_bayar = [];
+
+			var catatan = [];
+			var table = document.getElementById("dataTables-emp");
+			var akun_rek = $('#no_rek').val();
+			var akun_cash = $('#cash').val();
+			var akun_rek = $('#no_rek').val();
+			var akun_cash = $('#cash').val();
+			var tgl_pembayaran = $('#tgl_pembayaran').val();
+			var metode_bayar = $('#metode_bayar2').val();
+
+
+			if (tgl_pembayaran == '') {
+				alert("tanggal pembayaran belum diisi");
+
+			} else if ((akun_rek == "0") && (akun_cash == "0")) {
+
+				alert("akun belum dipilih");
+
+			} else {
+
+				for (var t = 1; t < table.rows.length; t++) {
+
+
+					var c = table.rows[t].cells[12].children[0].checked;
+					if (c) {
+						var sisa_bayar1 = table.rows[t].cells[9].innerHTML;
+						var jml_bayar1 = table.rows[t].cells[8].innerHTML;
+
+						var no_order1 = table.rows[t].cells[1].innerHTML;
+						var catatan1 = table.rows[t].cells[11].children[0].value;
+
+						sisa_bayar2 = sisa_bayar1.replace(/[^\w\s]/gi, '');
+						jml_bayar2 = jml_bayar1.replace(/[^\w\s]/gi, '');
+						//push to array
+						sisa_bayar.push(sisa_bayar2);
+						jml_bayar.push(jml_bayar2);
+						no_order.push(no_order1);
+
+						catatan.push(catatan1);
+						//console.log(sisa_bayar1);
+
+					}
+				}
+
+
+				var url = "<?php echo $this->basePath; ?>/supplier/bayar";
+				var opt = {
+					no_order: no_order,
+					tgl_pembayaran: tgl_pembayaran,
+					sisa_bayar: sisa_bayar,
+					jml_bayar: jml_bayar,
+					catatan: catatan,
+					akun_rek: akun_rek,
+					akun_cash: akun_cash,
+					metode_bayar: metode_bayar
+				}
+
+				jQuery.get(url, opt, function(data) {
+					swal({
+						title: 'Pembayaran sukses !',
+						text: 'Auto Close...',
+						icon: 'success',
+						timer: 4000,
+						showConfirmButton: false,
+					});
+
+
+
+					location.reload(true)
+				})
+			}
+
+		}
+
+		function metodebayar(nilai) {
+			var nilai = nilai.value;
+			if (nilai == 'Transfer') {
+				$("#transferTD").show();
+				$("#cashTD").hide();
+				$("#default").hide();
+				$("#cash").val("");
+
+			} else {
+				$("#transferTD").hide();
+				$("#cashTD").show();
+				$("#no_rek").val("");
+				$("#default").hide();
 			}
 		}
-	 
-
-var url = "<?php echo $this->basePath; ?>/supplier/bayar";
-var opt = {no_order:no_order,tgl_pembayaran:tgl_pembayaran,sisa_bayar:sisa_bayar,jml_bayar:jml_bayar,catatan:catatan,akun_rek:akun_rek,akun_cash:akun_cash,metode_bayar:metode_bayar}
-					
-jQuery.get(url,opt, function(data) {
-	swal({
-		 title: 'Pembayaran sukses !',
-		 text: 'Auto Close...',
-		  icon: 'success',
-				    timer: 4000,
-				    showConfirmButton: false,
-				});
-	
-
-
-location.reload(true)
-})
- 	}
-
-}
-
-function metodebayar(nilai){
-		var nilai = nilai.value;
-		if(nilai == 'Transfer'){
-			$("#transferTD").show();
-			$("#cashTD").hide();
-			$("#default").hide();
-			$("#cash").val("");
-			
-		} else {
-			$("#transferTD").hide();
-			$("#cashTD").show();
-			$("#no_rek").val("");
-			$("#default").hide();
-		}
-	}
- 
-
-
-  </script>
+	</script>
 </div>
 </body>
 

@@ -249,10 +249,7 @@ class PembayarancustomerController extends Zend_Controller_Action {
 		$total_bayar= str_replace(".", "", $total_bayar);
 		$sisa_hutang= str_replace(".", "", $sisa_hutang);
 
-		if ($sisa_hutang=="0"){
-			$id_akun="90";
-
-		}else{
+		 
 
 			if (($no_rek==0) || ($no_rek=="")){
 				$id_akun=$cash;
@@ -262,7 +259,7 @@ class PembayarancustomerController extends Zend_Controller_Action {
 	
 			}
 
-		}
+		
 
 	
 		

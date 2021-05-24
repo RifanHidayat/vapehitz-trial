@@ -188,8 +188,10 @@ public function bayarAction(){
 	$hasil = $this->Master_Service->bayar($no_order,$tgl_pembayaran,$sisa_bayar,$jml_bayar,$catatan,$akun,$metode_bayar);
 
 	if ($hasil == 'sukses') {
-		$this->view->pesan = 'Data Berhasil Dihapus';
+	
+		$this->view->pesan = 'Data Berhasil disimpan';
 		
+	
 	}
 	/* $this->indexAction();
 	$this->render('index'); */

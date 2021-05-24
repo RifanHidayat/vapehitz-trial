@@ -541,8 +541,6 @@ class Ordercentral_Service {
 	public function getRekening() {
         $registry = Zend_Registry::getInstance();
         $db = $registry->get('db');
- 
-
         try {
             $query ="select * FROM akun where type='Transfer' AND akun.type Not In ('None')  AND akun.id Not In ('23') Order by id Asc ";
             $result = $db->fetchAll($query);
@@ -582,4 +580,3 @@ class Ordercentral_Service {
     }
 	
 }
-?>

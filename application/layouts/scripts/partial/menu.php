@@ -1,4 +1,3 @@
-
 <!-- **********************************************************************************************************************************************************
         MAIN SIDEBAR MENU
         *********************************************************************************************************************************************************** -->
@@ -314,10 +313,10 @@
 							<?php }
 							} ?>
 							<!-- 	<?php if ($serialize_permission) {
-												if (in_array('viewRekening', $serialize_permission)) { ?>
+											if (in_array('viewRekening', $serialize_permission)) { ?>
 			  <li <?php if ($source == "rekening") echo "class='active'"; ?>><a href="rekening">Data Bank Pembayaran</a></li>
 			<?php }
-											} ?> -->
+										} ?> -->
 							<?php if ($serialize_permission) {
 								if (in_array('viewRasaLiquid', $serialize_permission)) { ?>
 									<li <?php if ($source == "rasaliquid") echo "class='active'"; ?>><a href="rasaliquid">Data Rasa Liquid</a></li>
@@ -385,22 +384,29 @@
 					</li>
 			<?php }
 			} ?>
-  <?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)OR 
-											   in_array('viewUsers', $serialize_permission)OR
-											   in_array('viewGntPassword', $serialize_permission))  {?>
-		  <li class="sub-menu">
-            <a href="javascript:;" <?php if($ket_menu == "Finance") echo "class='active'";?>>
-              <i class="fa fa-tasks"></i>
-              <span>Finance</span>
-              </a>
-            <ul class="sub">
-            	<?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)) { ?>
-              <li <?php if($source == "akun") echo "class='active'";?>><a href="akun">Akun</a></li>
-			<?php } } ?>
+			<?php if ($serialize_permission) {
+				if (
+					in_array('viewGroups', $serialize_permission) or
+					in_array('viewUsers', $serialize_permission) or
+					in_array('viewGntPassword', $serialize_permission)
+				) { ?>
+					<li class="sub-menu">
+						<a href="javascript:;" <?php if ($ket_menu == "Finance") echo "class='active'"; ?>>
+							<i class="fa fa-tasks"></i>
+							<span>Finance</span>
+						</a>
+						<ul class="sub">
+							<?php if ($serialize_permission) {
+								if (in_array('viewGroups', $serialize_permission)) { ?>
+									<li <?php if ($source == "akun") echo "class='active'"; ?>><a href="akun">Akun</a></li>
+							<?php }
+							} ?>
 
-			<?php if($serialize_permission) { if(in_array('viewGroups', $serialize_permission)) { ?>
-              <li <?php if($source == "cashincashout") echo "class='active'";?>><a href="cashincashout">Cash In  Cash Out</a></li>
-			<?php } } ?>
+							<?php if ($serialize_permission) {
+								if (in_array('viewGroups', $serialize_permission)) { ?>
+									<li <?php if ($source == "cashincashout") echo "class='active'"; ?>><a href="cashincashout">Cash In Cash Out</a></li>
+							<?php }
+							} ?>
 
 
 

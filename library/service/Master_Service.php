@@ -266,6 +266,7 @@ class Master_Service {
                  $db->insert('hutang',$insdata_piutang);
                  $db->insert('transaksi',$insdata_transaksi);
                  $db->insert('transaksi',$insdata_transaksi_hutang);
+                 $i = $i + 1;
             }
               
             
@@ -310,4 +311,3 @@ class Master_Service {
         }
         
 }
-?>

@@ -180,10 +180,10 @@
               <!-- <form @submit.prevent="submitForm" id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST" autocomplete="off"> -->
               <form @submit.prevent="submitForm" autocomplete="off">x
                 <input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage; ?>" class="inputbox2 narrowkey1"></input>
-               <?php $no_invoice_revisi=$this->no_invoice_revisi[0]['no_invoice_original'].'-Rev'.sprintf("%04s",$this->no_invoice_revisi[0]['jml']);?>
-              
-              	<input type="hidden" v-model="invoiceNumberRevisi"  name="no_invoice_revisi" id="no_invoice_revisi" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
-	              <input type="hidden" v-model="invoiceNumberOriginal"  name="no_invoice_original" id="no_invoice_original" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
+                <?php $no_invoice_revisi = $this->no_invoice_revisi[0]['no_invoice_original'] . '-Rev' . sprintf("%04s", $this->no_invoice_revisi[0]['jml']); ?>
+
+                <input type="hidden" v-model="invoiceNumberRevisi" name="no_invoice_revisi" id="no_invoice_revisi" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
+                <input type="hidden" v-model="invoiceNumberOriginal" name="no_invoice_original" id="no_invoice_original" size="6" maxlength="6" value="" class="inputbox2 narrowkey1"></input>
 
 
                 <?php
@@ -602,14 +602,15 @@
                                 if ($this->rek[$x]['no_akun'] == 0) {
                                   $cek_rek = $this->rek[$x]['nama_akun'];
                                 } else {
-                                  $cek_rek = $this->rek[$x]['nama_akun'] . ' - ' . $this->rek[$x]['no_akun'] . ' (' . $this->rek[$x]['nama_cabang_pembuka'] . ')';
+                                  $cek_rek = $this->rek[$x]['nama_akun'];
                                 }
 
 
                                 $id = $this->rek[$x]['id'];
-                              ?>
-                                <option value="<?php echo $id; ?>"><?php echo $cek_rek; ?></option>
-                              <?php } ?>
+                              ?>`
+                              <option value="<?php echo $id; ?>" <?php if ($this->rek[$x]['id'] == $this->data[0]['metode_penerimaan']) echo 'selected'; ?>><?php echo $cek_rek; ?></option>
+                            
+                            <?php } ?>
                             </select>
 
                           </td>
@@ -644,14 +645,13 @@
                                 if ($this->rek[$x]['no_akun'] == 0) {
                                   $cek_rek = $this->rek[$x]['nama_akun'];
                                 } else {
-                                  $cek_rek = $this->rek[$x]['nama_akun'] . ' - ' . $this->rek[$x]['no_akun'] . ' (' . $this->rek[$x]['nama_cabang_pembuka'] . ')';
+                                  $cek_rek = $this->rek[$x]['nama_akun'];
                                 }
 
-
-                              ?>
-
-                                <option value="<?php echo $id; ?>"><?php echo $cek_rek; ?></option>
-                              <?php } ?>
+                                $id = $this->rek[$x]['id'];
+                              ?>`
+                              <option value="<?php echo $id; ?>" <?php if ($this->rek[$x]['id'] == $this->data[0]['metode_penerimaan']) echo 'selected'; ?>><?php echo $cek_rek; ?></option>
+                            <?php } ?>
                             </select>
 
                           </td>
@@ -735,10 +735,10 @@
                     <button type="button" @click="revision" class="btn btn-success" :disabled="finalSelectedGoods.length < 1 || loading">
                       <span class="fa fa-save" value="revisi"></span> &nbsp;Revisi
                     </button>
-                    <button type="submit"  name="btnSubmit"  class="btn btn-theme03" :disabled="finalSelectedGoods.length < 1 || loading">
-                      <span class="fa fa-save" value="edit" ></span> &nbsp;Simpan
+                    <button type="submit" name="btnSubmit" class="btn btn-theme03" :disabled="finalSelectedGoods.length < 1 || loading">
+                      <span class="fa fa-save" value="edit"></span> &nbsp;Simpan
                     </button>
-                    
+
                   </div>
                   <!-- <pre><?= print_r($this->subsale) ?></pre> -->
                   <div v-if="loading" class="progress progress-striped active" style="margin-top: 30px; margin-bottom: 0; border-radius: 0;">
@@ -974,7 +974,7 @@
         </tr>
         `
   })
- 
+
 
 
   let app = new Vue({
@@ -1027,7 +1027,7 @@
         axios.post('<?= $this->baseUrl(); ?>/salecentral/tesresponse', {
             no_invoice: this.invoiceNumber,
             no_invoice_revisi: this.invoiceNumberRevisi,
-            no_invoice_original:this.invoiceNumberOriginal,
+            no_invoice_original: this.invoiceNumberOriginal,
             tgl_invoice: this.invoiceDate,
             kode_customer: this.customer.name,
             shipment: this.shipment,
@@ -1056,7 +1056,7 @@
             jenis_diskon: this.discountType,
             keranjang: this.finalSelectedGoods,
             seq: this.seq,
-            
+
             // sub_total_berat: this.totalWeight,
           })
           .then(function(response) {
@@ -1089,7 +1089,7 @@
         axios.post('<?= $this->baseUrl(); ?>/salecentral/tesresponserevision', {
             no_invoice: this.invoiceNumber,
             no_invoice_revisi: this.invoiceNumberRevisi,
-            no_invoice_original:this.invoiceNumberOriginal,
+            no_invoice_original: this.invoiceNumberOriginal,
             tgl_invoice: this.invoiceDate,
             kode_customer: this.customer.name,
             shipment: this.shipment,
@@ -1118,7 +1118,7 @@
             jenis_diskon: this.discountType,
             keranjang: this.finalSelectedGoods,
             seq: this.seq,
-            
+
             // sub_total_berat: this.totalWeight,
           })
           .then(function(response) {

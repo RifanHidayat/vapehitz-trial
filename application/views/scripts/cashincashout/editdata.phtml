@@ -1,185 +1,205 @@
-	
-
 	<form id="frm_postdata" name="frm_postdata" enctype="multipart/form-data" method="POST">
-	<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage;?>" class="inputbox2 narrowkey1"></input>
-		<?php 
-			$seq = $this->seq;
-			//var_dump($seq);
-			$seq += 1;
-			$seq2=str_pad($seq, 2, '0', STR_PAD_LEFT);
+		<input type="hidden" name="currentPage" id="currentPage" size="6" maxlength="6" value="<?php echo $this->numPage; ?>" class="inputbox2 narrowkey1"></input>
+		<?php
+		$seq = $this->seq;
+		//var_dump($seq);
+		$seq += 1;
+		$seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 		?>
-		<input type="hidden" id='seq' name='seq' value ='<?php echo $seq;?>'>
-		<input type="hidden" id='id' name='id' value ='<?php echo $this->data[0]['id_cashincashout'];?>'>
+		<input type="hidden" id='seq' name='seq' value='<?php echo $seq; ?>'>
+		<input type="hidden" id='id' name='id' value='<?php echo $this->data[0]['id_cashincashout']; ?>'>
 
-		<input type="hidden" id='id_transaksi' name='id_transaksi' value ='<?php echo $this->data[0]['id_transaksi'];?>'>
-
-
+		<input type="hidden" id='id_transaksi' name='id_transaksi' value='<?php echo $this->data[0]['id_transaksi']; ?>'>
 
 
-		<input type="hidden" id='action' name='action' value =''>
+
+
+		<input type="hidden" id='action' name='action' value=''>
 		<div class="panel">
-            <fieldset class="panel-dt">	
+			<fieldset class="panel-dt">
 				<h4 align="left"><u>Cash In Cash Out</u></h4>
 				<br>
-					<div class="col-sm-12">
+				<div class="col-sm-12">
 					<table width="100%">
-							<!-- baris judul -->
-							<tr>
-								<td width="10%"><font style="font-size:12px;font-weight:bold;">Tanggal Transaksi</font></td>	
-								<td> </td>
+						<!-- baris judul -->
+						<tr>
+							<td width="10%">
+								<font style="font-size:12px;font-weight:bold;">No In Out</font>
+							</td>
+							<td>&nbsp; &nbsp; &nbsp; &nbsp; </td>
 
-								 
-								<td width="14%" ><font style="font-size:12px;font-weight:bold;">In</font></td>
-								<td>&nbsp;  </td>
-								 
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Out</font></td>
-								<td>&nbsp;  </td>
-								<td width="14%"><font style="font-size:12px;font-weight:bold;">Nominal</font></td>
-								<td>&nbsp;  </td>
-								 
-								<td width="18%"><font style="font-size:12px;font-weight:bold;">Catatan</font></td>
-								<td>&nbsp;  </td>
-								 
 
- 
-							 
-								<td width="14%"></td>
-							</tr> 
+							<td width="10%">
+								<font style="font-size:12px;font-weight:bold;">Tanggal Transaksi</font>
+							</td>
+							<td> </td>
+
+
+							<td width="14%">
+								<font style="font-size:12px;font-weight:bold;">In</font>
+							</td>
+							<td>&nbsp; </td>
+
+							<td width="14%">
+								<font style="font-size:12px;font-weight:bold;">Out</font>
+							</td>
+							<td>&nbsp; </td>
+							<td width="14%">
+								<font style="font-size:12px;font-weight:bold;">Nominal</font>
+							</td>
+							<td>&nbsp; </td>
+
+							<td width="18%">
+								<font style="font-size:12px;font-weight:bold;">Catatan</font>
+							</td>
+							<td>&nbsp; </td>
+
+
+
+
+							<td width="14%"></td>
+						</tr>
 						<!-- 	Baris input -->
 
-							<tr>
-								<td width="14%"> 
-								
-											<input name="tgl_transaksi" value="<?php echo $this->data[0]['tgl_cashincashout'] ?>" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value=""> 
-											<span class="input-group-btn add-on">
-											<button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
-											</span>
-										
-								</td>
-						 
-								 <td width="4%"> </td>
-								 
-								<td width="16%">
-									<select id="akun_in" name="akun_in" class="form-control select_group product" style="width: 100%" onchange="getSelectValueIn()">
-                        			<option value="">--Akun In--</option>
-                        			<?php  
-                          			for($x=0; $x<count($this->akun); $x++){ 
-                          			$nama_akun = $this->akun[$x]['nama_akun'];
-                          		 
-                          			$id = $this->akun[$x]['id'];
-                          			if ($no_akun==0){
-												$sumber_dana=$nama_akun; 
-										}else{
-												$sumber_dana=$nama_akun ; 
+						<tr>
+
+							<td width="16%"> <input name="no_inout" id="no_inout" type="text" maxlength="50" size="20" class="form-control input-sm" value="<?php echo $this->data[0]['no_inout'] ?>" readonly> </td>
+
+							<td>&nbsp; &nbsp; &nbsp; &nbsp; </td>
+							<td width="14%">
+
+								<input name="tgl_transaksi" value="<?php echo $this->data[0]['tgl_cashincashout'] ?>" id="tgl_transaksi" type="text" maxlength="50" size="20" class="form-control" value="" autocomplete='off'>
+								<span class="input-group-btn add-on">
+									<button class="btn btn-theme" type="button"><i class="fa fa-calendar"></i></button>
+								</span>
+
+							</td>
+
+							<td width="4%"> </td>
+
+							<td width="16%">
+								<select id="akun_in" name="akun_in" class="form-control select_group product" style="width: 100%" onchange="getSelectValueIn()">
+									<option value="">--Akun In--</option>
+									<?php
+									for ($x = 0; $x < count($this->akun); $x++) {
+										$nama_akun = $this->akun[$x]['nama_akun'];
+
+										$id = $this->akun[$x]['id'];
+										if ($no_akun == 0) {
+											$sumber_dana = $nama_akun;
+										} else {
+											$sumber_dana = $nama_akun;
 										}
-                          		
-                        		?>
-                        			<option value="<?php echo $id.','.$nama_akun ?>"><?php echo $sumber_dana;?></option>
-                       			 <?php } ?>
-                       			</select>
 
 
-								</td>
-								<td>&nbsp;  </td>
-								<td width="20%"hidden >
-									<input name="nama_akun_in" id="nama_akun_in" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
-								</td>
-								<td hidden>&nbsp;  </td>
-								<td width="20%" hidden >
-									<input name="id_akun_in" id="id_akun_in" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
-								</td>
-								<td hidden>&nbsp;  </td>
-								 
-								<td width="16%" >
-									<select id="akun_out" name="akun_out" class="form-control select_group product" style="width: 100%" onchange="getSelectValueOut()">
-                        			<option value="">--Akun Out--</option>
-                        			<?php  
-                          			for($x=0; $x<count($this->akun); $x++){ 
-                          			$nama_akun = $this->akun[$x]['nama_akun'];
-                          	 
-                          			$id = $this->akun[$x]['id'];
-                          			if ($no_akun==0){
-												$sumber_dana=$nama_akun; 
-										}else{
-												$sumber_dana=$nama_akun ; 
+									?>
+
+										<option value="<?php echo $id . ',' . $nama_akun ?>" ?><?php echo $sumber_dana; ?></option>
+
+									<?php } ?>
+								</select>
+
+
+
+							</td>
+							<td>&nbsp; </td>
+							<td width="20%" hidden>
+								<input name="nama_akun_in" id="nama_akun_in" type="text" maxlength="30" size="30" class="form-control input-sm" value="">
+							</td>
+							<td hidden>&nbsp; </td>
+							<td width="20%" hidden>
+								<input name="id_akun_in" id="id_akun_in" type="text" maxlength="30" size="30" class="form-control input-sm" value="">
+							</td>
+							<td hidden>&nbsp; </td>
+
+							<td width="16%">
+								<select id="akun_out" name="akun_out" class="form-control select_group product" style="width: 100%" onchange="getSelectValueOut()">
+									<option value="">--Akun Out--</option>
+									<?php
+									for ($x = 0; $x < count($this->akun); $x++) {
+										$nama_akun = $this->akun[$x]['nama_akun'];
+
+										$id = $this->akun[$x]['id'];
+										if ($no_akun == 0) {
+											$sumber_dana = $nama_akun;
+										} else {
+											$sumber_dana = $nama_akun;
 										}
-                          		
-                        		?>
-                        			<option value="<?php echo $id.','.$nama_akun ?>"><?php echo $sumber_dana;?></option>
-                       			 <?php } ?>
-                       			</select>
+
+										//$id = $this->rek[$x]['id'];
+									?>
+										<option value="<?php echo $id . ',' . $nama_akun ?>" ?><?php echo $sumber_dana; ?></option>
+
+									<?php } ?>
+								</select>
 
 
-								</td>
-								<td>&nbsp;  </td>
-								<td width="20%" hidden >
-									<input name="nama_akun_out" id="nama_akun_out" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
-								</td>
-								<td hidden>&nbsp;  </td>
-								<td width="20%" hidden >
-									<input name="id_akun_out" id="id_akun_out" type="text" maxlength="30" size="30" class="form-control input-sm" value=""> 
-								</td>
-								<td hidden>&nbsp;  </td>
-								 
-
-								<td width="16%"> 
-									<input name="nominal" value="<?php echo number_format($this->data[0]['nominal'],0,",",".")?>" id="nominal" type="text" maxlength="30" size="30" class="form-control input-sm" placeholder="0"  onkeyup='masking("nominal")'> 
-
-								</td>
-								<td>&nbsp;  </td>
-
-								
-						 
-						 
-
-								<td width="20%">
-									<input name="catatan" id="catatan" type="text" maxlength="30" size="30" class="form-control input-sm" value="<?php echo $this->data[0]['catatan'] ?>"> 
-								</td>
-								<td>&nbsp;  </td>
-								 
-							</tr> 
-								<tr>
-								<td width="10%">&nbsp; <label id="tgl_transaksi-error" for="nama_akun" class="error"></font></td>
-								<td> &nbsp;</td>
-
-								<td width="14%">&nbsp; <label id="akun_in-error" for="nama_akun" class="error"></td>
-								<td> &nbsp;</td>
-								<td width="14%">&nbsp; <label id="akun_out-error" for="nama_akun" class="error"></td>
-								<td> &nbsp;</td>
-
-   
-								<td width="14%">&nbsp; <label id="nominal-error" for="nominal" class="error"></td>
-								<td> &nbsp;</td>
-								<td width="18%">&nbsp; <label id="catatan-error" for="catatan" class="error"></td>
-								<td> &nbsp;</td>
-								 
-								 	
-							</tr> 
+							</td>
+							<td>&nbsp; </td>
+							<td width="20%" hidden>
+								<input name="nama_akun_out" id="nama_akun_out" type="text" maxlength="30" size="30" class="form-control input-sm" value="">
+							</td>
+							<td hidden>&nbsp; </td>
+							<td width="20%" hidden>
+								<input name="id_akun_out" id="id_akun_out" type="text" maxlength="30" size="30" class="form-control input-sm" value="">
+							</td>
+							<td hidden>&nbsp; </td>
 
 
-							
-						</table>
-					</div>
+							<td width="16%">
+								<input name="nominal" value="<?php echo number_format($this->data[0]['nominal'], 0, ",", ".") ?>" id="nominal" type="text" maxlength="30" size="30" class="form-control input-sm" placeholder="0" onkeyup='masking("nominal")'>
+
+							</td>
+							<td>&nbsp; </td>
+							<td width="20%">
+								<input name="catatan" id="catatan" type="text" maxlength="30" size="30" class="form-control input-sm" value="<?php echo $this->data[0]['catatan'] ?>">
+							</td>
+							<td>&nbsp; </td>
+
+						</tr>
+						<tr>
+							<td width="10%">&nbsp; <label id="tgl_transaksi-error" for="nama_akun" class="error"></font>
+							</td>
+							<td> &nbsp;</td>
+							<td width="14%">&nbsp; <label id="akun_in-error" for="nama_akun" class="error"></td>
+							<td> &nbsp;</td>
+							<td width="14%">&nbsp; <label id="akun_out-error" for="nama_akun" class="error"></td>
+							<td> &nbsp;</td>
+							<td width="14%">&nbsp; <label id="nominal-error" for="nominal" class="error"></td>
+							<td> &nbsp;</td>
+							<td width="18%">&nbsp; <label id="catatan-error" for="catatan" class="error"></td>
+							<td> &nbsp;</td>
+						</tr>
+					</table>
+				</div>
 				<div class="col-lg-12">
 					<div class="form-group form-group-bottom" align="right">
-						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses?>">	
+						<input type="hidden" id="proses" name="proses" value="<?php echo $this->proses ?>">
 						<br><br>
-							<a href="cashincashout">
+						<a href="cashincashout">
 							<button type="button" class="btn btn-theme02">
 								<span class="fa fa-backward"></span> &nbsp;Kembali
 							</button></a>
-							<button type="button" class="btn btn-theme03" onCLick="PostData()">
-								<span class="fa fa-save"></span> &nbsp;Simpan
-							</button>
+						<button type="button" class="btn btn-theme03" onCLick="PostData()">
+							<span class="fa fa-save"></span> &nbsp;Simpan
+						</button>
 					</div>
 				</div>
 			</fieldset>
 		</div>
-	</form>	
+	</form>
 
-<script type="text/javascript">
-	console.log("tes");
-</script>
-  
+	<script type="text/javascript">
+		$(document).ready(function() {
+			setTimeout(() => {
+
+				$('#tgl_transaksi').datepicker({
+					dateFormat: 'yy-mm-dd',
+					changeMonth: true,
+					changeYear: true
+				});
+			}, 200)
 
 
+		});
+	</script>

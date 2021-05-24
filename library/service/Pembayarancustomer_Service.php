@@ -301,6 +301,8 @@ class Pembayarancustomer_Service {
 					     "id_table" => $data['no_invoice'],
 					     "id_akun" => $data['no_rek']);
 		
+		 
+		
 		$insdata_transaksi_pitang= array(
 							"deskripsi" => "Transaksi pembayaran piutang \n".$data['no_invoice'],
 							"tgl_transaksi" => $data['tgl_pembayaran'],
@@ -314,6 +316,8 @@ class Pembayarancustomer_Service {
 		
 		$db->insert('piutang',$insdata2);
 		$db->insert('transaksi',$insdata_transaksi);
+		$db->insert('transaksi',$insdata_transaksi_pitang);
+		
 		
 		
 		$db->commit();
