@@ -92,7 +92,7 @@
                           <td><?= $sale['keterangan'] ?></td>
                           <td class="text-center"><?= $sale['qty'] ?></td>
                           <td class="text-right"><?= number_format($sale['harga_jual'], 0, ',', '.') ?></td>
-                          <td class="text-right"><?= number_format($sale['sub_total_barang'], 0, ',', '.') ?></td>
+                          <td class="text-right"><?= number_format($sale['sub_total'], 0, ',', '.') ?></td>
                         </tr>
                       <?php endforeach; ?>
                     </tbody>
@@ -130,6 +130,7 @@
   <script>
     $('#sales-by-customer-detail-table').DataTable({
       order: false,
+      paging: false,
       rowGroup: {
         endRender: function(rows, group) {
           // return group +' ('+rows.count()+')';
