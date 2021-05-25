@@ -105,6 +105,7 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 							$type 	= $this->data[$x]['type_transaksi'];
 							$id 	= $this->data[$x]['id_akun'];
 							$deskripsi 	= $this->data[$x]['deskripsi'];
+							$link 	= $this->data[$x]['url'];
 
 							if ($type == "Cash In") {
 								$saldo += $nominal;
@@ -129,8 +130,13 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 							<td align="center"><?php echo $nomer; ?></td>
 							<td align="center"><?php echo $tgl_transaksi; ?></td>
 							<td align="center"><?php echo $type; ?></td>
-							<td><?php echo $deskripsi ?></td>
-							<!-- <td><a onclick="open_url_to_div('/ordercentral/detail?id=PO/VH/080321/00001')"><?php echo $deskripsi ?></a></td> -->
+							<!-- <td><?php echo $deskripsi ?></td> -->
+							<td><?php if ($link == '') {
+									echo $deskripsi;
+								} else { ?>
+									<a href="#" onclick="<?php echo $link ?>"><?php echo $deskripsi ?></a>
+								<?php } ?>
+
 							<td><?php echo $catatan ?></td>
 							<td><?php echo $cashin ?></td>
 							<td><?php echo  $cashout ?></td>

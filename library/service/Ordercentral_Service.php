@@ -181,9 +181,6 @@ class Ordercentral_Service
             $db->beginTransaction();
 
 
-
-
-
             if ($data['jml_bayar_dp'] == "0") {
                 $insdata_transaksi = array(
                     "deskripsi" => "Transaksi Hutang \n" . $data['no_order'],
@@ -193,10 +190,9 @@ class Ordercentral_Service
                     "nama_table" => "ordercentral",
                     "id_table" => $data['no_order'],
                     "id_table_original" => $data['no_order'],
-                    "id_akun" => $data['no_rek']
+                    "id_akun" => $data['no_rek'],
+                    "url" => "open_url_to_div('/ordercentral/detail?id=" . $data['no_order'] . "')"
                 );
-
-
 
                 $insdata = array(
                     "kode_supplier" => $data['kode_supplier'],
@@ -213,7 +209,8 @@ class Ordercentral_Service
                     "metode_bayar" => "-",
                     'user_id' => '-',
                     "tgl_entry" => "0000-00-00 00:00:00",
-                    "no_rekening" => $data['no_rek']
+                    "no_rekening" => $data['no_rek'],
+
                 );
             } else {
                 $insdata_transaksi = array(
@@ -224,7 +221,8 @@ class Ordercentral_Service
                     "nama_table" => "ordercentral",
                     "id_table" => $data['no_order'],
                     "id_table_original" => $data['no_order'],
-                    "id_akun" => $data['no_rek']
+                    "id_akun" => $data['no_rek'],
+                    "url" => "open_url_to_div('/ordercentral/detail?id=" . $data['no_order'] . "')"
                 );
 
 
@@ -256,7 +254,8 @@ class Ordercentral_Service
                 "nama_table" => "ordercentral",
                 "id_table" => 'biaya_kirim_' . $data['no_order'],
                 "id_table_original" => 'biaya_kirim_' . $data['no_order'],
-                "id_akun" => "23"
+                "id_akun" => "23",
+                "url" => "open_url_to_div('/ordercentral/detail?id=" . $data['no_order'] . "')"
             );
 
 

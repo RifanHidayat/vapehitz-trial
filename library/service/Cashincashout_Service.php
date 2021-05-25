@@ -97,7 +97,7 @@ class Cashincashout_Service
         $db = $registry->get('db');
 
         try {
-            $query = "SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout  order by tgl_cashincashout ASC";
+            $query = "SELECT *,tb_cashincashout.id as id_cashincashout FROM tb_cashincashout  order by tgl_cashincashout DESC";
             $result = $db->fetchAll($query);
             return $result;
         } catch (Exception $e) {

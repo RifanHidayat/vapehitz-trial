@@ -682,7 +682,8 @@ class Salecentral_Service
 				"nama_table" => "salecentral",
 				"id_table" => $no_invoice,
 				"id_table_original" => $data['no_invoice_original'],
-				"id_akun" => $data['metode_penerimaan']
+				"id_akun" => $data['metode_penerimaan'],
+				"url" => "open_url_to_div('/salecentral/detail?id=" . $no_invoice . "')"
 			);
 
 			$insdata_transaksi2 = array(
@@ -693,7 +694,8 @@ class Salecentral_Service
 				"nama_table" => "salecentral",
 				"id_table" => $no_invoice,
 				"id_table_original" => $data['no_invoice_original'],
-				"id_akun" => $data['metode_penerimaan2']
+				"id_akun" => $data['metode_penerimaan2'],
+				"url" => "open_url_to_div('/salecentral/detail?id=" . $no_invoice . "')",
 			);
 
 
@@ -706,7 +708,8 @@ class Salecentral_Service
 				"nama_table" => "biayakirim_salecentral",
 				"id_table" => $no_invoice,
 				"id_table_original" => $data['no_invoice_original'],
-				"id_akun" => "23"
+				"id_akun" => "23",
+				"url" => "open_url_to_div('/salecentral/detail?id=" . $no_invoice . "')"
 			);
 
 
@@ -721,7 +724,8 @@ class Salecentral_Service
 					"nama_table" => "biayakirim_salecentral",
 					"id_table" => $no_invoice,
 					"id_table_original" => $data['no_invoice_original'],
-					"id_akun" => "90"
+					"id_akun" => "90",
+					"url" => "open_url_to_div('/salecentral/detail?id=" . $no_invoice . "')"
 				);
 				$db->insert('transaksi', $insdata_transaksi_piutang);
 			}

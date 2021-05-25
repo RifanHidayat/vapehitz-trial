@@ -117,7 +117,7 @@ class AkunController extends Zend_Controller_Action
 			$id = $_REQUEST['id'];
 		}
 
-		$this->view->data = $this->Akun_Service->getDataLiquid($id);
+		$this->view->data = $this->Akun_Service->getDataEdit($id);
 
 		$this->view->Akun_Service = $this->Akun_Service;
 	}

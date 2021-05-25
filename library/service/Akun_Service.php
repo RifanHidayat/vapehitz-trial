@@ -118,8 +118,26 @@ class Akun_Service
         try {
 
             $query = "SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,transaksi.type as type_transaksi,akun.type as type_akun from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id'   order by transaksi.id ASC";
+            // $query = "SELECT * from akun where id = '$id'";
             $result = $db->fetchAll($query);
-            //$query = "SELECT * from akun where id = '$id'";
+            // $query = "SELECT * from akun where id = '$id'";
+            return $result;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br>';
+            return $e->getMessage(); //'Data tidak ada <br>';
+        }
+    }
+    public function getDataEdit($id)
+    {
+        $registry = Zend_Registry::getInstance();
+        $db = $registry->get('db');
+
+        try {
+
+            // $query = "SELECT *,transaksi.id as id_transaksi,akun.id as id_akun,transaksi.type as type_transaksi,akun.type as type_akun from transaksi  JOIN akun on akun.id=transaksi.id_akun where transaksi.id_akun = '$id'   order by transaksi.id ASC";
+            $query = "SELECT * from akun where id = '$id'";
+            $result = $db->fetchAll($query);
+            $query = "SELECT * from akun where id = '$id'";
             return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
