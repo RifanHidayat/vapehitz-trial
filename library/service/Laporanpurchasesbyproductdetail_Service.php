@@ -22,15 +22,22 @@ class Laporanpurchasesbyproductdetail_Service
     $db = $registry->get('db');
 
     try {
-      $query = "SELECT sub_ordercentral.sub_total, sub_ordercentral.kode_barang, liquid.nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, supplier.nama_supplier, sub_ordercentral.no_order FROM sub_ordercentral INNER JOIN liquid ON sub_ordercentral.kode_barang = liquid.kode_barang INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
+      $query = "SELECT sub_ordercentral.kode_barang, liquid.nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, sub_ordercentral.sub_total, supplier.nama_supplier, supplier.kode_supplier, ordercentral.biaya_kirim, sub_ordercentral.no_order, ordercentral.keterangan, ordercentral.diskon, ordercentral.jenis_diskon , ordercentral.total, ordercentral.net_total FROM sub_ordercentral INNER JOIN liquid ON sub_ordercentral.kode_barang = liquid.kode_barang INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
       $result = $db->fetchAll($query);
-      $query2 = "SELECT sub_ordercentral.sub_total, sub_ordercentral.kode_barang, accessories.nama_aksesoris AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, supplier.nama_supplier, sub_ordercentral.no_order FROM sub_ordercentral INNER JOIN accessories ON sub_ordercentral.kode_barang = accessories.kode_aksesoris INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
+      $query2 = "SELECT sub_ordercentral.kode_barang, accessories.nama_aksesoris AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, sub_ordercentral.sub_total, supplier.nama_supplier, supplier.kode_supplier, ordercentral.biaya_kirim, sub_ordercentral.no_order, ordercentral.keterangan, ordercentral.diskon, ordercentral.jenis_diskon , ordercentral.total, ordercentral.net_total FROM sub_ordercentral INNER JOIN accessories ON sub_ordercentral.kode_barang = accessories.kode_aksesoris INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
       $result2 = $db->fetchAll($query2);
-      $query3 = "SELECT sub_ordercentral.sub_total, sub_ordercentral.kode_barang, atomizer.nama_atomizer AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, supplier.nama_supplier, sub_ordercentral.no_order FROM sub_ordercentral INNER JOIN atomizer ON sub_ordercentral.kode_barang = atomizer.kode_atomizer INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
+      $query3 = "SELECT sub_ordercentral.kode_barang, atomizer.nama_atomizer AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, sub_ordercentral.sub_total, supplier.nama_supplier, supplier.kode_supplier, ordercentral.biaya_kirim, sub_ordercentral.no_order, ordercentral.keterangan, ordercentral.diskon, ordercentral.jenis_diskon , ordercentral.total, ordercentral.net_total FROM sub_ordercentral INNER JOIN atomizer ON sub_ordercentral.kode_barang = atomizer.kode_atomizer INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
       $result3 = $db->fetchAll($query3);
-      $query4 = "SELECT sub_ordercentral.sub_total, sub_ordercentral.kode_barang, device.nama_device AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, supplier.nama_supplier, sub_ordercentral.no_order FROM sub_ordercentral INNER JOIN device ON sub_ordercentral.kode_barang = device.kode_device INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
+      $query4 = "SELECT sub_ordercentral.kode_barang, device.nama_device AS nama_barang, sub_ordercentral.harga_beli, sub_ordercentral.qty, ordercentral.tgl_order, sub_ordercentral.sub_total, supplier.nama_supplier, supplier.kode_supplier, ordercentral.biaya_kirim, sub_ordercentral.no_order, ordercentral.keterangan, ordercentral.diskon, ordercentral.jenis_diskon , ordercentral.total, ordercentral.net_total FROM sub_ordercentral INNER JOIN device ON sub_ordercentral.kode_barang = device.kode_device INNER JOIN ordercentral ON sub_ordercentral.no_order = ordercentral.no_order INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
       $result4 = $db->fetchAll($query4);
-      return array_merge($result, $result2, $result3, $result4);
+      // return array_merge($result, $result2, $result3, $result4);
+
+      $finalResult =  array_merge($result, $result2, $result3, $result4);
+      usort($finalResult, function ($a, $b) {
+        return $a['kode_barang'] <=> $b['kode_barang'];
+      });
+
+      return $finalResult;
 
       // $query = "SELECT supplier.nama_supplier, tgl_order, no_order, sub_total, diskon, jenis_diskon, total_biaya FROM ordercentral INNER JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier";
       // $result = $db->fetchAll($query);

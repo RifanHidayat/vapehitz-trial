@@ -32,7 +32,7 @@ ob_start();
     <table>
       <thead style="background-color: #4ECDC4; color: #fff;">
         <tr>
-  
+
           <td>Customer</td>
           <td>Total</td>
         </tr>
@@ -43,7 +43,7 @@ ob_start();
         <?php foreach ($this->totalSales as $sale) : ?>
           <tr>
 
-            <td><?= $sale['nama_barang'] ?></td>
+            <td><?= $sale['nama_customer'] ?></td>
             <td style="text-align: right;"><?= number_format($sale['total'], 0, ',', '.') ?></td>
           </tr>
           <?php $no++; ?>
@@ -51,10 +51,10 @@ ob_start();
         <?php endforeach; ?>
       </tbody>
       <tfoot>
-          <tr>
-            <td>Total</td>
-            <td style="text-align: right;"><?= number_format($total, 0, ',', '.') ?></td>
-          </tr>
+        <tr>
+          <td>Total</td>
+          <td style="text-align: right;"><?= number_format($total, 0, ',', '.') ?></td>
+        </tr>
       </tfoot>
     </table>
   </div>

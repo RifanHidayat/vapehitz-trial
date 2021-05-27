@@ -7,16 +7,18 @@ $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 $sheet->setCellValue('A1', 'Customer');
 $sheet->setCellValue('B1', 'No.');
-$sheet->setCellValue('C1', 'Product');
-$sheet->setCellValue('D1', 'Date');
-$sheet->setCellValue('E1', 'Description');
-$sheet->setCellValue('F1', 'Qty');
-$sheet->setCellValue('G1', 'Price');
-$sheet->setCellValue('H1', 'Amount');
+$sheet->setCellValue('C1', 'Created By');
+$sheet->setCellValue('D1', 'Product');
+$sheet->setCellValue('E1', 'Date');
+$sheet->setCellValue('F1', 'Description');
+$sheet->setCellValue('G1', 'Qty');
+$sheet->setCellValue('H1', 'Price');
+$sheet->setCellValue('I1', 'Amount');
 
 $index = 0;
 $totalForCustomer = 0;
 $rowNum = 2;
+$grandTotal = 0;
 
 foreach ($this->salesDetail as $sale) {
   if ($index > 0) {
@@ -32,25 +34,27 @@ foreach ($this->salesDetail as $sale) {
   if ($index > 0) {
     if ($sale['no_invoice'] !== $this->salesDetail[$index - 1]['no_invoice']) {
       $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
+      $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
     } else {
       $sheet->setCellValue('B' . $rowNum, '');
     }
   } else {
     $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
+    $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
   }
 
-  $sheet->setCellValue('C' . $rowNum, $sale['nama_barang']);
-  $sheet->setCellValue('D' . $rowNum, date_format(date_create($sale['tgl_invoice']), "d-m-Y"));
-  $sheet->setCellValue('E' . $rowNum, $sale['keterangan']);
-  $sheet->setCellValue('F' . $rowNum, $sale['qty']);
-  $sheet->setCellValue('G' . $rowNum, $sale['harga_jual']);
-
-  $spreadsheet->getActiveSheet()->getStyle('G' . $rowNum)->getNumberFormat()
-    ->setFormatCode('#,##0.00');
-
-  $sheet->setCellValue('H' . $rowNum, $sale['sub_total']);
+  $sheet->setCellValue('D' . $rowNum, $sale['nama_barang']);
+  $sheet->setCellValue('E' . $rowNum, date_format(date_create($sale['tgl_invoice']), "d-m-Y"));
+  $sheet->setCellValue('F' . $rowNum, $sale['keterangan']);
+  $sheet->setCellValue('G' . $rowNum, $sale['qty']);
+  $sheet->setCellValue('H' . $rowNum, $sale['harga_jual']);
 
   $spreadsheet->getActiveSheet()->getStyle('H' . $rowNum)->getNumberFormat()
+    ->setFormatCode('#,##0.00');
+
+  $sheet->setCellValue('I' . $rowNum, $sale['sub_total']);
+
+  $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
     ->setFormatCode('#,##0.00');
 
   $rowNum++;
@@ -70,7 +74,7 @@ foreach ($this->salesDetail as $sale) {
       $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
         ->setFormatCode('#,##0.00');
 
-      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:H$rowNum");
+      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
 
       $rowNum++;
 
@@ -80,7 +84,7 @@ foreach ($this->salesDetail as $sale) {
       $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
         ->setFormatCode('#,##0.00');
 
-      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:H$rowNum");
+      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
 
       $totalForCustomer += $sale['salecentral_sub_total'];
     }
@@ -97,7 +101,7 @@ foreach ($this->salesDetail as $sale) {
     $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
       ->setFormatCode('#,##0.00');
 
-    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:H$rowNum");
+    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
 
     $rowNum++;
 
@@ -107,13 +111,14 @@ foreach ($this->salesDetail as $sale) {
     $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
       ->setFormatCode('#,##0.00');
 
-    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:H$rowNum");
+    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
 
     $totalForCustomer += $sale['salecentral_sub_total'];
 
     $rowNum++;
   }
 
+  $grandTotal += $totalForCustomer;
 
   if ($index < count($this->salesDetail) - 1) {
     if ($sale['nama_customer'] !== $this->salesDetail[$index + 1]['nama_customer']) {
@@ -123,7 +128,7 @@ foreach ($this->salesDetail as $sale) {
       $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
         ->setFormatCode('#,##0.00');
 
-      $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:H$rowNum");
+      $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
 
       $totalForCustomer = 0;
     }
@@ -134,7 +139,7 @@ foreach ($this->salesDetail as $sale) {
     $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
       ->setFormatCode('#,##0.00');
 
-    $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:H$rowNum");
+    $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
 
     $totalForCustomer = 0;
   }
@@ -143,29 +148,36 @@ foreach ($this->salesDetail as $sale) {
   $index++;
 }
 
-$styleArray = array(
-  'borders' => array(
-      'top' => array(
-          'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-      ),
-      'bottom' => array(
-          'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-      ),
-      'right' => array(
-          'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-      ),
-      'left' => array(
-          'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-      ),
-      
-  ),
-);
+$sheet->setCellValue('A' . $rowNum, 'TOTAL');
+$sheet->setCellValue('I' . $rowNum, $grandTotal);
 
-$borderRange = "A1:H" . ($rowNum - 1);
+$spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
+  ->setFormatCode('#,##0.00');
 
-$sheet = $sheet->getStyle($borderRange)->applyFromArray($styleArray);
+// $styleArray = array(
+//   'borders' => array(
+//     'top' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'bottom' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'right' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'left' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+
+//   ),
+// );
+
+// $borderRange = "A1:H" . ($rowNum - 1);
+
+// $sheet = $sheet->getStyle($borderRange)->applyFromArray($styleArray);
 
 $writer = new Xlsx($spreadsheet);
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment; filename="salesbycustomerdetail.xlsx"');
 $writer->save("php://output");
+// $writer->save('salesbycustomerdetail.xlsx');

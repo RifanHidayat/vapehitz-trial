@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '5df95e926f2d854804e80a353a3491629033238b',
+    'reference' => '99c94858a3aa9a55fd4c21ce135635942e7709d3',
     'name' => '__root__',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '5df95e926f2d854804e80a353a3491629033238b',
+      'reference' => '99c94858a3aa9a55fd4c21ce135635942e7709d3',
     ),
     'ezyang/htmlpurifier' => 
     array (
@@ -415,7 +415,6 @@ self::$canGetVendors = method_exists('Composer\Autoload\ClassLoader', 'getRegist
 $installed = array();
 
 if (self::$canGetVendors) {
-
 foreach (ClassLoader::getRegisteredLoaders() as $vendorDir => $loader) {
 if (isset(self::$installedByVendor[$vendorDir])) {
 $installed[] = self::$installedByVendor[$vendorDir];
