@@ -49,9 +49,9 @@
               <div id="page-content">
                 <div class="col-lg-12">
                   <div class="panel">
-                    <div class="alert alert-danger">
+                    <!-- <div class="alert alert-danger">
                       !!!Discount not included!!!
-                    </div>
+                    </div> -->
                     <div class="panel-body">
                       <form class="form-horizontal">
                         <div class="form-group">
@@ -65,10 +65,19 @@
                             <button type="submit" class="btn btn-default">Terapkan</button>
                           </div>
                         </div>
+                        <div class="form-group">
+                          <label for="inputEmail3" class="col-sm-2 control-label">Export As</label>
+                          <div class="col-sm-10">
+                            <!-- <a href="/laporansalesbycustomerdetail/print" target="_blank" class="btn btn-danger">PDF</a> -->
+                            <a href="/laporansalesbyproductdetail/print" target="_blank" class="btn btn-danger btn-pdf">Print</a>
+                            <button class="btn btn-success">Xlsx</button>
+                          </div>
+                        </div>
                       </form>
 
                     </div>
                   </div>
+
                   <table class="table table-bordered" id="sales-by-customer-detail-table" style="font-size: 1.25rem;">
                     <thead style="background-color: #4ECDC4; color: #fff;">
                       <tr>
@@ -92,7 +101,7 @@
                           <td><?= $sale['keterangan'] ?></td>
                           <td class="text-center"><?= $sale['qty'] ?></td>
                           <td class="text-right"><?= number_format($sale['harga_jual'], 0, ',', '.') ?></td>
-                          <td class="text-right"><?= number_format($sale['sub_total_barang'], 0, ',', '.') ?></td>
+                          <td class="text-right"><?= number_format($sale['sub_total'], 0, ',', '.') ?></td>
                         </tr>
                       <?php endforeach; ?>
                     </tbody>
@@ -130,6 +139,7 @@
   <script>
     $('#sales-by-customer-detail-table').DataTable({
       order: false,
+      paging: false,
       rowGroup: {
         endRender: function(rows, group) {
           // return group +' ('+rows.count()+')';

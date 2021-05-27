@@ -2,6 +2,10 @@
 require_once 'Zend/Controller/Action.php';
 require_once 'service/Home_Service.php';
 require_once 'service/Laporansalesbyproductdetail_Service.php';
+require './../vendor/autoload.php';
+
+use \PhpOffice\PhpSpreadsheet\Spreadsheet;
+use \PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class LaporansalesbyproductdetailController extends Zend_Controller_Action {
 
@@ -27,6 +31,29 @@ class LaporansalesbyproductdetailController extends Zend_Controller_Action {
 		$this->view->salesDetail = $this->Laporansalesbyproductdetail_Service->getlistsales();
 		$this->view->totalSales = $this->Laporansalesbyproductdetail_Service->getTotalByCustomer();
 		// $salesByLiquid = $this->Laporansalesbyproductdetail_Service->getlistsales();
+  }
+
+  public function printAction()
+  {
+    $sessionlogin = new Zend_Session_Namespace('sessionlogin');
+    $this->view->permission = $sessionlogin->permission;
+    $this->_helper->layout->setLayout('target-column');
+
+    $this->view->salesDetail = $this->Laporansalesbyproductdetail_Service->getlistsales();
+    // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
+    // $mpdf->WriteHTML('<h1>Hello world!</h1>');
+    // $mpdf->Output();
+  }
+
+  public function excelAction()
+  {
+    // $this->_helper->viewRenderer->setNoRender(true);
+    $sessionlogin = new Zend_Session_Namespace('sessionlogin');
+    $this->view->permission = $sessionlogin->permission;
+    $this->_helper->layout->setLayout('target-column');
+
+    $this->view->salesDetail = $this->Laporansalesbyproductdetail_Service->getlistsales();
+    // echo 'eds';
   }
  
 }
