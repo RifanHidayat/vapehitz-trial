@@ -151,7 +151,8 @@ class CustomerController extends Zend_Controller_Action
 		$akun_cash = '';
 		$akun = '';
 		$metode_bayar = '';
-	 
+		$pembayaran = '';
+
 
 		if (isset($_REQUEST['no_invoice'])) {
 			$no_invoice = $_REQUEST['no_invoice'];
@@ -178,6 +179,10 @@ class CustomerController extends Zend_Controller_Action
 			$metode_bayar = $_REQUEST['metode_bayar'];
 		}
 
+		if (isset($_REQUEST['pembayaran'])) {
+			$pembayaran = $_REQUEST['pembayaran'];
+		}
+
 
 		if (($akun_rek == '0') || ($akun_rek == '')) {
 			$akun = $akun_cash;
@@ -186,7 +191,7 @@ class CustomerController extends Zend_Controller_Action
 		}
 
 
-		$hasil = $this->Customer_Service->bayar($no_invoice,$tgl_invoice, $sisa_bayar, $jml_bayar, $catatan, $akun, $metode_bayar);
+		$hasil = $this->Customer_Service->bayar($no_invoice, $tgl_invoice, $sisa_bayar, $jml_bayar, $catatan, $akun, $metode_bayar, $pembayaran);
 
 		if ($hasil == 'sukses') {
 

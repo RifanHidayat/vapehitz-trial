@@ -32,10 +32,10 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 					<!-- baris judul -->
 					<thead>
 						<tr>
-							<td>
+							<th>
 								<font style="font-size:12px;font-weight:bold;"><b>Tanggal Pembayaran</b></font>
 
-							</td>
+							</th>
 							<td width="10%"> </td>
 							<td width="18%" align="right">
 								<font style="font-size:12px;font-weight:bold;"><b>Metode Bayar</b></font>
@@ -75,9 +75,6 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 						</td>
 						<td width="10%"> </td>
 
-
-
-
 						<td>
 							<select id="metode_bayar2" name="metode_bayar2" class="form-control input-sm" width="15%" onchange="metodebayar(this)">
 								<option value="0">--Pilih Cara Pembayaran--</option>
@@ -103,9 +100,8 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 
 						</td>
 
+
 						<td id="cashTD">
-
-
 							<select id="cash" name="cash" class="form-control input-sm" width="15%">
 								<option value="0">--Pilih Akun-</option>
 
@@ -126,11 +122,36 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 						<td width="16%" align="right">
 							<?php echo "Rp. " . number_format($this->payment[0]['total_sisabayar'], 0, ",", "."); ?>
 
+						</td>
+					</tr>
+					<br>
+					<br>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td width="15%" align="right">
+							<font style="font-size:12px;font-weight:bold;"><b>Jumlah Bayar</b></font>
+						</td>
+
+
+					<tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td width="15%" align="right">
+							<input type='text' class="form-control input-sm" name='jml_bayar_dp' id='jml_bayar_dp' value='0' onkeyup='masking("jml_bayar_dp")'>
 
 						</td>
 					</tr>
-
-
 
 				</table>
 				<br>
@@ -197,7 +218,6 @@ $seq2 = str_pad($seq, 2, '0', STR_PAD_LEFT);
 								<?php if ($status == "Finished") { ?>
 									<td><input type="text" disabled name="catatan" value="" /></td>
 									<td><input type="checkbox" disabled name="checkfield" value="<?php echo $nomer ?>" onclick="payment1()" /></td>
-
 
 								<?php } else { ?>
 									<td><input type="text" name="catatan" value="" /></td>

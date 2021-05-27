@@ -262,7 +262,7 @@ class Customer_Service
         }
     }
 
-    public function bayar(array $no_invoice, $tgl_invoice, array $sisa_bayar, array $jml_bayar, array $catatan, $akun)
+    public function bayar(array $no_invoice, $tgl_invoice, array $sisa_bayar, array $jml_bayar, array $catatan, $akun, $metode_bayar, $pembayaran)
     {
 
         $registry = Zend_Registry::getInstance();
@@ -271,61 +271,88 @@ class Customer_Service
             $db->beginTransaction();
             $i = 0;
 
+
+            $jml_bayar1 = 0;
+            $sisa_bayar1 = 0;
+            $jml_bayar_transaksi = 0;
+
+            $jml_pembayaran_sekarang = $pembayaran;
             foreach ($no_invoice as $row) {
-                //data update
-                $dataupdate = array(
-                    "jml_bayar" => $jml_bayar[$i] + $sisa_bayar[$i],
-                    "sisa_bayar" => "0"
-                );
+                if ($jml_pembayaran_sekarang > 0) {
 
-                $where = "no_invoice = '" . $no_invoice[$i] . "'";
-                $tgl_invoice1    = date_create($tgl_invoice);
-                $tgl_invoice2    = date_format($tgl_invoice1, "y-m-d");
+                    $jml_pembayaran_sekarang = $jml_pembayaran_sekarang - $sisa_bayar[$i];
+
+                    if ($jml_pembayaran_sekarang > 0) {
+                        $jml_bayar1 = $sisa_bayar[$i] + $jml_bayar[$i];
+                        $jml_bayar_transaksi = $sisa_bayar[$i];
+                        $sisa_bayar1 = "0";
+                    } else {
+                        $jml_bayar1 = $sisa_bayar[$i] + $jml_pembayaran_sekarang + $jml_bayar[$i];
+                        $jml_bayar_transaksi = $sisa_bayar[$i] + $jml_pembayaran_sekarang;
+                        $sisa_bayar1 = $jml_pembayaran_sekarang * -1;
+                    }
 
 
-                //insert data piutang
-                $insdata_piutang = array(
-                    "no_invoice" => $no_invoice[$i],
-                    "tgl_pembayaran" => $tgl_invoice2,
-                    "jumlah_pembayaran" => $jml_bayar[$i] + $sisa_bayar[$i],
-                    "sisa_pembayaran" => "0",
-                    "metode_pembayaran" => "-",
-                    "catatan" => $catatan[$i],
-                    "tgl_entry" => "0000-00-00 00:00:00",
-                    "no_rekening" => $akun
-                );
+                    //data update
+                    $dataupdate = array(
+                        "jml_bayar" => $jml_bayar1,
+                        "sisa_bayar" => $sisa_bayar1
+                    );
 
-                // insert data transaksi
-                $insdata_transaksi = array(
-                    "deskripsi" => "Transaksi pembayaran pelanggan  \n" . $no_invoice[$i],
-                    "tgl_transaksi" => $tgl_invoice2,
-                    "nominal" => $jml_bayar[$i],
-                    "type" => "Cash In",
-                    "catatan" => $catatan[$i],
-                    "nama_table" => "piutang",
-                    "id_table" => $no_invoice[$i],
-                    "id_table_original" => $no_invoice[$i],
-                    "id_akun" => $akun
-                );
-                $insdata_transaksi_piutang = array(
-                    "deskripsi" => "Transaksi pembayaran piutang  \n" . $no_invoice[$i],
-                    "tgl_transaksi" => $tgl_invoice2,
-                    "nominal" => $jml_bayar[$i],
-                    "type" => "Cash In",
-                    "catatan" => $catatan[$i],
-                    "nama_table" => "piutang",
-                    "id_table" => $no_invoice[$i],
-                    "id_table_original" => $no_invoice[$i],
-                    "id_akun" => "90"
-                );
+                    $where = "no_invoice = '" . $no_invoice[$i] . "'";
+                    $tgl_invoice1    = date_create($tgl_invoice);
+                    $tgl_invoice2    = date_format($tgl_invoice1, "y-m-d");
 
-                $db->update('salecentral', $dataupdate, $where);
 
-                $db->insert('piutang', $insdata_piutang);
-                $db->insert('transaksi', $insdata_transaksi);
-                $db->insert('transaksi', $insdata_transaksi_piutang);
+                    //insert data piutang
+                    $insdata_piutang = array(
+                        "no_invoice" => $no_invoice[$i],
+                        "tgl_pembayaran" => $tgl_invoice2,
+                        "jumlah_pembayaran" => $jml_bayar1,
+                        "sisa_pembayaran" => "0",
+                        "metode_pembayaran" => $metode_bayar,
+                        "catatan" => $catatan[$i],
+                        "tgl_entry" => "0000-00-00 00:00:00",
+                        "no_rekening" => $akun
+                    );
+
+                    // insert data transaksi
+                    $insdata_transaksi = array(
+                        "deskripsi" => "Transaksi pembayaran pelanggan  \n" . $no_invoice[$i],
+                        "tgl_transaksi" => $tgl_invoice2,
+                        "nominal" => $jml_bayar_transaksi,
+                        "type" => "Cash In",
+                        "catatan" => $catatan[$i],
+                        "nama_table" => "piutang",
+                        "id_table" => $no_invoice[$i],
+                        "id_table_original" => $no_invoice[$i],
+                        "id_akun" => $akun,
+                        "url" => "open_url_to_div('/pembayarancustomer/detail?id=" . $no_invoice[$i] . "')"
+                    );
+                    $insdata_transaksi_piutang = array(
+                        "deskripsi" => "Transaksi pembayaran piutang  \n" . $no_invoice[$i],
+                        "tgl_transaksi" => $tgl_invoice2,
+                        "nominal" => $jml_bayar_transaksi,
+                        "type" => "Cash In",
+                        "catatan" => $catatan[$i],
+                        "nama_table" => "piutang",
+                        "id_table" => $no_invoice[$i],
+                        "id_table_original" => $no_invoice[$i],
+                        "id_akun" => "90",
+                        "url" => "open_url_to_div('/pembayarancustomer/detail?id=" . $no_invoice[$i] . "')"
+                    );
+
+                    $db->update('salecentral', $dataupdate, $where);
+
+                    $db->insert('piutang', $insdata_piutang);
+                    $db->insert('transaksi', $insdata_transaksi);
+                    $db->insert('transaksi', $insdata_transaksi_piutang);
+                }
                 $i = $i + 1;
             }
+
+
+
 
 
 

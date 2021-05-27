@@ -321,6 +321,8 @@
 			var akun_cash = $('#cash').val();
 			var tgl_pembayaran = $('#tgl_pembayaran').val();
 			var metode_bayar = $('#metode_bayar2').val();
+			var pembayaran1 = $('#jml_bayar_dp').val();
+			var pembayaran = pembayaran1.replace(/[^\w\s]/gi, '');
 
 
 			if (tgl_pembayaran == '') {
@@ -355,6 +357,7 @@
 
 					}
 				}
+				console.log(pembayaran);
 
 
 				var url = "<?php echo $this->basePath; ?>/supplier/bayar";
@@ -366,7 +369,8 @@
 					catatan: catatan,
 					akun_rek: akun_rek,
 					akun_cash: akun_cash,
-					metode_bayar: metode_bayar
+					metode_bayar: metode_bayar,
+					pembayaran: pembayaran
 				}
 
 				jQuery.get(url, opt, function(data) {
@@ -400,6 +404,13 @@
 				$("#no_rek").val("");
 				$("#default").hide();
 			}
+		}
+		//function masking nominal
+		function masking(id) {
+			var biaya_kirim = document.getElementById(id).value;
+			var biaya_kirim2 = biaya_kirim.replaceAll(".", "");
+			var biaya_kirim3 = biaya_kirim2.toString().replaceAll(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+			document.getElementById(id).value = biaya_kirim3;
 		}
 	</script>
 </div>

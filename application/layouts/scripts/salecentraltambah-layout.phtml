@@ -640,6 +640,7 @@
                                                                 } else {
                                                                     $cek_rek = $this->rek[$x]['nama_akun'] . ' - ' . $this->rek[$x]['no_akun'] . ' (' . $this->rek[$x]['nama_cabang_pembuka'] . ')';
                                                                 }
+                                                                $id = $this->rek[$x]['id'];
 
 
                                                             ?>
@@ -967,7 +968,7 @@
     let app = new Vue({
         el: '#main-content',
         data: {
-       
+
             invoiceNumber: 'SO/VH/<?php echo date("dmy H:i:s"); ?>/<?php echo $seq; ?>',
             invoiceDate: '',
             shipment: '',

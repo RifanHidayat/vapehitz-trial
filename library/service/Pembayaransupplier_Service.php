@@ -313,7 +313,7 @@ class Pembayaransupplier_Service
                 "id_table" => $data['no_order'],
                 "id_table_original" => $data['no_order'],
                 "catatan" => $data['catatan'],
-                "id_akun" => "90",
+                "id_akun" => "99",
                 "url" => "open_url_to_div('/pembayaransupplier/detail?id=" . $data['no_order'] . "')",
 
             );
