@@ -59,10 +59,7 @@ ob_start();
             <?php else : ?>
               <td><?= $sale['kode_barang'] ?> - <?= $sale['nama_barang'] ?></td>
             <?php endif; ?>
-
-
             <td><?= $sale['no_invoice'] ?></td>
-
             <td><?= $sale['nama_customer'] ?></td>
             <td><?= date_format(date_create($sale['tgl_invoice']), "d-m-Y") ?></td>
             <td><?= $sale['keterangan'] ?></td>

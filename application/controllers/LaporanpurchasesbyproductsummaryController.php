@@ -28,7 +28,11 @@ class LaporanpurchasesbyproductsummaryController extends Zend_Controller_Action
     $this->_helper->layout->setLayout('laporanpurchasesbyproductsummary-layout');
     $this->view->Laporanpurchasesbyproductsummary_Service = $this->Laporanpurchasesbyproductsummary_Service;
 
-    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProductByDate($date1, $date2);
   }
 
   public function printAction()
@@ -37,7 +41,13 @@ class LaporanpurchasesbyproductsummaryController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProductByDate($date1, $date2);
+
+    // $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
     // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
     // $mpdf->Output();
@@ -50,7 +60,13 @@ class LaporanpurchasesbyproductsummaryController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
+    $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProductByDate($date1, $date2);
+    // $this->view->totalPurchases = $this->Laporanpurchasesbyproductsummary_Service->getTotalByProduct();
     //
   }
 }

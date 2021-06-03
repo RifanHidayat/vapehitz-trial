@@ -177,7 +177,8 @@ $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
 // $sheet = $sheet->getStyle($borderRange)->applyFromArray($styleArray);
 
 $writer = new Xlsx($spreadsheet);
+ob_end_clean();
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment; filename="salesbycustomerdetail.xlsx"');
 $writer->save("php://output");
-// $writer->save('salesbycustomerdetail.xlsx');
+$writer->save('Sales By Customer Detail.xlsx');

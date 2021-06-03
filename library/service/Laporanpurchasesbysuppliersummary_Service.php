@@ -50,7 +50,21 @@ class Laporanpurchasesbysuppliersummary_Service
       FROM ordercentral JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier GROUP BY kode_supplier;";
       $result = $db->fetchAll($query);
       return $result;
-    } catch(Exception $e) {
+    } catch (Exception $e) {
+      echo $e->getMessage() . '<br>';
+      return $e->getMessage();
+    }
+  }
+  public function getTotalBySupplierByDate($date1, $date2)
+  {
+    $registry = Zend_Registry::getInstance();
+    $db = $registry->get('db');
+    try {
+      $query = "SELECT ordercentral.kode_supplier, supplier.nama_supplier, SUM(net_total) AS total
+      FROM ordercentral JOIN supplier ON ordercentral.kode_supplier = supplier.kode_supplier WHERE ordercentral.tgl_order BETWEEN '$date1' AND '$date2' GROUP BY kode_supplier;";
+      $result = $db->fetchAll($query);
+      return $result;
+    } catch (Exception $e) {
       echo $e->getMessage() . '<br>';
       return $e->getMessage();
     }

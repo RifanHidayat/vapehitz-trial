@@ -8,29 +8,29 @@ $sheet = $spreadsheet->getActiveSheet();
 $sheet->setCellValue('A1', 'Customer');
 $sheet->setCellValue('B1', 'Total');
 
-// $index = 0;
-// $total = 0;
-// $rowNum = 2;
+$index = 0;
+$total = 0;
+$rowNum = 2;
 
-// foreach ($this->totalSales as $sale) {
+foreach ($this->totalSales as $sale) {
 
-//   $sheet->setCellValue('A' . $rowNum, $sale['nama_customer']);
-//   $sheet->setCellValue('B' . $rowNum, $sale['total']);
+  $sheet->setCellValue('A' . $rowNum, $sale['nama_customer']);
+  $sheet->setCellValue('B' . $rowNum, $sale['total']);
 
-//   $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
-//     ->setFormatCode('#,##0.00');
+  $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
+    ->setFormatCode('#,##0.00');
 
-//   $total += $sale['total'];
+  $total += $sale['total'];
 
-//   $rowNum++;
-//   $index++;
-// }
+  $rowNum++;
+  $index++;
+}
 
-// $sheet->setCellValue('A' . $rowNum, 'Total');
-// $sheet->setCellValue('B' . $rowNum, $total);
+$sheet->setCellValue('A' . $rowNum, 'Total');
+$sheet->setCellValue('B' . $rowNum, $total);
 
-// $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
-//     ->setFormatCode('#,##0.00');
+$spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
+  ->setFormatCode('#,##0.00');
 
 // $styleArray = array(
 //   'borders' => array(
@@ -55,6 +55,7 @@ $sheet->setCellValue('B1', 'Total');
 // $sheet = $sheet->getStyle($borderRange)->applyFromArray($styleArray);
 
 $writer = new Xlsx($spreadsheet);
+ob_end_clean();
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment; filename="salesbycustomersummary.xlsx"');
+header('Content-Disposition: attachment; filename="Sales By Customer Summary.xlsx"');
 $writer->save("php://output");

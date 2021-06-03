@@ -29,8 +29,12 @@ class LaporanpurchasesbysuppliersummaryController extends Zend_Controller_Action
     $this->_helper->layout->setLayout('laporanpurchasesbysuppliersummary-layout');
     $this->view->Laporanpurchasesbysuppliersummary_Service = $this->Laporanpurchasesbysuppliersummary_Service;
 
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
     // $this->view->salesDetail = $this->Laporanpurchasesbysuppliersummary_Service->getlistsales();
-    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
+    // $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
+    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplierByDate($date1, $date2);
     // $salesByLiquid = $this->Laporanpurchasesbysupplierdetail_Service->getlistsales();
   }
 
@@ -40,7 +44,12 @@ class LaporanpurchasesbysuppliersummaryController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getlistpurchases();
+    $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getListPurchasesByDate($date1, $date2);
+    // $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
     // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
     // $mpdf->Output();
@@ -53,7 +62,12 @@ class LaporanpurchasesbysuppliersummaryController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getlistpurchases();
+    $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getListPurchasesByDate($date1, $date2);
+    // $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
     // echo 'eds';
   }
 }

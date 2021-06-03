@@ -31,8 +31,15 @@ class LaporansalesbycustomerdetailController extends Zend_Controller_Action
     $this->_helper->layout->setLayout('laporansalesbycustomerdetail-layout');
     $this->view->Laporansalesbycustomerdetail_Service = $this->Laporansalesbycustomerdetail_Service;
 
-    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
-    $this->view->totalSales = $this->Laporansalesbycustomerdetail_Service->getTotalByCustomer();
+    // $date1 = "2021-03-08";
+    // $date2 = "2021-03-08";
+
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getListSalesByDate($date1, $date2);
+    // $this->view->totalSales = $this->Laporansalesbycustomerdetail_Service->getTotalByCustomer();
   }
 
   public function printAction()
@@ -41,7 +48,13 @@ class LaporansalesbycustomerdetailController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getListSalesByDate($date1, $date2);
+
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
     // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
     // $mpdf->Output();
@@ -54,7 +67,13 @@ class LaporansalesbycustomerdetailController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
+    $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getListSalesByDate($date1, $date2);
+    // $this->view->salesDetail = $this->Laporansalesbycustomerdetail_Service->getlistsales();
     // echo 'eds';
   }
 }

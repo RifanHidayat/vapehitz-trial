@@ -28,7 +28,11 @@ class LaporanpurchasesbyproductdetailController extends Zend_Controller_Action
     $this->_helper->layout->setLayout('laporanpurchasesbyproductdetail-layout');
     $this->view->Laporanpurchasesbyproductdetail_Service = $this->Laporanpurchasesbyproductdetail_Service;
 
-    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getListPurchasesByDate($date1, $date2);
     // $this->view->totalSales = $this->Laporanpurchasesbyproductdetail_Service->getTotalByCustomer();
     // $salesByLiquid = $this->Laporansalesbyproductdetail_Service->getlistsales();
   }
@@ -39,7 +43,13 @@ class LaporanpurchasesbyproductdetailController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getListPurchasesByDate($date1, $date2);
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
     // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
     // $mpdf->Output();
@@ -52,7 +62,11 @@ class LaporanpurchasesbyproductdetailController extends Zend_Controller_Action
     $this->view->permission = $sessionlogin->permission;
     $this->_helper->layout->setLayout('target-column');
 
-    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $date1 = $_GET['date1'];
+    $date2 = $_GET['date2'];
+
+    // $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getlistpurchases();
+    $this->view->purchasesDetail = $this->Laporanpurchasesbyproductdetail_Service->getListPurchasesByDate($date1, $date2);
     // echo 'eds';
   }
 }

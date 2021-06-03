@@ -60,7 +60,32 @@ class Laporansalesbyproductsummary_Service
       $result4 = $db->fetchAll($query4);
       // $result4 = [];
       return array_merge($result, $result2, $result3, $result4);
-    } catch(Exception $e) {
+    } catch (Exception $e) {
+      echo $e->getMessage() . '<br>';
+      return $e->getMessage();
+    }
+  }
+
+  public function getTotalByProductByDate($date1, $date2)
+  {
+    $registry = Zend_Registry::getInstance();
+    $db = $registry->get('db');
+    try {
+      $query = "SELECT sub_salecentral.kode_barang, liquid.nama_barang, SUM(sub_salecentral.sub_total) AS total
+      FROM sub_salecentral JOIN liquid ON sub_salecentral.kode_barang = liquid.kode_barang INNER JOIN salecentral ON sub_salecentral.no_invoice = salecentral.no_invoice WHERE salecentral.tgl_invoice BETWEEN '$date1' AND '$date2' GROUP BY kode_barang;";
+      $result = $db->fetchAll($query);
+      $query2 = "SELECT sub_salecentral.kode_barang, accessories.nama_aksesoris AS nama_barang, SUM(sub_salecentral.sub_total) AS total
+      FROM sub_salecentral JOIN accessories ON sub_salecentral.kode_barang = accessories.kode_aksesoris INNER JOIN salecentral ON sub_salecentral.no_invoice = salecentral.no_invoice WHERE salecentral.tgl_invoice BETWEEN '$date1' AND '$date2' GROUP BY kode_barang;";
+      $result2 = $db->fetchAll($query2);
+      $query3 = "SELECT sub_salecentral.kode_barang, atomizer.nama_atomizer AS nama_barang, SUM(sub_salecentral.sub_total) AS total
+      FROM sub_salecentral JOIN atomizer ON sub_salecentral.kode_barang = atomizer.kode_atomizer INNER JOIN salecentral ON sub_salecentral.no_invoice = salecentral.no_invoice WHERE salecentral.tgl_invoice BETWEEN '$date1' AND '$date2' GROUP BY kode_barang;";
+      $result3 = $db->fetchAll($query3);
+      $query4 = "SELECT sub_salecentral.kode_barang, device.nama_device AS nama_barang, SUM(sub_salecentral.sub_total) AS total
+      FROM sub_salecentral JOIN device ON sub_salecentral.kode_barang = device.kode_device INNER JOIN salecentral ON sub_salecentral.no_invoice = salecentral.no_invoice WHERE salecentral.tgl_invoice BETWEEN '$date1' AND '$date2' GROUP BY kode_barang;";
+      $result4 = $db->fetchAll($query4);
+      // $result4 = [];
+      return array_merge($result, $result2, $result3, $result4);
+    } catch (Exception $e) {
       echo $e->getMessage() . '<br>';
       return $e->getMessage();
     }

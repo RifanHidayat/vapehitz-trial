@@ -205,10 +205,10 @@ class SalecentraltambahController extends Zend_Controller_Action
         if (count($body->keranjang) > 0) {
             foreach ($body->keranjang as $keranjang) {
                 array_push($kode_barang, $keranjang->kode_barang);
-                array_push($hj_retail, $keranjang->hj_retail);
+                array_push($hj_retail, str_replace(".", "", $keranjang->hj_retail));
                 array_push($qty, $keranjang->qty);
                 array_push($free, $keranjang->free);
-                array_push($sub_total_barang, $keranjang->subTotal);
+                array_push($sub_total_barang, str_replace(".", "", $keranjang->subTotal));
                 array_push($sub_total_berat, $keranjang->berat);
                 array_push($nama_tabel, $keranjang->nama_tabel);
                 array_push($on_hand, $keranjang->on_hand);

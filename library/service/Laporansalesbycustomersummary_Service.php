@@ -41,16 +41,32 @@ class Laporansalesbycustomesummary_Service
     }
   }
 
+
   public function getTotalByCustomer()
   {
     $registry = Zend_Registry::getInstance();
     $db = $registry->get('db');
     try {
-      $query = "SELECT salecentral.kode_customer, customer.nama_customer, SUM(sub_total) AS total
+      $query = "SELECT salecentral.kode_customer, salecentral.tgl_invoice, customer.nama_customer, SUM(sub_total) AS total
       FROM salecentral JOIN customer ON salecentral.kode_customer = customer.kode_customer GROUP BY kode_customer;";
       $result = $db->fetchAll($query);
       return $result;
-    } catch(Exception $e) {
+    } catch (Exception $e) {
+      echo $e->getMessage() . '<br>';
+      return $e->getMessage();
+    }
+  }
+
+  public function getTotalByCustomerByDate($date1, $date2)
+  {
+    $registry = Zend_Registry::getInstance();
+    $db = $registry->get('db');
+    try {
+      $query = "SELECT salecentral.kode_customer, salecentral.tgl_invoice, customer.nama_customer, SUM(sub_total) AS total
+      FROM salecentral JOIN customer ON salecentral.kode_customer = customer.kode_customer WHERE salecentral.tgl_invoice BETWEEN '$date1' AND '$date2' GROUP BY kode_customer;";
+      $result = $db->fetchAll($query);
+      return $result;
+    } catch (Exception $e) {
       echo $e->getMessage() . '<br>';
       return $e->getMessage();
     }

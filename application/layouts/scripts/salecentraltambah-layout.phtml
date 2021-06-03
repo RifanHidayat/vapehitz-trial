@@ -107,11 +107,11 @@
 <?php $serialize_permission = unserialize($this->permission); ?>
 <section id="main-content">
     <section class="wrapper" style="min-height:522px">
-        <h3><i class="fa fa-angle-right"></i> Transaksi Penjualan Barang</h3>
+        <!-- <h3><i class="fa fa-angle-right"></i> Transaksi Penjualan Barang</h3>
         <button @click="onClickButton" class="btn btn-primary">Send Data</button>
 
         <button type="button" class="btn btn-warning button-test">Change Modal Content</button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Otorisasi</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Otorisasi</button> -->
         <div class="row mb">
             <!-- page start-->
             <div class="content-panel">
@@ -417,7 +417,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(finalGood, index) in finalSelectedGoods" is="selected-good" :key="index" :good="finalGood" :index="index" :ondelete="deleteFinalGood" :calculate="calculateFinalGoods"></tr>
+                                                    <tr v-for="(finalGood, index) in finalSelectedGoods" is="selected-good" :key="index" :good="finalGood" :index="index" :ondelete="deleteFinalGood" :calculate="calculateFinalGoods" :cleave="cleaveCurrency"></tr>
                                                     <tr v-if="finalSelectedGoods.length < 1">
                                                         <td colspan="11" style="text-align: center;">Belum ada barang dipilih</td>
                                                     </tr>
@@ -501,7 +501,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' class="form-control input-sm" name='diskon' id='diskon' value='0' onkeyup='datadiskon()' style="width: 55%; display: inline"> -->
-                                                        <input type='text' v-model="discount" class="form-control input-sm" name='diskon' id='diskon' style="width: 55%; display: inline">
+                                                        <input type='text' v-model="discount" v-cleave="cleaveCurrency" class="form-control input-sm" name='diskon' id='diskon' style="width: 55%; display: inline">
                                                         <select class="form-control input-sm" v-model="discountType" id="jenis_diskon" name="jenis_diskon" style="width: 43%; display: inline">
                                                             <option value="nominal">Nominal</option>
                                                             <option value="persen">Persen (%)</option>
@@ -528,7 +528,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' class="form-control input-sm" name='biaya_kirim' id='biaya_kirim' value='0' onkeyup='biaya()'> -->
-                                                        <input type='text' v-model="shipping" class="form-control input-sm text-right" name='biaya_kirim' id='biaya_kirim'>
+                                                        <input type='text' v-model="shipping" v-cleave="cleaveCurrency" class="form-control input-sm text-right" name='biaya_kirim' id='biaya_kirim'>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -541,7 +541,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' v-model="paymentOther" class="form-control input-sm text-right" name='biaya_lain' id='biaya_lain' value='0' onkeyup='biayaLain()'> -->
-                                                        <input type='text' v-model="paymentOther" class="form-control input-sm text-right" name='biaya_lain' id='biaya_lain'>
+                                                        <input type='text' v-model="paymentOther" v-cleave="cleaveCurrency" class="form-control input-sm text-right" name='biaya_lain' id='biaya_lain'>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -566,7 +566,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' class="form-control input-sm" name='deposit' id='deposit' value='0' onkeyup='onDepositChange()'> -->
-                                                        <input type='text' v-model="deposit" class="form-control input-sm text-right" name='deposit' id='deposit'>
+                                                        <input type='text' v-model="deposit" v-cleave="cleaveCurrency" class="form-control input-sm text-right" name='deposit' id='deposit'>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -618,7 +618,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' class="form-control input-sm" name='jml_penerimaan' id='jml_penerimaan' value='0' onkeyup='jumlahdp()'> -->
-                                                        <input type='text' v-model="receiptSourceTotal1" class="form-control input-sm text-right" name='jml_penerimaan' id='jml_penerimaan'>
+                                                        <input type='text' v-model="receiptSourceTotal1" v-cleave="cleaveCurrency" class="form-control input-sm text-right" name='jml_penerimaan' id='jml_penerimaan'>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -661,7 +661,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- <input type='text' class="form-control input-sm" name='jml_penerimaan2' id='jml_penerimaan2' value='0' onkeyup='jumlahdp()'> -->
-                                                        <input type='text' v-model="receiptSourceTotal2" class="form-control input-sm text-right" name='jml_penerimaan2' id='jml_penerimaan2'>
+                                                        <input type='text' v-model="receiptSourceTotal2" v-cleave="cleaveCurrency" class="form-control input-sm text-right" name='jml_penerimaan2' id='jml_penerimaan2'>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -932,6 +932,7 @@
 <script src="<?php echo $this->baseUrl(); ?>/lib/jquery.nicescroll.js" type="text/javascript"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
 <script>
     $(function() {
         // $('#table-test').DataTable({
@@ -946,8 +947,25 @@
         // console.log(table);
     })
 
+    Vue.directive('cleave', {
+        inserted: (el, binding) => {
+            el.cleave = new Cleave(el, binding.value || {})
+        },
+        update: (el) => {
+            const event = new Event('input', {
+                bubbles: true
+            });
+            // el.value = el.cleave.properties.result
+            // el.dispatchEvent(event)
+            setTimeout(function() {
+                el.value = el.cleave.properties.result
+                el.dispatchEvent(event)
+            }, 100);
+        }
+    })
+
     Vue.component('selected-good', {
-        props: ['good', 'index', 'ondelete', 'calculate'],
+        props: ['good', 'index', 'ondelete', 'calculate', 'cleave'],
         template: `
         <tr>
             <td style="text-transform: capitalize">{{ good.nama_tabel }}</td>
@@ -956,7 +974,7 @@
             <td>{{ good.berat }}</td>
             <td>{{ good.on_hand }}</td>
             <td>{{ good.stok_pusat }}</td>
-            <td><input type="text" @input="calculate(good)" v-model="good.hj_retail" class="form-control input-sm" style="text-align: right" /></td>
+            <td><input type="text" @input="calculate(good)" v-model="good.hj_retail" v-cleave="cleave" class="form-control input-sm" style="text-align: right" /></td>
             <td><input type="text" @input="calculate(good)" v-model="good.qty" class="form-control input-sm" /></td>
             <td><input type="text" @input="calculate(good)" v-model="good.free" class="form-control input-sm" /></td>
             <td><input type="text" v-model="good.subTotal" class="form-control input-sm" style="text-align: right" readonly /></td>
@@ -968,7 +986,12 @@
     let app = new Vue({
         el: '#main-content',
         data: {
-
+            cleaveCurrency: {
+                delimiter: '.',
+                numeralDecimalMark: ',',
+                numeral: true,
+                numeralThousandsGroupStyle: 'thousand'
+            },
             invoiceNumber: 'SO/VH/<?php echo date("dmy H:i:s"); ?>/<?php echo $seq; ?>',
             invoiceDate: '',
             shipment: '',
@@ -1013,27 +1036,27 @@
                         kode_customer: this.customer.name,
                         shipment: this.shipment,
                         nama_kurir: this.courier,
-                        total_berat: this.totalWeight,
-                        total_biaya: this.totalSubtotal,
-                        diskon: this.discount,
-                        biaya_kirim: this.shipping,
-                        net_total: this.netTotal,
+                        total_berat: this.clearCurrencyMask(this.totalWeight),
+                        total_biaya: this.clearCurrencyMask(this.totalSubtotal),
+                        diskon: this.clearCurrencyMask(this.discount),
+                        biaya_kirim: this.clearCurrencyMask(this.shipping),
+                        net_total: this.clearCurrencyMask(this.netTotal),
                         metode_penerimaan: this.receiptSource1,
-                        jml_penerimaan: this.receiptSourceTotal1,
+                        jml_penerimaan: this.clearCurrencyMask(this.receiptSourceTotal1),
                         metode_penerimaan2: this.receiptSource2,
-                        jml_penerimaan2: this.receiptSourceTotal2,
-                        jml_bayar: this.totalPayment,
-                        sisa_bayar: this.changePayment,
+                        jml_penerimaan2: this.clearCurrencyMask(this.receiptSourceTotal2),
+                        jml_bayar: this.clearCurrencyMask(this.totalPayment),
+                        sisa_bayar: this.clearCurrencyMask(this.changePayment),
                         nama_penerima: this.recipientName,
                         alamat_penerima: this.recipientAddress,
                         keterangan: this.information,
                         //seq: '',
                         termin_hutang: this.customer.debtDuration,
                         //kode_inv: '',
-                        sub_total: this.mainSubtotal,
-                        biaya_lain: this.paymentOther,
+                        sub_total: this.clearCurrencyMask(this.mainSubtotal),
+                        biaya_lain: this.clearCurrencyMask(this.paymentOther),
                         ket_biaya_lain: this.paymentOtherDescription,
-                        deposit: this.deposit,
+                        deposit: this.clearCurrencyMask(this.deposit),
                         jenis_diskon: this.discountType,
                         keranjang: this.finalSelectedGoods,
                         seq: this.seq,
@@ -1043,12 +1066,24 @@
                         vm.loading = false;
                         console.log(response);
                         swal({
-                            title: 'Order Sukses !',
-                            text: 'Auto Close...',
-                            icon: 'success',
-                            timer: 4000,
-                            showConfirmButton: false,
-                        })
+                                title: 'Sukses',
+                                text: 'Data berhasil disimpan',
+                                icon: 'success',
+                                closeOnClickOutside: false,
+                                timer: 1000,
+                                // showConfirmButton: false,
+                            },
+                            // function(isConfirm) {
+                            //     if (isConfirm) {
+                            //         window.location.href = '/salecentral';
+                            //     }
+                            // }
+                        )
+
+                        setTimeout(() => {
+                            window.location.href = '/salecentral';
+                        }, 1000)
+
                     })
                     .catch(function(error) {
                         vm.loading = false;
@@ -1123,7 +1158,7 @@
                 this.finalSelectedGoods.splice(index, 1);
             },
             calculateFinalGoods: function(item) {
-                item.subTotal = Number(item.qty) * Number(item.hj_retail);
+                item.subTotal = this.toThousandFormat(Number(item.qty) * Number(this.clearCurrencyMask(item.hj_retail)));
                 // let stok = item.stok_pusat;
                 // item.stok_pusat = Number(item.stok_pusat) - Number(item.qty) - Number(item.free);
             },
@@ -1136,34 +1171,58 @@
                     this.customer.whatsapp == selectedCustomer.no_hp;
                     this.customer.email == selectedCustomer.email;
                 }
-            }
+            },
+            clearCurrencyMask: function(masked) {
+                if (masked == '' || masked == 0 || typeof(masked) == 'undefined') {
+                    return 0;
+                }
+                return masked.toString().replaceAll('.', '');
+            },
+            toThousandFormat: function(number) {
+                if (number !== '') {
+                    // return number.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    return new Intl.NumberFormat('de-DE').format(number)
+                }
+                return;
+            },
         },
         computed: {
             totalWeight: function() {
-                return this.finalSelectedGoods.map(good => Number(good.berat) * Number(good.qty)).reduce((acc, cur) => {
+                const totalWeight = this.finalSelectedGoods.map(good => Number(good.berat) * Number(good.qty)).reduce((acc, cur) => {
                     return acc + cur;
                 }, 0);
+                return this.toThousandFormat(totalWeight);
             },
             totalSubtotal: function() {
-                return this.finalSelectedGoods.map(good => Number(good.subTotal)).reduce((acc, cur) => {
+                let vm = this;
+                const totalSubtotal = this.finalSelectedGoods.map(good => Number(vm.clearCurrencyMask(good.subTotal))).reduce((acc, cur) => {
                     return acc + cur;
                 }, 0);
+
+                return this.toThousandFormat(totalSubtotal);
             },
             mainSubtotal: function() {
+                let mainSubtotal = 0;
                 if (this.discountType == 'persen') {
-                    return this.totalSubtotal - (this.totalSubtotal * (Number(this.discount) / 100));
+                    mainSubtotal = this.clearCurrencyMask(this.totalSubtotal) - (this.clearCurrencyMask(this.totalSubtotal) * (Number(this.clearCurrencyMask(this.discount)) / 100));
+
+                    return this.toThousandFormat(mainSubtotal);
                 }
 
-                return this.totalSubtotal - this.discount;
+                mainSubtotal = this.clearCurrencyMask(this.totalSubtotal) - this.clearCurrencyMask(this.discount);
+                return this.toThousandFormat(mainSubtotal);
             },
             netTotal: function() {
-                return this.mainSubtotal + Number(this.shipping) + Number(this.paymentOther) - Number(this.deposit);
+                const netTotal = Number(this.clearCurrencyMask(this.mainSubtotal)) + Number(this.clearCurrencyMask(this.shipping)) + Number(this.clearCurrencyMask(this.paymentOther)) - Number(this.clearCurrencyMask(this.deposit));
+                return this.toThousandFormat(netTotal);
             },
             totalPayment: function() {
-                return Number(this.receiptSourceTotal1) + Number(this.receiptSourceTotal2);
+                const totalPayment = Number(this.clearCurrencyMask(this.receiptSourceTotal1)) + Number(this.clearCurrencyMask(this.receiptSourceTotal2));
+                return this.toThousandFormat(totalPayment);
             },
             changePayment: function() {
-                return this.netTotal - this.totalPayment;
+                const changePayment = this.clearCurrencyMask(this.netTotal) - this.clearCurrencyMask(this.totalPayment);
+                return this.toThousandFormat(changePayment);
             }
         }
     })
