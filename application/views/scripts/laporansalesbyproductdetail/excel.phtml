@@ -5,10 +5,10 @@ use \PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setCellValue('A1', 'Customer');
+$sheet->setCellValue('A1', 'Product');
 $sheet->setCellValue('B1', 'No.');
 $sheet->setCellValue('C1', 'Created By');
-$sheet->setCellValue('D1', 'Product');
+$sheet->setCellValue('D1', 'Customer');
 $sheet->setCellValue('E1', 'Date');
 $sheet->setCellValue('F1', 'Description');
 $sheet->setCellValue('G1', 'Qty');
@@ -16,34 +16,36 @@ $sheet->setCellValue('H1', 'Price');
 $sheet->setCellValue('I1', 'Amount');
 
 $index = 0;
-$totalForCustomer = 0;
+$totalForProduct = 0;
 $rowNum = 2;
 $grandTotal = 0;
 
 foreach ($this->salesDetail as $sale) {
   if ($index > 0) {
-    if ($sale['nama_customer'] !== $this->salesDetail[$index - 1]['nama_customer']) {
-      $sheet->setCellValue('A' . $rowNum, $sale['nama_customer']);
+    if ($sale['kode_barang'] !== $this->salesDetail[$index - 1]['kode_barang']) {
+      $sheet->setCellValue('A' . $rowNum, $sale['kode_barang'] . ' - ' . $sale['nama_barang']);
     } else {
       $sheet->setCellValue('A' . $rowNum, '');
     }
   } else {
-    $sheet->setCellValue('A' . $rowNum, $sale['nama_customer']);
+    $sheet->setCellValue('A' . $rowNum, $sale['kode_barang'] . ' - ' . $sale['nama_barang']);
   }
 
-  if ($index > 0) {
-    if ($sale['no_invoice'] !== $this->salesDetail[$index - 1]['no_invoice']) {
-      $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
-      $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
-    } else {
-      $sheet->setCellValue('B' . $rowNum, '');
-    }
-  } else {
-    $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
-    $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
-  }
+  // if ($index > 0) {
+  //   if ($sale['no_invoice'] !== $this->salesDetail[$index - 1]['no_invoice']) {
+  //     $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
+  //     $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
+  //   } else {
+  //     $sheet->setCellValue('B' . $rowNum, '');
+  //   }
+  // } else {
+  //   $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
+  //   $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
+  // }
 
-  $sheet->setCellValue('D' . $rowNum, $sale['nama_barang']);
+  $sheet->setCellValue('B' . $rowNum, $sale['no_invoice']);
+  $sheet->setCellValue('C' . $rowNum, $sale['created_by']);
+  $sheet->setCellValue('D' . $rowNum, $sale['nama_customer']);
   $sheet->setCellValue('E' . $rowNum, date_format(date_create($sale['tgl_invoice']), "d-m-Y"));
   $sheet->setCellValue('F' . $rowNum, $sale['keterangan']);
   $sheet->setCellValue('G' . $rowNum, $sale['qty']);
@@ -52,96 +54,99 @@ foreach ($this->salesDetail as $sale) {
   $spreadsheet->getActiveSheet()->getStyle('H' . $rowNum)->getNumberFormat()
     ->setFormatCode('#,##0.00');
 
-  $sheet->setCellValue('I' . $rowNum, $sale['sub_total']);
+  $sheet->setCellValue('I' . $rowNum, $sale['sub_total_barang']);
 
   $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
     ->setFormatCode('#,##0.00');
 
+  $totalForProduct += $sale['sub_total_barang'];
+  $grandTotal += $sale['sub_total_barang'];
+
   $rowNum++;
 
+  // if ($index < count($this->salesDetail) - 1) {
+
+  //   if ($sale['nama_barang'] !== $this->salesDetail[$index + 1]['nama_barang']) {
+  //     $sheet->setCellValue('A' . $rowNum, '');
+  //     $sheet->setCellValue('B' . $rowNum, 'Discount');
+
+  //     if ($sale['jenis_diskon'] == 'persen') {
+  //       $sale['diskon'] = $sale['total_biaya'] * ($sale['diskon'] / 100);
+  //     }
+
+  //     $sheet->setCellValue('C' . $rowNum, $sale['diskon']);
+
+  //     $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+  //       ->setFormatCode('#,##0.00');
+
+  //     $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+  //     $rowNum++;
+
+  //     $sheet->setCellValue('B' . $rowNum, 'Total Invoice');
+  //     $sheet->setCellValue('C' . $rowNum, $sale['salecentral_sub_total']);
+
+  //     $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+  //       ->setFormatCode('#,##0.00');
+
+  //     $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+  //     $totalForCustomer += $sale['salecentral_sub_total'];
+  //   }
+  // } else {
+
+  //   $sheet->setCellValue('B' . $rowNum, 'Discount');
+
+  //   if ($sale['jenis_diskon'] == 'persen') {
+  //     $sale['diskon'] = $sale['total_biaya'] * ($sale['diskon'] / 100);
+  //   }
+
+  //   $sheet->setCellValue('C' . $rowNum, $sale['diskon']);
+
+  //   $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+  //     ->setFormatCode('#,##0.00');
+
+  //   $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+  //   $rowNum++;
+
+  //   $sheet->setCellValue('B' . $rowNum, 'Total Invoice');
+  //   $sheet->setCellValue('C' . $rowNum, $sale['salecentral_sub_total']);
+
+  //   $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+  //     ->setFormatCode('#,##0.00');
+
+  //   $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+  //   $totalForCustomer += $sale['salecentral_sub_total'];
+
+  //   $rowNum++;
+  // }
+
+  // $grandTotal += $totalForCustomer;
+
   if ($index < count($this->salesDetail) - 1) {
-
-    if ($sale['no_invoice'] !== $this->salesDetail[$index + 1]['no_invoice']) {
-      // $sheet->setCellValue('A' . $rowNum, '');
-      $sheet->setCellValue('B' . $rowNum, 'Discount');
-
-      if ($sale['jenis_diskon'] == 'persen') {
-        $sale['diskon'] = $sale['total_biaya'] * ($sale['diskon'] / 100);
-      }
-
-      $sheet->setCellValue('C' . $rowNum, $sale['diskon']);
-
-      $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
-        ->setFormatCode('#,##0.00');
-
-      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
-
-      $rowNum++;
-
-      $sheet->setCellValue('B' . $rowNum, 'Total Invoice');
-      $sheet->setCellValue('C' . $rowNum, $sale['salecentral_sub_total']);
-
-      $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
-        ->setFormatCode('#,##0.00');
-
-      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
-
-      $totalForCustomer += $sale['salecentral_sub_total'];
-    }
-  } else {
-
-    $sheet->setCellValue('B' . $rowNum, 'Discount');
-
-    if ($sale['jenis_diskon'] == 'persen') {
-      $sale['diskon'] = $sale['total_biaya'] * ($sale['diskon'] / 100);
-    }
-
-    $sheet->setCellValue('C' . $rowNum, $sale['diskon']);
-
-    $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
-      ->setFormatCode('#,##0.00');
-
-    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
-
-    $rowNum++;
-
-    $sheet->setCellValue('B' . $rowNum, 'Total Invoice');
-    $sheet->setCellValue('C' . $rowNum, $sale['salecentral_sub_total']);
-
-    $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
-      ->setFormatCode('#,##0.00');
-
-    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
-
-    $totalForCustomer += $sale['salecentral_sub_total'];
-
-    $rowNum++;
-  }
-
-  $grandTotal += $totalForCustomer;
-
-  if ($index < count($this->salesDetail) - 1) {
-    if ($sale['nama_customer'] !== $this->salesDetail[$index + 1]['nama_customer']) {
-      $sheet->setCellValue('A' . $rowNum, 'Total for ' . $sale['nama_customer']);
-      $sheet->setCellValue('B' . $rowNum, $totalForCustomer);
+    if ($sale['nama_barang'] !== $this->salesDetail[$index + 1]['nama_barang']) {
+      $sheet->setCellValue('A' . $rowNum, 'Total for ' . $sale['nama_barang']);
+      $sheet->setCellValue('B' . $rowNum, $totalForProduct);
 
       $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
         ->setFormatCode('#,##0.00');
 
       $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
 
-      $totalForCustomer = 0;
+      $totalForProduct = 0;
     }
   } else {
-    $sheet->setCellValue('A' . $rowNum, 'Total for ' . $sale['nama_customer']);
-    $sheet->setCellValue('B' . $rowNum, $totalForCustomer);
+    $sheet->setCellValue('A' . $rowNum, 'Total for ' . $sale['nama_barang']);
+    $sheet->setCellValue('B' . $rowNum, $totalForProduct);
 
     $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
       ->setFormatCode('#,##0.00');
 
     $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
 
-    $totalForCustomer = 0;
+    $totalForProduct = 0;
   }
 
   $rowNum++;
@@ -179,6 +184,6 @@ $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
 $writer = new Xlsx($spreadsheet);
 ob_end_clean();
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-header('Content-Disposition: attachment; filename="salesbycustomerdetail.xlsx"');
+header('Content-Disposition: attachment; filename="salesbyproductdetail.xlsx"');
 $writer->save("php://output");
 $writer->save('Sales By Customer Detail.xlsx');

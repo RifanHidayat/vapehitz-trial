@@ -65,11 +65,11 @@ ob_start();
             <td><?= $sale['keterangan'] ?></td>
             <td style="text-align: center;"><?= $sale['qty'] ?></td>
             <td style="text-align: right;"><?= number_format($sale['harga_jual'], 0, ',', '.') ?></td>
-            <td style="text-align: right;"><?= number_format($sale['sub_total'], 0, ',', '.') ?></td>
+            <td style="text-align: right;"><?= number_format($sale['sub_total_barang'], 0, ',', '.') ?></td>
           </tr>
 
-          <?php $totalForProduct += $sale['sub_total'] ?>
-          <?php $grandTotal += $sale['sub_total'] ?>
+          <?php $totalForProduct += $sale['sub_total_barang'] ?>
+          <?php $grandTotal += $sale['sub_total_barang'] ?>
 
           <?php if ($index < count($this->salesDetail) - 1) : ?>
             <?php if ($sale['nama_barang'] !== $this->salesDetail[$index + 1]['nama_barang']) : ?>

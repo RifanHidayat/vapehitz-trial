@@ -52,7 +52,7 @@ foreach ($this->salesDetail as $sale) {
   $spreadsheet->getActiveSheet()->getStyle('H' . $rowNum)->getNumberFormat()
     ->setFormatCode('#,##0.00');
 
-  $sheet->setCellValue('I' . $rowNum, $sale['sub_total']);
+  $sheet->setCellValue('I' . $rowNum, $sale['sub_total_barang']);
 
   $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
     ->setFormatCode('#,##0.00');

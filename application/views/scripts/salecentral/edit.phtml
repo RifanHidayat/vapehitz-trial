@@ -108,10 +108,10 @@
 <section id="main-content">
   <section class="wrapper" style="min-height:522px">
     <h3><i class="fa fa-angle-right"></i> Transaksi Penjualan Barang</h3>
-    <button @click="onClickButton" class="btn btn-primary">Send Data</button>
+    <!-- <button @click="onClickButton" class="btn btn-primary">Send Data</button>
 
     <button type="button" class="btn btn-warning button-test">Change Modal Content</button>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Otorisasi</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Otorisasi</button> -->
     <div class="row mb">
       <!-- page start-->
       <div class="content-panel">
@@ -609,7 +609,7 @@
                                 $id = $this->rek[$x]['id'];
                               ?>`
                               <option value="<?php echo $id; ?>" <?php if ($this->rek[$x]['id'] == $this->data[0]['metode_penerimaan']) echo 'selected'; ?>><?php echo $cek_rek; ?></option>
-                            
+
                             <?php } ?>
                             </select>
 
@@ -727,7 +727,7 @@
 
                   </fieldset>
                   <div class="text-right" style="padding: 2em 1em; margin-top: 20px">
-                    <a href="salecentral">
+                    <a href="/salecentral">
                       <button type="button" class="btn btn-theme02">
                         <span class="fa fa-backward"></span> &nbsp;Kembali
                       </button>
@@ -1062,13 +1062,31 @@
           .then(function(response) {
             vm.loading = false;
             console.log(response);
+            // swal({
+            //   title: 'Order Sukses !',
+            //   text: 'Auto Close...',
+            //   icon: 'success',
+            //   timer: 4000,
+            //   showConfirmButton: false,
+            // })
             swal({
-              title: 'Order Sukses !',
-              text: 'Auto Close...',
-              icon: 'success',
-              timer: 4000,
-              showConfirmButton: false,
-            })
+                title: 'Sukses',
+                text: 'Data berhasil disimpan',
+                icon: 'success',
+                closeOnClickOutside: false,
+                timer: 1000,
+                // showConfirmButton: false,
+              },
+              // function(isConfirm) {
+              //     if (isConfirm) {
+              //         window.location.href = '/salecentral';
+              //     }
+              // }
+            )
+
+            setTimeout(() => {
+              window.location.href = '/salecentral';
+            }, 1000)
           })
           .catch(function(error) {
             vm.loading = false;
@@ -1277,6 +1295,9 @@
     })
 
     $("#tgl_invoice").datepicker({
+      dateFormat: 'dd/mm/yy',
+      changeMonth: true,
+      changeYear: true,
       onSelect: function(dateText) {
         app.$data.invoiceDate = dateText;
       }
@@ -1290,11 +1311,11 @@
 <script>
   $(document).ready(function() {
 
-    $('#tgl_invoice').datepicker({
-      dateFormat: 'dd/mm/yy',
-      changeMonth: true,
-      changeYear: true
-    });
+    // $('#tgl_invoice').datepicker({
+    //   dateFormat: 'dd/mm/yy',
+    //   changeMonth: true,
+    //   changeYear: true
+    // });
 
 
 

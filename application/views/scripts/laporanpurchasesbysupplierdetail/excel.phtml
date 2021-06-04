@@ -1,0 +1,212 @@
+<?php
+
+use \PhpOffice\PhpSpreadsheet\Spreadsheet;
+use \PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$sheet->setCellValue('A1', 'Supplier');
+$sheet->setCellValue('B1', 'No.');
+$sheet->setCellValue('C1', 'Created By');
+$sheet->setCellValue('D1', 'Product');
+$sheet->setCellValue('E1', 'Date');
+$sheet->setCellValue('F1', 'Description');
+$sheet->setCellValue('G1', 'Qty');
+$sheet->setCellValue('H1', 'Price');
+$sheet->setCellValue('I1', 'Amount');
+
+$index = 0;
+$totalForSupplier = 0;
+$rowNum = 2;
+$grandTotal = 0;
+
+foreach ($this->purchasesDetail as $purchase) {
+  if ($index > 0) {
+    if ($purchase['kode_supplier'] !== $this->purchasesDetail[$index - 1]['kode_supplier']) {
+      $sheet->setCellValue('A' . $rowNum, $purchase['nama_supplier']);
+    } else {
+      $sheet->setCellValue('A' . $rowNum, '');
+    }
+  } else {
+    $sheet->setCellValue('A' . $rowNum, $purchase['nama_supplier']);
+  }
+
+  if ($index > 0) {
+    if ($purchase['no_order'] !== $this->purchasesDetail[$index - 1]['no_order']) {
+      $sheet->setCellValue('B' . $rowNum, $purchase['no_order']);
+      $sheet->setCellValue('C' . $rowNum, $purchase['created_by']);
+    } else {
+      $sheet->setCellValue('B' . $rowNum, '');
+    }
+  } else {
+    $sheet->setCellValue('B' . $rowNum, $purchase['no_order']);
+    $sheet->setCellValue('C' . $rowNum, $purchase['created_by']);
+  }
+
+  $sheet->setCellValue('D' . $rowNum, $purchase['nama_barang']);
+  $sheet->setCellValue('E' . $rowNum, date_format(date_create($purchase['tgl_order']), "d-m-Y"));
+  $sheet->setCellValue('F' . $rowNum, $purchase['keterangan']);
+  $sheet->setCellValue('G' . $rowNum, $purchase['qty']);
+  $sheet->setCellValue('H' . $rowNum, $purchase['harga_beli']);
+
+  $spreadsheet->getActiveSheet()->getStyle('H' . $rowNum)->getNumberFormat()
+    ->setFormatCode('#,##0.00');
+
+  $sheet->setCellValue('I' . $rowNum, $purchase['sub_total']);
+
+  $spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
+    ->setFormatCode('#,##0.00');
+
+  $rowNum++;
+
+  if ($index < count($this->purchasesDetail) - 1) {
+
+    if ($purchase['no_order'] !== $this->purchasesDetail[$index + 1]['no_order']) {
+      // $sheet->setCellValue('A' . $rowNum, '');
+      // Biaya Kirim
+      $sheet->setCellValue('B' . $rowNum, 'Shipping Cost');
+
+      $sheet->setCellValue('C' . $rowNum, $purchase['biaya_kirim']);
+
+      $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+        ->setFormatCode('#,##0.00');
+
+      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+      $rowNum++;
+
+      // Diskon
+
+      $sheet->setCellValue('B' . $rowNum, 'Discount');
+
+      if ($purchase['jenis_diskon'] == 'persen') {
+        $purchase['diskon'] = $purchase['total_biaya'] * ($purchase['diskon'] / 100);
+      }
+
+      $sheet->setCellValue('C' . $rowNum, $purchase['diskon']);
+
+      $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+        ->setFormatCode('#,##0.00');
+
+      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+      $rowNum++;
+
+      // Total Invoice
+
+      $sheet->setCellValue('B' . $rowNum, 'Total Order');
+      $sheet->setCellValue('C' . $rowNum, $purchase['net_total']);
+
+      $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+        ->setFormatCode('#,##0.00');
+
+      $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+      $totalForSupplier += $purchase['net_total'];
+    }
+  } else {
+
+    // Biaya Kirim
+    $sheet->setCellValue('B' . $rowNum, 'Shipping Cost');
+
+    $sheet->setCellValue('C' . $rowNum, $purchase['biaya_kirim']);
+
+    $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+      ->setFormatCode('#,##0.00');
+
+    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+    $rowNum++;
+
+    $sheet->setCellValue('B' . $rowNum, 'Discount');
+
+    if ($purchase['jenis_diskon'] == 'persen') {
+      $purchase['diskon'] = $purchase['total_biaya'] * ($purchase['diskon'] / 100);
+    }
+
+    $sheet->setCellValue('C' . $rowNum, $purchase['diskon']);
+
+    $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+      ->setFormatCode('#,##0.00');
+
+    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+    $rowNum++;
+
+    $sheet->setCellValue('B' . $rowNum, 'Total Order');
+    $sheet->setCellValue('C' . $rowNum, $purchase['net_total']);
+
+    $spreadsheet->getActiveSheet()->getStyle('C' . $rowNum)->getNumberFormat()
+      ->setFormatCode('#,##0.00');
+
+    $spreadsheet->getActiveSheet()->mergeCells("C$rowNum:I$rowNum");
+
+    $totalForSupplier += $purchase['net_total'];
+
+    $rowNum++;
+  }
+
+  $grandTotal += $totalForSupplier;
+
+  if ($index < count($this->purchasesDetail) - 1) {
+    if ($purchase['koe_supplier'] !== $this->purchasesDetail[$index + 1]['koe_supplier']) {
+      $sheet->setCellValue('A' . $rowNum, 'Total for ' . $purchase['nama_supplier']);
+      $sheet->setCellValue('B' . $rowNum, $totalForSupplier);
+
+      $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
+        ->setFormatCode('#,##0.00');
+
+      $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
+
+      $totalForSupplier = 0;
+    }
+  } else {
+    $sheet->setCellValue('A' . $rowNum, 'Total for ' . $purchase['nama_supplier']);
+    $sheet->setCellValue('B' . $rowNum, $totalForSupplier);
+
+    $spreadsheet->getActiveSheet()->getStyle('B' . $rowNum)->getNumberFormat()
+      ->setFormatCode('#,##0.00');
+
+    $spreadsheet->getActiveSheet()->mergeCells("B$rowNum:I$rowNum");
+
+    $totalForSupplier = 0;
+  }
+
+  $rowNum++;
+  $index++;
+}
+
+$sheet->setCellValue('A' . $rowNum, 'TOTAL');
+$sheet->setCellValue('I' . $rowNum, $grandTotal);
+
+$spreadsheet->getActiveSheet()->getStyle('I' . $rowNum)->getNumberFormat()
+  ->setFormatCode('#,##0.00');
+
+// $styleArray = array(
+//   'borders' => array(
+//     'top' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'bottom' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'right' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+//     'left' => array(
+//       'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+//     ),
+
+//   ),
+// );
+
+// $borderRange = "A1:H" . ($rowNum - 1);
+
+// $sheet = $sheet->getStyle($borderRange)->applyFromArray($styleArray);
+
+$writer = new Xlsx($spreadsheet);
+ob_end_clean();
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment; filename="Purchases By Supplier Detail.xlsx"');
+$writer->save("php://output");
+$writer->save('Sales By Customer Detail.xlsx');

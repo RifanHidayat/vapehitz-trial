@@ -78,7 +78,7 @@ ob_start();
 
             <td style="text-align: center;"><?= $sale['qty'] ?></td>
             <td style="text-align: right;"><?= number_format($sale['harga_jual'], 0, ',', '.') ?></td>
-            <td style="text-align: right;"><?= number_format($sale['sub_total'], 0, ',', '.') ?></td>
+            <td style="text-align: right;"><?= number_format($sale['sub_total_barang'], 0, ',', '.') ?></td>
           </tr>
 
           <?php if ($index < count($this->salesDetail) - 1) : ?>

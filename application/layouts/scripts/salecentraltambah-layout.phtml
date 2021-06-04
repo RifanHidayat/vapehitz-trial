@@ -1255,9 +1255,12 @@
         })
 
         $("#tgl_invoice").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
             onSelect: function(dateText) {
                 app.$data.invoiceDate = dateText;
-            }
+            },
         });
     })
 </script>
@@ -2242,11 +2245,11 @@
 <script>
     $(document).ready(function() {
 
-        $('#tgl_invoice').datepicker({
-            dateFormat: 'dd/mm/yy',
-            changeMonth: true,
-            changeYear: true
-        });
+        // $('#tgl_invoice').datepicker({
+        //     dateFormat: 'dd/mm/yy',
+        //     changeMonth: true,
+        //     changeYear: true
+        // });
 
 
 

@@ -48,7 +48,7 @@ class LaporanpurchasesbysuppliersummaryController extends Zend_Controller_Action
     $date2 = $_GET['date2'];
 
     // $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getlistpurchases();
-    $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getListPurchasesByDate($date1, $date2);
+    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplierByDate($date1, $date2);
     // $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
     // $mpdf = new \Mpdf\Mpdf(['debug' => true]);
     // $mpdf->WriteHTML('<h1>Hello world!</h1>');
@@ -66,7 +66,7 @@ class LaporanpurchasesbysuppliersummaryController extends Zend_Controller_Action
     $date2 = $_GET['date2'];
 
     // $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getlistpurchases();
-    $this->view->purchasesDetail = $this->Laporanpurchasesbysupplierdetail_Service->getListPurchasesByDate($date1, $date2);
+    $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplierByDate($date1, $date2);
     // $this->view->totalPurchases = $this->Laporanpurchasesbysuppliersummary_Service->getTotalBySupplier();
     // echo 'eds';
   }
